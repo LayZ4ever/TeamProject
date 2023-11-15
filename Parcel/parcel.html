@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form</title>
+</head>
+
+<body>
+    <h1>Welcome to Our Website</h1>
+    <p>This is a simple HTML form to insert data into a MySQL database.</p>
+
+    <form id="dataForm">
+        <legend>Sender information</legend>
+        Full Name: <input type="text" name="customerName" id="customerName"><br>
+        Sending from: <input type="text" id="cityInput" name="senderCity" list="cityList"
+            placeholder="Type or select a city" oninput="loadCityList()">
+        <datalist id="cityList"></datalist><br><br>
+    
+        <legend>Receiver information</legend>
+        First Name: <input type="text" name="firstName" required><br>
+        Last Name: <input type="text" name="lastName" required><br>
+        Phone number: <input type="tel" name="phoneNumber" required><br><br>
+  
+        <legend>Delivery Details</legend>
+        Weight: <input type="text" name="weight" id="weight" placeholder="Weight in kg" required><br>
+        Deliver to office <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" value="office"
+            onclick="showSelection('office')">
+        Deliver to address <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" value="address"
+            onclick="showSelection('address')"><br>
+
+        <div id="officeSelection" style="display:none;">
+            Office: <select id="office" name="office">
+                <option value="" selected disabled>Please select an office</option>
+                <option value="office1">Office 1</option>
+                <option value="office2">Office 2</option>
+                <option value="office3">Office 3</option>
+            </select>
+        </div>
+
+        <div id="addressSelection" style="display:none;">
+            Choose a city: <input type="text" id="cityInput" name="addressCity" list="cityList"
+                placeholder="Type or select a city" oninput="loadCityList()">
+            <datalist id="cityList"></datalist>
+            Address: <input type="text" name="deliveryAddress" id="deliveryAddress" placeholder="zh.k , ul. ">
+        </div><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="result"></div>
+
+    <script src="parcel.js"></script>
+</body>
+
+</html>

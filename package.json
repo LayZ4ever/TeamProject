@@ -1,0 +1,19 @@
+{
+  "name": "teamproject",
+  "version": "1.0.0",
+  "description": "1. you need to have npm installed\r 2. you need to have a db with the following credentials:\r user:            'companymanager_user',\r password:        'companymanager_user',\r database schema: 'testdb',\r 3. run \"npm init -y\" in your project folder\r 4. run \"npm install express mysql2\"\r 5. open browser and go to \"http://localhost:3000/index.html\"\r 6. submit and the tuples will appear in your db\r (I have included a copy of the model for the db \"TestModelToImport.mwb\")",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql2": "^3.6.3"
+  }
+}
