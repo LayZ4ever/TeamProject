@@ -43,16 +43,34 @@ app.post('/api/register', async (req, res) => {
             return res.status(409).json({ message: 'Username already exists' });
         }
 
-        // If username doesn't exist, proceed with registration
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const insertUserSql = 'INSERT INTO users (Username, Password) VALUES (?, ?)';
-        const [userResult] = await connection.query(insertUserSql, [username, hashedPassword]);
-        const newUserId = userResult.insertId;
-
-        // Combine first and last name for custName and insert into Customer table
+        // Check if customer with the same name and phone number exists
         const custName = `${firstName} ${lastName}`;
-        const insertCustomerSql = 'INSERT INTO customer (Users_UserId, CustName, PhoneNumber) VALUES (?, ?, ?)';
-        await connection.query(insertCustomerSql, [newUserId, custName, phoneNumber]);
+        const checkCustomerSql = 'SELECT * FROM customer WHERE CustName = ? AND PhoneNumber = ?';
+        const [customers] = await connection.query(checkCustomerSql, [custName, phoneNumber]);
+
+        let newUserId;
+
+        if (customers.length > 0) {
+            // Customer exists, so link new user to existing customer
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const insertUserSql = 'INSERT INTO users (Username, Password) VALUES (?, ?)';
+            const [userResult] = await connection.query(insertUserSql, [username, hashedPassword]);
+            newUserId = userResult.insertId;
+
+            // Update the existing customer record with the new user ID
+            const updateCustomerSql = 'UPDATE customer SET UserId = ? WHERE CustName = ? AND PhoneNumber = ?';
+            await connection.query(updateCustomerSql, [newUserId, custName, phoneNumber]);
+        } else {
+            // No existing customer, create new user and customer
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const insertUserSql = 'INSERT INTO users (Username, Password) VALUES (?, ?)';
+            const [userResult] = await connection.query(insertUserSql, [username, hashedPassword]);
+            newUserId = userResult.insertId;
+
+            // Insert into Customer table
+            const insertCustomerSql = 'INSERT INTO customer (UserId, CustName, PhoneNumber) VALUES (?, ?, ?)';
+            await connection.query(insertCustomerSql, [newUserId, custName, phoneNumber]);
+        }
 
         // Release connection and send response
         connection.release();
@@ -77,9 +95,6 @@ app.post('/api/login', async (req, res) => {
         if (users.length > 0) {
             const comparison = await bcrypt.compare(password, users[0].Password);
             if (comparison) {
-                // Create a session
-                req.session.userId = users[0].UserId;
-                // req.session.username = users[0].Username;
                 res.json({ success: true, message: 'Login successful' });
             } else {
                 res.json({ success: false, message: 'Wrong username or password' });
@@ -87,20 +102,61 @@ app.post('/api/login', async (req, res) => {
         } else {
             res.json({ success: false, message: 'User not found' });
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, message: 'Error logging in' });
     }
 });
 
+app.get('/api/search-customer', async (req, res) => {
+    try {
+        const { phoneNumber } = req.query;
+
+        const connection = await pool.getConnection();
+        const sql = 'SELECT * FROM customer WHERE PhoneNumber = ?';
+        const [customer] = await connection.query(sql, [phoneNumber]);
+        connection.release();
+
+        if (customer.length > 0) {
+            res.json({ success: true, customer: customer[0] });
+        } else {
+            res.json({ success: false });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ success: false, message: 'Error searching for customer' });
+    }
+});
+
+app.post('/api/create-or-update-customer', async (req, res) => {
+    try {
+        const { CustName, PhoneNumber, Address } = req.body;
+
+        // Check if customer exists
+        const [existingCustomer] = await pool.query('SELECT * FROM customer WHERE PhoneNumber = ?', [PhoneNumber]);
+
+        if (existingCustomer.length > 0) {
+            // Customer exists, update their details
+            await pool.query('UPDATE customer SET CustName = ?, Address = ? WHERE PhoneNumber = ?', [CustName, Address, PhoneNumber]);
+            res.json({ success: true, message: 'Customer updated successfully' });
+        } else {
+            // No customer found, create new
+            await pool.query('INSERT INTO customer (CustName, PhoneNumber, Address) VALUES (?, ?, ?)', [CustName, PhoneNumber, Address]);
+            res.json({ success: true, message: 'Customer created successfully' });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Error processing request' });
+    }
+});
 
 app.post('/api/insertData', async (req, res) => {
     try {
-        const { senderId, receiverId, officeOrAddress, senderAddress, deliveryAddress, weight, price } = req.body;
+        const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price } = req.body;
         const connection = await pool.getConnection();
-        const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, DeliveryAddress, Weight, Price) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const [result] = await connection.query(sql, [senderId, receiverId, officeOrAddress, senderAddress, deliveryAddress, weight, price]);
+        const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, ReceiverAddress, Weight, Price) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const [result] = await connection.query(sql, [SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price]);
         connection.release();
         res.json({ message: 'Data inserted successfully', insertId: result.insertId });
     } catch (error) {
@@ -109,26 +165,23 @@ app.post('/api/insertData', async (req, res) => {
     }
 });
 
-
-app.get('/api/customerName', async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).json({ message: 'Not logged in' });
-    }
-
+app.get('/api/getCustomerId', async (req, res) => {
     try {
+        const phoneNumber = req.query.phone;
+
         const connection = await pool.getConnection();
-        const sql = 'SELECT CustName FROM customer WHERE Users_UserId = ?';
-        const [rows] = await connection.query(sql, [req.session.userId]);
+        const sql = 'SELECT CustId FROM customer WHERE PhoneNumber = ?';
+        const [rows] = await connection.query(sql, [phoneNumber]);
         connection.release();
 
         if (rows.length > 0) {
-            res.json({ custName: rows[0].CustName });
+            res.json({ customerId: rows[0].CustId });
         } else {
-            res.status(404).json({ message: 'Customer not found' });
+            res.json({ message: 'Customer not found', customerId: null });
         }
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Error retrieving customer name' });
+        res.status(500).json({ message: 'Error fetching customer ID' });
     }
 });
 

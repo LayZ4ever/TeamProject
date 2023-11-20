@@ -5,24 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Form</title>
+    <style>
+        .customerInfo {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #SenderForm,
+        #ReceiverForm {
+            flex: 1;
+            margin: 5px;
+        }
+
+        #senderSubmit,
+        #receiverSubmit {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Welcome to Our Website</h1>
     <p>This is a simple HTML form to insert data into a MySQL database.</p>
 
-    <form id="dataForm">
-        <legend>Sender information</legend>
-        Full Name: <input type="text" name="customerName" id="customerName"><br>
-        Sending from: <input type="text" id="cityInput" name="senderCity" list="cityList"
-            placeholder="Type or select a city" oninput="loadCityList()">
-        <datalist id="cityList"></datalist><br><br>
-    
-        <legend>Receiver information</legend>
-        First Name: <input type="text" name="firstName" required><br>
-        Last Name: <input type="text" name="lastName" required><br>
-        Phone number: <input type="tel" name="phoneNumber" required><br><br>
-  
+    <div class="customerInfo">
+        <form id="SenderForm">
+            <legend>Sender information</legend>
+            Phone number: <input type="text" id="senderPhoneInput" name="phoneNumber" required><br>
+            First Name: <input type="text" name="firstName" required><br>
+            Last Name: <input type="text" name="lastName" required><br>
+            City: <input type="text" id="cityInput" name="city" list="cityList"
+                placeholder="Type or select a city" oninput="loadCityList()" required>
+            <datalist id="cityList"></datalist><br>
+            Address: <input type="text" name="address" placeholder="zh.k , ul. " required><br>
+
+            <input type="submit" id="senderSubmit" value="Submit">
+        </form>
+
+        <form id="ReceiverForm">
+            <legend>Receiver information</legend>
+            Phone number: <input type="text" id="receiverPhoneInput" name="phoneNumber" required><br>
+            First Name: <input type="text" name="firstName" required><br>
+            Last Name: <input type="text" name="lastName" required><br>
+            City: <input type="text" id="cityInput" name="city" list="cityList"
+                placeholder="Type or select a city" oninput="loadCityList()" required>
+            <datalist id="cityList"></datalist><br>
+            Address: <input type="text" name="address" placeholder="zh.k , ul. " required><br>
+
+            <input type="submit" id="receiverSubmit" value="Submit">
+        </form>
+    </div>
+
+    <form id="DeliveryForm">
         <legend>Delivery Details</legend>
         Weight: <input type="text" name="weight" id="weight" placeholder="Weight in kg" required><br>
         Deliver to office <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" value="office"
@@ -47,7 +81,7 @@
             Address: <input type="text" name="deliveryAddress" id="deliveryAddress" placeholder="zh.k , ul. ">
         </div><br>
 
-        <input type="submit" value="Submit">
+        <input type="submit" id="submitAllForms" value="Submit">
     </form>
 
     <div id="result"></div>

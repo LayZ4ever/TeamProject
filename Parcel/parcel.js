@@ -1,23 +1,3 @@
-window.onload = function() {
-    fetch('/api/customerName')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Not logged in');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.custName) {
-            document.getElementById('customerName').value = data.custName;
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Redirect to login page
-        window.location.href = '/autentication.html';
-    });
-};
-
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
 
@@ -34,15 +14,10 @@ function loadCityList() {
         .then(data => {
             console.log('City data loaded:', data);
             data.forEach(cityInfo => {
-                const grIndex = cityInfo.indexOf('gr. ');
-                const commaIndex = cityInfo.indexOf(',');
-                if (grIndex !== -1 && commaIndex !== -1) {
-                    const cityName = cityInfo.substring(grIndex + 4, commaIndex);
-                    const option = document.createElement('option');
-                    option.value = cityName;
-                    option.text = cityName;
-                    cityListElement.appendChild(option);
-                }
+                const option = document.createElement('option');
+                option.value = cityInfo;
+                option.text = cityInfo;
+                cityListElement.appendChild(option);
             });
         })
         .catch(error => {
@@ -63,45 +38,183 @@ function showSelection(selectionType) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const dataForm = document.getElementById('dataForm');
-    const resultDisplay = document.getElementById('result');
+let customerSelected = false; // Flag to track if a customer has been selected
 
-    dataForm.addEventListener('submit', function (event) {
+// Search for customer and autofill the form
+function searchCustomer(phoneInputId, formId, submitButtonId) {
+    const phoneInput = document.getElementById(phoneInputId);
+    const submitButton = document.getElementById(submitButtonId);
+
+    phoneInput.addEventListener('input', function () {
+        if (this.value.length === 10) {
+            fetch(`/api/search-customer?phoneNumber=${this.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fillForm(formId, data.customer);
+                        customerSelected = true;
+                    } else {
+                        submitButton.style.display = 'block';
+                        customerSelected = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    customerSelected = false;
+                });
+        } else if (customerSelected) {
+            clearForm(formId);
+            customerSelected = false;
+        }
+    });
+}
+
+function clearForm(formId) {
+    const form = document.getElementById(formId);
+    form.reset();
+}
+
+function fillForm(formId, customerData) {
+    const form = document.getElementById(formId);
+    let allFieldsFilled = true;
+
+    // Split full name into first and last names
+    const fullName = customerData.CustName.split(' ');
+    form.elements['firstName'].value = fullName[0];
+    form.elements['lastName'].value = fullName[1];
+    form.elements['firstName'].readOnly = true;
+    form.elements['lastName'].readOnly = true;
+
+    // Split the combined city and address
+    if (customerData.Address) {
+        // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
+        const addressParts = customerData.Address.split(') ');
+        const city = addressParts[0] + ')';
+        const address = addressParts[1];
+
+        form.elements['city'].value = city;
+        form.elements['address'].value = address;
+        form.elements['city'].readOnly = true;
+        form.elements['address'].readOnly = true;
+    } else {
+        form.elements['city'].readOnly = false;
+        form.elements['address'].readOnly = false;
+        allFieldsFilled = false;
+    }
+
+    // Enable the submit button if not all fields are filled
+    const submitButtonId = formId === 'SenderForm' ? 'senderSubmit' : 'receiverSubmit';
+    const submitButton = document.getElementById(submitButtonId);
+
+    if (allFieldsFilled) {
+        // If all fields are filled, hide the submit button
+        submitButton.style.display = 'none';
+    } else {
+        // If not all fields are filled, show the submit button
+        submitButton.style.display = 'block';
+    }
+}
+
+// Generalized form submission handler
+function handleFormSubmission(formId, apiUrl) {
+    document.getElementById(formId).addEventListener('submit', function (event) {
         event.preventDefault();
+        const formData = new FormData(this);
 
-        const formData = new FormData(event.target);
-        const isOfficeDelivery = formData.get('deliveryMethod') === 'office';
-        const deliveryType = isOfficeDelivery ? 1 : 2; // 1 for office, 2 for address
+        // Make sure these names match the 'name' attributes in your form inputs
+        const fullName = `${formData.get('firstName')} ${formData.get('lastName')}`.trim();
+        const fullAddress = `${formData.get('city')} ${formData.get('address')}`.trim();
 
-        const weight = formData.get('weight');
-        const price = (parseFloat(weight) * 0.50 + deliveryType).toFixed(2);
-        const deliveryAddress = isOfficeDelivery ? formData.get('office') : `${formData.get('addressCity')} ${formData.get('deliveryAddress')}`;
-
-        const submissionData = {
-            senderId,
-            receiverId,
-            officeOrAddress: deliveryType,
-            senderAddress: formData.get('senderCity'),
-            deliveryAddress: deliveryAddress,
-            weight: weight,
-            price: price
+        // Prepare the data to be sent
+        const dataToSend = {
+            CustName: fullName,
+            PhoneNumber: formData.get('phoneNumber'),
+            Address: fullAddress
         };
 
-        fetch('/api/insertData', {
+        console.log('Data to send:', dataToSend); // Log data to debug
+
+        fetch(apiUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(submissionData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
         })
             .then(response => response.json())
             .then(data => {
-                resultDisplay.textContent = data.message;
+                console.log('Success:', data);
             })
             .catch(error => {
                 console.error('Error:', error);
-                resultDisplay.textContent = 'Error inserting data';
             });
+
+        if (formId === 'SenderForm') {
+            document.getElementById('senderSubmit').style.display = 'none';
+        } else {
+            document.getElementById('receiverSubmit').style.display = 'none';
+        }
     });
+}
+
+async function handleParcelFormSubmission(event) {
+    event.preventDefault();
+
+    // Collect data from SenderForm, ReceiverForm, and DeliveryForm
+    const senderFormData = new FormData(document.getElementById('SenderForm'));
+    const receiverFormData = new FormData(document.getElementById('ReceiverForm'));
+    const deliveryFormData = new FormData(document.getElementById('DeliveryForm'));
+
+    const isOfficeDelivery = deliveryFormData.get('deliveryMethod') === 'office';
+    const deliveryType = isOfficeDelivery ? 1 : 2; // 1 for office, 2 for address
+
+    // Retrieve phone numbers from sender and receiver form data
+    const senderPhone = senderFormData.get('phoneNumber');
+    const receiverPhone = receiverFormData.get('phoneNumber');
+
+    // Fetch SenderId and ReceiverId using the phone numbers
+    const senderResponse = await fetch(`/api/getCustomerId?phone=${senderPhone}`);
+    const senderData = await senderResponse.json();
+    const senderId = senderData.customerId;
+
+    const receiverResponse = await fetch(`/api/getCustomerId?phone=${receiverPhone}`);
+    const receiverData = await receiverResponse.json();
+    const receiverId = receiverData.customerId;
+
+
+    const parcelData = {
+        SenderId: senderId,
+        ReceiverId: receiverId,
+        officeOrAddress: deliveryType,
+        senderAddress: `${senderFormData.get('city')}, ${senderFormData.get('address')}`,
+        receiverAddress: `${receiverFormData.get('city')}, ${receiverFormData.get('address')}`,
+        Weight: deliveryFormData.get('weight'),
+        Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryType).toFixed(2),
+    };
+
+    fetch('/api/insertData', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(parcelData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Handle successful data submission here
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors here
+        });
+}
+
+// Event listener for form submission
+document.getElementById('DeliveryForm').addEventListener('submit', handleParcelFormSubmission);
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialization code here
+    searchCustomer('senderPhoneInput', 'SenderForm', 'senderSubmit');
+    searchCustomer('receiverPhoneInput', 'ReceiverForm', 'receiverSubmit');
+    handleFormSubmission('SenderForm', '/api/create-or-update-customer');
+    handleFormSubmission('ReceiverForm', '/api/create-or-update-customer');
 });
-
-
