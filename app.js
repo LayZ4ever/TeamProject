@@ -17,7 +17,7 @@ app.use(session({
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: 'd8zRJmDyVlAX8fHP',
+    password: '1234',
     database: 'mydb',
 };
 
