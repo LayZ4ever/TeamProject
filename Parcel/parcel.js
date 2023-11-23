@@ -187,7 +187,7 @@ async function handleParcelFormSubmission(event) {
         ReceiverId: receiverId,
         officeOrAddress: deliveryType,
         senderAddress: `${senderFormData.get('city')}, ${senderFormData.get('address')}`,
-        receiverAddress: `${receiverFormData.get('city')}, ${receiverFormData.get('address')}`,
+        receiverAddress: isOfficeDelivery ? deliveryFormData.get('office') : `${receiverFormData.get('city')} ${receiverFormData.get('address')}`,
         Weight: deliveryFormData.get('weight'),
         Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryType).toFixed(2),
     };
@@ -201,7 +201,7 @@ async function handleParcelFormSubmission(event) {
     })
         .then(response => response.json())
         .then(data => {
-            // Handle successful data submission here
+            document.getElementById('result').textContent = data.message;
         })
         .catch(error => {
             console.error('Error:', error);
