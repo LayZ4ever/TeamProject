@@ -23,7 +23,7 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
-app.use(express.static('Autentication'));
+app.use(express.static('Authentication'));
 app.use(express.static('Parcel'));
 
 app.post('/api/register', async (req, res) => {
