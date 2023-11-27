@@ -187,7 +187,7 @@ async function handleParcelFormSubmission(event) {
         ReceiverId: receiverId,
         officeOrAddress: deliveryType,
         senderAddress: `${senderFormData.get('city')}, ${senderFormData.get('address')}`,
-        receiverAddress: isOfficeDelivery ? deliveryFormData.get('office') : `${receiverFormData.get('city')} ${receiverFormData.get('address')}`,
+        deliveryAddress: isOfficeDelivery ? deliveryFormData.get('office') : `${receiverFormData.get('city')} ${receiverFormData.get('address')}`,
         Weight: deliveryFormData.get('weight'),
         Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryType).toFixed(2),
     };

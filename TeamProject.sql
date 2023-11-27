@@ -42,6 +42,7 @@ CREATE TABLE `teamprojectdb`.`customer` (
   `CustId` int NOT NULL AUTO_INCREMENT,
   `CustName` varchar(45) NOT NULL,
   `PhoneNumber` varchar(10) NOT NULL,
+  `Address` VARCHAR(90) NULL,
   `UserId` int DEFAULT NULL,
   PRIMARY KEY (`CustId`),
   KEY `fk_Customer_Users_idx` (`UserId`),

@@ -154,10 +154,10 @@ app.post('/api/create-or-update-customer', async (req, res) => {
 
 app.post('/api/insertData', async (req, res) => {
     try {
-        const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price } = req.body;
+        const { SenderId, ReceiverId, officeOrAddress, senderAddress, deliveryAddress, Weight, Price } = req.body;
         const connection = await pool.getConnection();
-        const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, ReceiverAddress, Weight, Price) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const [result] = await connection.query(sql, [SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price]);
+        const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, DeliveryAddress, Weight, Price) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const [result] = await connection.query(sql, [SenderId, ReceiverId, officeOrAddress, senderAddress, deliveryAddress, Weight, Price]);
         connection.release();
         res.json({ message: 'Data inserted successfully', insertId: result.insertId });
     } catch (error) {
