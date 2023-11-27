@@ -16,9 +16,9 @@ app.use(session({
 
 const dbConfig = {
     host: 'localhost',
-    user: 'root',
-    password: '1234',
-    database: 'mydb',
+    user: 'teamproject_user',
+    password: 'teamproject_user',
+    database: 'teamprojectdb',
 };
 
 const pool = mysql.createPool(dbConfig);
@@ -26,6 +26,7 @@ const pool = mysql.createPool(dbConfig);
 app.use(express.static('Authentication'));
 app.use(express.static('Parcel'));
 
+// Register Route
 app.post('/api/register', async (req, res) => {
     try {
         const { username, password, firstName, lastName, phoneNumber } = req.body;

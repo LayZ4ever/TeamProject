@@ -1,5 +1,44 @@
+--inserting the old code to create the tables didn't work for me for some reason (referencing tables that don't exist)
+--this worked (reordered the tables): (for schema "teamprojectdb")
+
+-- Role Table
+CREATE TABLE `teamprojectdb`.`role` (
+  `RoleId` INT NOT NULL DEFAULT 0 COMMENT 'Default is \"user\" (default id for user entries is RoleId=2).' ,
+  `RoleName` varchar(45) NOT NULL,
+  PRIMARY KEY (`RoleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+
+-- Firm Table
+CREATE TABLE `teamprojectdb`.`firm` (
+  `FirmId` int NOT NULL AUTO_INCREMENT,
+  `FirmName` varchar(255) NOT NULL,
+  `FirmAddress` varchar(255) NOT NULL,
+  PRIMARY KEY (`FirmId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
+-- Statuses Table
+CREATE TABLE `teamprojectdb`.`statuses` (
+  `StatusId` int NOT NULL AUTO_INCREMENT,
+  `StatusName` varchar(255) NOT NULL,
+  PRIMARY KEY (`StatusId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
+-- Users Table
+CREATE TABLE `teamprojectdb`.`users` (
+  `Role_RoleId` int NOT NULL DEFAULT '2',
+  `UserId` int NOT NULL AUTO_INCREMENT,
+  `Username` varchar(45) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  PRIMARY KEY (`UserId`),
+  KEY `fk_Users_Role1_idx` (`Role_RoleId`),
+  CONSTRAINT `fk_Users_Role1` FOREIGN KEY (`Role_RoleId`) REFERENCES `role` (`RoleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+
+
 -- Customer Table
-CREATE TABLE `customer` (
+CREATE TABLE `teamprojectdb`.`customer` (
   `CustId` int NOT NULL AUTO_INCREMENT,
   `CustName` varchar(45) NOT NULL,
   `PhoneNumber` varchar(10) NOT NULL,
@@ -9,8 +48,9 @@ CREATE TABLE `customer` (
   CONSTRAINT `fk_Customer_Users` FOREIGN KEY (`UserId`) REFERENCES `users` (`UserId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
+
 -- Employees Table
-CREATE TABLE `employees` (
+CREATE TABLE `teamprojectdb`.`employees` (
   `Firm_FirmId` int NOT NULL,
   `Users_UserId` int NOT NULL,
   `EmpId` int NOT NULL AUTO_INCREMENT,
@@ -22,16 +62,9 @@ CREATE TABLE `employees` (
   CONSTRAINT `fk_Employees_Users1` FOREIGN KEY (`Users_UserId`) REFERENCES `users` (`UserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Firm Table
-CREATE TABLE `firm` (
-  `FirmId` int NOT NULL AUTO_INCREMENT,
-  `FirmName` varchar(255) NOT NULL,
-  `FirmAddress` varchar(255) NOT NULL,
-  PRIMARY KEY (`FirmId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Offices Table
-CREATE TABLE `offices` (
+CREATE TABLE `teamprojectdb`.`offices` (
   `Firm_FirmId` int NOT NULL,
   `OfficeId` int NOT NULL AUTO_INCREMENT,
   `OfficeName` varchar(255) NOT NULL,
@@ -41,7 +74,7 @@ CREATE TABLE `offices` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Parcels Table
-CREATE TABLE `parcels` (
+CREATE TABLE `teamprojectdb`.`parcels` (
   `ParcelsId` int NOT NULL AUTO_INCREMENT,
   `SenderId` int NOT NULL,
   `ReceiverId` int NOT NULL,
@@ -63,27 +96,6 @@ CREATE TABLE `parcels` (
   CONSTRAINT `fk_packages_statuses1` FOREIGN KEY (`StatusId`) REFERENCES `statuses` (`StatusId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Role Table
-CREATE TABLE `role` (
-  `RoleId` int NOT NULL AUTO_INCREMENT,
-  `RoleName` varchar(45) NOT NULL,
-  PRIMARY KEY (`RoleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
--- Users Table
-CREATE TABLE `users` (
-  `Role_RoleId` int NOT NULL DEFAULT '2',
-  `UserId` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(45) NOT NULL,
-  `Password` varchar(255) NOT NULL,
-  PRIMARY KEY (`UserId`),
-  KEY `fk_Users_Role1_idx` (`Role_RoleId`),
-  CONSTRAINT `fk_Users_Role1` FOREIGN KEY (`Role_RoleId`) REFERENCES `role` (`RoleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
--- Statuses Table
-CREATE TABLE `statuses` (
-  `StatusId` int NOT NULL AUTO_INCREMENT,
-  `StatusName` varchar(255) NOT NULL,
-  PRIMARY KEY (`StatusId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
