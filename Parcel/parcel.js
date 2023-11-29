@@ -72,9 +72,27 @@ function searchCustomer(phoneInputId, formId, submitButtonId) {
     });
 }
 
+function checkFormsCompletion() {
+    let senderFormFilled = checkFormFilled('SenderForm');
+    let receiverFormFilled = checkFormFilled('ReceiverForm');
+
+    toggleSubmitButton(senderFormFilled && receiverFormFilled);
+}
+
+function checkFormFilled(formId) {
+    const form = document.getElementById(formId);
+    return Array.from(form.elements).every(input => input.value.trim() !== '');
+}
+
+function toggleSubmitButton(show) {
+    const submitButton = document.getElementById('submitAllForms');
+    submitButton.style.display = show ? 'block' : 'none';
+}
+
 function clearForm(formId) {
     const form = document.getElementById(formId);
     form.reset();
+    checkFormsCompletion()
 }
 
 function fillForm(formId, customerData) {
@@ -116,6 +134,7 @@ function fillForm(formId, customerData) {
         // If not all fields are filled, show the submit button
         submitButton.style.display = 'block';
     }
+    checkFormsCompletion()
 }
 
 // Generalized form submission handler
