@@ -1,13 +1,3 @@
-CREATE TABLE `users` (
-  `Role_RoleId` int NOT NULL DEFAULT '2',
-  `UserId` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(45) NOT NULL,
-  `Password` varchar(255) NOT NULL,
-  PRIMARY KEY (`UserId`),
-  KEY `fk_Users_Role1_idx` (`Role_RoleId`),
-  CONSTRAINT `fk_Users_Role1` FOREIGN KEY (`Role_RoleId`) REFERENCES `role` (`RoleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
-
 CREATE TABLE `customer` (
   `CustId` int NOT NULL AUTO_INCREMENT,
   `CustName` varchar(45) NOT NULL,
@@ -17,7 +7,7 @@ CREATE TABLE `customer` (
   PRIMARY KEY (`CustId`),
   KEY `fk_Customer_Users_idx` (`UserId`),
   CONSTRAINT `fk_Customer_Users` FOREIGN KEY (`UserId`) REFERENCES `users` (`UserId`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE `employees` (
   `Firm_FirmId` int NOT NULL,
@@ -31,6 +21,13 @@ CREATE TABLE `employees` (
   CONSTRAINT `fk_Employees_Users1` FOREIGN KEY (`Users_UserId`) REFERENCES `users` (`UserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+CREATE TABLE `firm` (
+  `FirmId` int NOT NULL AUTO_INCREMENT,
+  `FirmName` varchar(255) NOT NULL,
+  `FirmAddress` varchar(255) NOT NULL,
+  PRIMARY KEY (`FirmId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
 CREATE TABLE `offices` (
   `Firm_FirmId` int NOT NULL,
   `OfficeId` int NOT NULL AUTO_INCREMENT,
@@ -38,13 +35,6 @@ CREATE TABLE `offices` (
   PRIMARY KEY (`OfficeId`),
   KEY `fk_offices_Firm1_idx` (`Firm_FirmId`),
   CONSTRAINT `fk_offices_Firm1` FOREIGN KEY (`Firm_FirmId`) REFERENCES `firm` (`FirmId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-CREATE TABLE `firm` (
-  `FirmId` int NOT NULL AUTO_INCREMENT,
-  `FirmName` varchar(255) NOT NULL,
-  `FirmAddress` varchar(255) NOT NULL,
-  PRIMARY KEY (`FirmId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE `parcels` (
@@ -67,7 +57,7 @@ CREATE TABLE `parcels` (
   CONSTRAINT `fk_packages_clients2` FOREIGN KEY (`ReceiverId`) REFERENCES `customer` (`CustId`),
   CONSTRAINT `fk_packages_employees1` FOREIGN KEY (`EmpId`) REFERENCES `employees` (`EmpId`),
   CONSTRAINT `fk_packages_statuses1` FOREIGN KEY (`StatusId`) REFERENCES `statuses` (`StatusId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE `role` (
   `RoleId` int NOT NULL,
@@ -79,4 +69,14 @@ CREATE TABLE `statuses` (
   `StatusId` int NOT NULL AUTO_INCREMENT,
   `StatusName` varchar(255) NOT NULL,
   PRIMARY KEY (`StatusId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `users` (
+  `Role_RoleId` int NOT NULL DEFAULT '2',
+  `UserId` int NOT NULL AUTO_INCREMENT,
+  `Username` varchar(45) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  PRIMARY KEY (`UserId`),
+  KEY `fk_Users_Role1_idx` (`Role_RoleId`),
+  CONSTRAINT `fk_Users_Role1` FOREIGN KEY (`Role_RoleId`) REFERENCES `role` (`RoleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;

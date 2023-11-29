@@ -92,6 +92,10 @@ function toggleSubmitButton(show) {
 function clearForm(formId) {
     const form = document.getElementById(formId);
     form.reset();
+    form.elements['firstName'].readOnly = false;
+    form.elements['lastName'].readOnly = false;
+    form.elements['city'].readOnly = false;
+    form.elements['address'].readOnly = false;
     checkFormsCompletion()
 }
 
@@ -139,6 +143,7 @@ function fillForm(formId, customerData) {
 
 // Generalized form submission handler
 function handleFormSubmission(formId, apiUrl) {
+    checkFormsCompletion()
     document.getElementById(formId).addEventListener('submit', function (event) {
         event.preventDefault();
         const formData = new FormData(this);
