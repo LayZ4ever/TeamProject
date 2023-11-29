@@ -34,8 +34,8 @@
             Phone number: <input type="text" id="senderPhoneInput" name="phoneNumber" required><br>
             First Name: <input type="text" name="firstName" required><br>
             Last Name: <input type="text" name="lastName" required><br>
-            City: <input type="text" id="cityInput" name="city" list="cityList"
-                placeholder="Type or select a city" oninput="loadCityList()" required>
+            City: <input type="text" id="cityInput" name="city" list="cityList" placeholder="Type or select a city"
+                oninput="loadCityList()" required>
             <datalist id="cityList"></datalist><br>
             Address: <input type="text" name="address" placeholder="zh.k , ul. " required><br>
 
@@ -47,8 +47,8 @@
             Phone number: <input type="text" id="receiverPhoneInput" name="phoneNumber" required><br>
             First Name: <input type="text" name="firstName" required><br>
             Last Name: <input type="text" name="lastName" required><br>
-            City: <input type="text" id="cityInput" name="city" list="cityList"
-                placeholder="Type or select a city" oninput="loadCityList()" required>
+            City: <input type="text" id="cityInput" name="city" list="cityList" placeholder="Type or select a city"
+                oninput="loadCityList()" required>
             <datalist id="cityList"></datalist><br>
             Address: <input type="text" name="address" placeholder="zh.k , ul. " required><br>
 
@@ -62,7 +62,8 @@
         Deliver to office <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" value="office"
             onclick="showSelection('office')">
         Deliver to address <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" value="address"
-            onclick="showSelection('address')"><br>
+            onclick="showSelection('address')">
+        Deliver to saved address<input type="radio" id="savedAddress" name="deliveryMethod" value="savedAddress" onclick="showSelection('saved_address')"><br>
 
         <div id="officeSelection" style="display:none;">
             Office: <select id="office" name="office">

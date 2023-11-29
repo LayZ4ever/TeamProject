@@ -35,6 +35,9 @@ function showSelection(selectionType) {
     } else if (selectionType === 'address') {
         officeSelection.style.display = 'none';
         addressSelection.style.display = 'block';
+    } else {
+        officeSelection.style.display = 'none';
+        addressSelection.style.display = 'none';
     }
 }
 
@@ -166,6 +169,7 @@ async function handleParcelFormSubmission(event) {
     const deliveryFormData = new FormData(document.getElementById('DeliveryForm'));
 
     const isOfficeDelivery = deliveryFormData.get('deliveryMethod') === 'office';
+    const isCustomerAddress = deliveryFormData.get('deliveryMethod') === 'savedAddress';
     const deliveryType = isOfficeDelivery ? 1 : 2; // 1 for office, 2 for address
 
     // Retrieve phone numbers from sender and receiver form data
@@ -187,7 +191,7 @@ async function handleParcelFormSubmission(event) {
         ReceiverId: receiverId,
         officeOrAddress: deliveryType,
         senderAddress: `${senderFormData.get('city')}, ${senderFormData.get('address')}`,
-        receiverAddress: isOfficeDelivery ? deliveryFormData.get('office') : `${receiverFormData.get('city')} ${receiverFormData.get('address')}`,
+        receiverAddress: isCustomerAddress ? `${receiverFormData.get('city')} ${receiverFormData.get('address')}` : (isOfficeDelivery ? deliveryFormData.get('office') : `${deliveryFormData.get('addressCity')} ${deliveryFormData.get('deliveryAddress')}`),
         Weight: deliveryFormData.get('weight'),
         Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryType).toFixed(2),
     };
