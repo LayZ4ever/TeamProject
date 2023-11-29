@@ -154,8 +154,6 @@ function handleFormSubmission(formId, apiUrl) {
             Address: fullAddress
         };
 
-        console.log('Data to send:', dataToSend); // Log data to debug
-
         fetch(apiUrl, {
             method: 'POST',
             headers: {
