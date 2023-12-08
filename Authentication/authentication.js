@@ -30,8 +30,13 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
         body: JSON.stringify(Object.fromEntries(formData))
     }).then(response => response.json()).then(data => {
         if (data.success) {
-            // Redirecting to another page on successful login
-            window.location.href = '/parcel.html'; // Change to the desired URL
+            console.log(data.roleId);
+            if (data.roleId === 1) // 1 is Employee
+            {
+                window.location.href = '/parcel.html'; // Adjust this URL
+            } else if (data.roleId === 2) {
+                window.location.href = '/customerPage.html'; // Adjust this URL
+            }
         } else {
             alert(data.message);
         }

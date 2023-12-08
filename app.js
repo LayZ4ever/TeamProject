@@ -91,11 +91,10 @@ app.post('/api/login', async (req, res) => {
         const sql = 'SELECT * FROM users WHERE Username = ?';
         const [users] = await connection.query(sql, [username]);
         connection.release();
-
         if (users.length > 0) {
             const comparison = await bcrypt.compare(password, users[0].Password);
             if (comparison) {
-                res.json({ success: true, message: 'Login successful' });
+                res.json({ success: true, message: 'Login successful', roleId: users[0].Role_RoleId });
             } else {
                 res.json({ success: false, message: 'Wrong username or password' });
             }
