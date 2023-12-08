@@ -169,6 +169,7 @@ function handleFormSubmission(formId, apiUrl) {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                checkFormsCompletion();
             })
             .catch(error => {
                 console.error('Error:', error);
