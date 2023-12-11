@@ -25,8 +25,11 @@ const pool = mysql.createPool(dbConfig);
 
 app.use(express.static('Authentication'));
 app.use(express.static('Parcel'));
+app.use(express.static('Moderator'));
 
 app.post('/api/register', async (req, res) => {
+    let connection;
+
     try {
         const { username, password, firstName, lastName, phoneNumber } = req.body;
 
@@ -78,12 +81,18 @@ app.post('/api/register', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error in user registration' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
 
 
 // Login Route
 app.post('/api/login', async (req, res) => {
+    let connection;
+
     try {
         const { username, password } = req.body;
 
@@ -94,7 +103,9 @@ app.post('/api/login', async (req, res) => {
         if (users.length > 0) {
             const comparison = await bcrypt.compare(password, users[0].Password);
             if (comparison) {
-                res.json({ success: true, message: 'Login successful', roleId: users[0].Role_RoleId });
+                req.session.userId = users[0].UserId;
+                req.session.roleId = users[0].RoleId;
+                res.json({ success: true, message: 'Login successful', roleId: req.session.roleId});
             } else {
                 res.json({ success: false, message: 'Wrong username or password' });
             }
@@ -105,10 +116,35 @@ app.post('/api/login', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, message: 'Error logging in' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
 
+app.get('/api/checkSession', (req, res) => {
+    if (req.session.userId) {
+        res.json({ loggedIn: true, roleId: req.session.roleId });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+
+app.post('/api/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            res.json({ success: false, message: 'Logout failed' });
+        } else {
+            res.clearCookie('connect.sid');
+            res.json({ success: true, message: 'Logged out successfully' });
+        }
+    });
+});
+
 app.get('/api/search-customer', async (req, res) => {
+    let connection;
+
     try {
         const { phoneNumber } = req.query;
 
@@ -125,10 +161,16 @@ app.get('/api/search-customer', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, message: 'Error searching for customer' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
 
 app.post('/api/create-or-update-customer', async (req, res) => {
+    let connection;
+
     try {
         const { CustName, PhoneNumber, Address } = req.body;
 
@@ -147,10 +189,16 @@ app.post('/api/create-or-update-customer', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Error processing request' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
 
 app.post('/api/insertData', async (req, res) => {
+    let connection;
+
     try {
         const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price } = req.body;
         const connection = await pool.getConnection();
@@ -161,10 +209,16 @@ app.post('/api/insertData', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error inserting data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
 
 app.get('/api/getCustomerId', async (req, res) => {
+    let connection;
+
     try {
         const phoneNumber = req.query.phone;
 
@@ -181,8 +235,32 @@ app.get('/api/getCustomerId', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error fetching customer ID' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
+
+//Employees data
+app.get('/employees', async (req, res) => {
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        const sql = 'SELECT * FROM employees';
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching employees data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');

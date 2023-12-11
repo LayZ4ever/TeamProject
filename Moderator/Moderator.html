@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        window.onload = function () {
+            fetch('/api/checkSession')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.loggedIn) {
+                        window.location.href = '/authentication.html'; // Redirect to login page if not logged in
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        };
+    </script>
+</head>
+
+<body>
+    <a href="EmployeesList.html">Employees List</a>
+    <button>Customers List</button>
+    <button>Company's revenue</button>
+    <button id="logoutButton">Log Out</button>
+</body>
+<script>
+    document.getElementById('logoutButton').addEventListener('click', function () {
+        fetch('/api/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/authentication.html'; // Redirect to login page after logout
+                } else {
+                    alert('Logout failed. Please try again.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
+</html>

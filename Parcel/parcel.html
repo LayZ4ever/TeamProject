@@ -5,6 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Form</title>
+    <script>
+        window.onload = function () {
+            fetch('/api/checkSession')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.loggedIn) {
+                        window.location.href = '/authentication.html'; // Redirect to login page if not logged in
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        };
+    </script>
     <style>
         .customerInfo {
             display: flex;
@@ -27,11 +39,13 @@
 <body>
     <h1>Welcome to Our Website</h1>
     <p>This is a simple HTML form to insert data into a MySQL database.</p>
+    <button id="logoutButton">Log Out</button>
 
     <div class="customerInfo">
         <form id="SenderForm">
             <legend>Sender information</legend>
-            Phone number: <input type="text" id="senderPhoneInput" name="phoneNumber" maxlength="10" minlength="10" required><br>
+            Phone number: <input type="text" id="senderPhoneInput" name="phoneNumber" maxlength="10" minlength="10"
+                required><br>
             First Name: <input type="text" name="firstName" required><br>
             Last Name: <input type="text" name="lastName" required><br>
             City: <input type="text" id="cityInput" name="city" list="cityList" placeholder="Type or select a city"
@@ -44,7 +58,8 @@
 
         <form id="ReceiverForm">
             <legend>Receiver information</legend>
-            Phone number: <input type="text" id="receiverPhoneInput" name="phoneNumber" maxlength="10" minlength="10" required><br>
+            Phone number: <input type="text" id="receiverPhoneInput" name="phoneNumber" maxlength="10" minlength="10"
+                required><br>
             First Name: <input type="text" name="firstName" required><br>
             Last Name: <input type="text" name="lastName" required><br>
             City: <input type="text" id="cityInput" name="city" list="cityList" placeholder="Type or select a city"
@@ -63,7 +78,8 @@
             onclick="showSelection('office')">
         Deliver to address <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" value="address"
             onclick="showSelection('address')">
-        Deliver to saved address<input type="radio" id="savedAddress" name="deliveryMethod" value="savedAddress" onclick="showSelection('saved_address')"><br>
+        Deliver to saved address<input type="radio" id="savedAddress" name="deliveryMethod" value="savedAddress"
+            onclick="showSelection('saved_address')"><br>
 
         <div id="officeSelection" style="display:none;">
             Office: <select id="office" name="office">

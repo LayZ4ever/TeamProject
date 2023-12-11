@@ -1,3 +1,21 @@
+document.getElementById('logoutButton').addEventListener('click', function () {
+    fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/authentication.html'; // Redirect to login page after logout
+            } else {
+                alert('Logout failed. Please try again.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});
+
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
 
@@ -239,7 +257,6 @@ async function handleParcelFormSubmission(event) {
 // Event listener for form submission
 document.getElementById('DeliveryForm').addEventListener('submit', handleParcelFormSubmission);
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialization code here
     searchCustomer('senderPhoneInput', 'SenderForm', 'senderSubmit');
     searchCustomer('receiverPhoneInput', 'ReceiverForm', 'receiverSubmit');
     handleFormSubmission('SenderForm', '/api/create-or-update-customer');
