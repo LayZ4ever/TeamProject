@@ -261,6 +261,133 @@ app.get('/employees', async (req, res) => {
     }
 });
 
+// Helper function to generate a username for the employees
+function generateUsername(fullName) {
+    var nameParts = fullName.trim().split(/\s+/);
+    if (nameParts.length < 3) {
+        console.error('Name does not have three parts:', fullName);
+        return null;
+    }
+    var username = nameParts[0].charAt(0) + nameParts[1].charAt(0) + nameParts[2];
+    return username;
+}
+
+// Helper function to ensure username uniqueness for the employees
+async function getUniqueUsername(connection, baseUsername, suffix = 0) {
+    let testUsername = suffix === 0 ? baseUsername : `${baseUsername}${suffix}`;
+    const [users] = await connection.query('SELECT Username FROM users WHERE Username = ?', [testUsername]);
+    if (users.length > 0) {
+        return await getUniqueUsername(connection, baseUsername, suffix + 1);
+    }
+    return testUsername;
+}
+
+// Add a new employee
+app.post('/api/addEmployee', async (req, res) => {
+    let connection;
+    const { EmpName, EmpType } = req.body;
+    const defaultPassword = 'LogComp'; // Default password, consider using a more secure approach
+
+    try {
+        const connection = await pool.getConnection();
+
+        // Generate and check the uniqueness of the username
+        let username = generateUsername(EmpName);
+        if (!username) {
+            res.json({ success: false, message: 'Invalid employee name format' });
+            return;
+        }
+        username = await getUniqueUsername(connection, username);
+
+        // Hash the default password
+        const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+
+        // Insert new user
+        const insertUserSql = 'INSERT INTO users (RoleId, Username, Password) VALUES (3, ?, ?)';
+        const [userResult] = await connection.query(insertUserSql, [username, hashedPassword]);
+        const newUserId = userResult.insertId;
+
+        // Insert new employee
+        const insertEmpSql = 'INSERT INTO employees (EmpName, EmpType, UserId) VALUES (?, ?, ?)';
+        await connection.query(insertEmpSql, [EmpName, EmpType, newUserId]);
+        connection.release();
+
+        res.json({ success: true, newUsername: username });
+    } catch (error) {
+        console.error('Error adding employee:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.post('/api/updateEmployee', async (req, res) => {
+    let connection;
+    const { EmpId, EmpName, EmpType } = req.body;
+
+    try {
+        const connection = await pool.getConnection();
+        const updateSql = 'UPDATE employees SET EmpName = ?, EmpType = ? WHERE EmpId = ?';
+        await connection.query(updateSql, [EmpName, EmpType, EmpId]);
+        connection.release();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error updating employee:', error);
+        res.json({ success: false });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+// API endpoint to delete an employee and their user account
+app.delete('/api/deleteEmployee', async (req, res) => {
+    const { empId } = req.body;
+
+    if (!empId) {
+        return res.status(400).send({ success: false, message: 'Employee ID is required.' });
+    }
+
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+        await connection.beginTransaction();
+
+        // Get the UserId associated with the employee
+        const [user] = await connection.execute('SELECT UserId FROM employees WHERE EmpId = ?', [empId]);
+        if (user.length === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'Employee not found.' });
+        }
+        const userId = user[0].UserId;
+
+        // Delete the employee
+        const [deleteEmp] = await connection.execute('DELETE FROM employees WHERE EmpId = ?', [empId]);
+        if (deleteEmp.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'Employee not found.' });
+        }
+
+        // Delete the user
+        const [deleteUser] = await connection.execute('DELETE FROM users WHERE UserId = ?', [userId]);
+        if (deleteUser.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'User not found.' });
+        }
+
+        await connection.commit();
+        res.send({ success: true, message: 'Employee and user deleted successfully.' });
+        await connection.end();
+    } catch (error) {
+        console.error('Error in deleting employee:', error);
+        await connection.rollback();
+        res.status(500).send({ success: false, message: 'Internal Server Error' });
+    }
+});
+
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
