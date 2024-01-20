@@ -27,6 +27,9 @@ app.use(express.static('Authentication'));
 app.use(express.static('Parcel'));
 app.use(express.static('Moderator'));
 
+/* ------------------------------------ LOGIN AND REGISTRATION ------------------------------------ */
+
+// Registration
 app.post('/api/register', async (req, res) => {
     let connection;
 
@@ -89,7 +92,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 
-// Login Route
+// Login
 app.post('/api/login', async (req, res) => {
     let connection;
 
@@ -123,14 +126,6 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-app.get('/api/checkSession', (req, res) => {
-    if (req.session.userId) {
-        res.json({ loggedIn: true, roleId: req.session.roleId });
-    } else {
-        res.json({ loggedIn: false });
-    }
-});
-
 app.post('/api/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
@@ -141,6 +136,19 @@ app.post('/api/logout', (req, res) => {
         }
     });
 });
+/* ------------------------------------------------------------------------------------------------ */
+
+
+/* ----------------------------------------- SESSION CHECK ---------------------------------------- */
+
+app.get('/api/checkSession', (req, res) => {
+    if (req.session.userId) {
+        res.json({ loggedIn: true, roleId: req.session.roleId });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+/* ------------------------------------------------------------------------------------------------- */
 
 app.get('/api/search-customer', async (req, res) => {
     let connection;
@@ -242,6 +250,8 @@ app.get('/api/getCustomerId', async (req, res) => {
     }
 });
 
+/* ------------------------------------------- Employees ------------------------------------------- */
+
 //Employees data
 app.get('/employees', async (req, res) => {
     let connection;
@@ -331,8 +341,6 @@ app.post('/api/updateEmployee', async (req, res) => {
         const connection = await pool.getConnection();
         const updateSql = 'UPDATE employees SET EmpName = ?, EmpType = ? WHERE EmpId = ?';
         await connection.query(updateSql, [EmpName, EmpType, EmpId]);
-        connection.release();
-
         res.json({ success: true });
     } catch (error) {
         console.error('Error updating employee:', error);
@@ -387,7 +395,7 @@ app.delete('/api/deleteEmployee', async (req, res) => {
         res.status(500).send({ success: false, message: 'Internal Server Error' });
     }
 });
-
+/* ------------------------------------------------------------------------------------------------- */
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
