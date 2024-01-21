@@ -14,12 +14,7 @@ app.use(session({
     cookie: { secure: false } // Set to true if using https
 }));
 
-const dbConfig = {
-    host: 'localhost',
-    user: 'teamproject_user',
-    password: 'teamproject_user',
-    database: 'mydb',
-};
+const dbConfig = require('./dbConfig');
 
 const pool = mysql.createPool(dbConfig);
 
