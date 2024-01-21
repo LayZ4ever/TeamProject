@@ -11,6 +11,6 @@ const dbConfig = {
 ![Alt text](ImagesForREADME/image.png)
 
 4. add roles in role table for id's 1,2 and 3
-5. Open http://localhost:3000/authentication.html
+5. Open http://localhost:3000/registration.html
 6. Register and then log in with the Username and Password you have created.
 7. if you want to create employees make an entry in the firm table for id 1 as well.

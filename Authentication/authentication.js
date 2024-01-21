@@ -7,21 +7,11 @@ function myFunction(x) {
     }
 }
 
-document.getElementById('registerForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    fetch('/api/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Object.fromEntries(formData))
-    }).then(response => response.json()).then(data => alert(data.message));
-});
-
 document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
     const formData = new FormData(this);
+    // const formObject = Object.fromEntries(formData);
+    // console.log(formObject);
     fetch('/api/login', {
         method: 'POST',
         headers: {

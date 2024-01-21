@@ -8,7 +8,7 @@ document.getElementById('logoutButton').addEventListener('click', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                window.location.href = '/authentication.html'; // Redirect to login page after logout
+                window.location.href = '/login.html'; // Redirect to login page after logout
             } else {
                 alert('Logout failed. Please try again.');
             }
