@@ -32,7 +32,7 @@ app.post('/api/register', async (req, res) => {
         const { username, password, firstName, lastName, phoneNumber } = req.body;
 
         // Connect to the database
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
 
         // Check if username already exists
         const checkUserSql = 'SELECT * FROM users WHERE Username = ?';
