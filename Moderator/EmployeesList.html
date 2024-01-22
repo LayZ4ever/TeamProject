@@ -20,6 +20,14 @@
 <body>
     <h1>Employee List</h1>
     <button onclick="addNewEmployee()">Add New Employee</button>
+
+    <button id="filterButton">Filter by</button> 
+    <select name="employeeAttribute" id="employeeAttribute"> 
+        <option value="EmpId">Employee id</option> 
+        <option value="EmpName">Employee name</option> 
+        <option value="EmpType">Employee Type</option>
+    </select>
+
     <button id="logoutButton">Log Out</button>
 
     <table id="employeeTable">

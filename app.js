@@ -266,6 +266,24 @@ app.get('/employees', async (req, res) => {
     }
 });
 
+app.get('/sortedEmployees', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const sortingAttribute = req.query.sortingAttribute || 'EmpId';
+        const sql = `SELECT * FROM employees ORDER BY ${sortingAttribute}`;
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching employees data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
 // Helper function to generate a username for the employees
 function generateUsername(fullName) {
     var nameParts = fullName.trim().split(/\s+/);
