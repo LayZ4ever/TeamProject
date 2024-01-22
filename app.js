@@ -94,7 +94,7 @@ app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const sql = 'SELECT * FROM users WHERE Username = ?';
         const [users] = await connection.query(sql, [username]);
         connection.release();
@@ -151,7 +151,7 @@ app.get('/api/search-customer', async (req, res) => {
     try {
         const { phoneNumber } = req.query;
 
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const sql = 'SELECT * FROM customer WHERE PhoneNumber = ?';
         const [customer] = await connection.query(sql, [phoneNumber]);
         connection.release();
@@ -204,7 +204,7 @@ app.post('/api/insertData', async (req, res) => {
 
     try {
         const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price } = req.body;
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, ReceiverAddress, Weight, Price) VALUES (?, ?, ?, ?, ?, ?, ?)';
         const [result] = await connection.query(sql, [SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price]);
         connection.release();
