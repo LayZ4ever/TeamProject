@@ -189,26 +189,6 @@ function deleteEmployee(empId) {
     });
 }
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     fetchEmployees();
-// });
-
-
-// idk what I'm doing.
-
-// not in use.
-function createEmployeeFilterDropdown(selectedType) {
-    const types = ['EmpId', 'EmpName', 'EmpType'];
-    let dropdownHTML = `<select name="employeeAttributes">Filter by`;
-
-    types.forEach(type => {
-        dropdownHTML += `<option value="${type}" ${selectedType === type ? 'selected' : ''}>${type}</option>`;
-    });
-
-    dropdownHTML += `</select>`;
-    return dropdownHTML;
-}
-
 function fetchSortedEmployees(sortingAttribute) {
     // sortingAttribute is appended to the URL as a query parameter so that it can be acceseed in the /sortedEmployees api
     url = `/sortedEmployees?sortingAttribute=${sortingAttribute}`;
