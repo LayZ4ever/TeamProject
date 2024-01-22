@@ -212,7 +212,6 @@ function createEmployeeFilterDropdown(selectedType) {
 function fetchSortedEmployees(sortingAttribute) {
     // sortingAttribute is appended to the URL as a query parameter so that it can be acceseed in the /sortedEmployees api
     url = `/sortedEmployees?sortingAttribute=${sortingAttribute}`;
-// fetch('/sortedEmployees')
     fetch(url)
         .then(response => response.json())
         .then(data => populateTable(data))
