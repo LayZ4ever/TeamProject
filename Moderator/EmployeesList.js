@@ -189,6 +189,10 @@ function deleteEmployee(empId) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    fetchEmployees();
+});
+
 function fetchSortedEmployees(sortingAttribute) {
     // sortingAttribute is appended to the URL as a query parameter so that it can be acceseed in the /sortedEmployees api
     url = `/sortedEmployees?sortingAttribute=${sortingAttribute}`;
