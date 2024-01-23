@@ -3,18 +3,7 @@
 
 <head>
     <title>Employee List</title>
-    <script>
-        window.onload = function () {
-            fetch('/api/checkSession')
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.loggedIn) {
-                        window.location.href = '/registration.html'; // Redirect to login page if not logged in
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        };
-    </script>
+    <script src="logoutRedirectionStuff.js"></script>
 </head>
 
 <body>
@@ -45,6 +34,8 @@
     </table>
 
     <script src="EmployeesList.js"></script>
+    <script src="logoutRedirectionStuff.js"></script>
+
 </body>
 
 </html>

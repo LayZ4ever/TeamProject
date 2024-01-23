@@ -408,8 +408,33 @@ app.delete('/api/deleteEmployee', async (req, res) => {
         res.status(500).send({ success: false, message: 'Internal Server Error' });
     }
 });
-/* ------------------------------------------------------------------------------------------------- */
 
+/* ------------------------------------------- Firm ------------------------------------------- */
+app.get('/firm', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const sql = 'SELECT * FROM firm';
+        const [row] = await connection.query(sql);
+        if (row.length > 0) {
+            res.json(row); // Send the first result
+        } else {
+            res.status(404).json({ message: 'No firm found' });
+            
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching firm data' });
+        return;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+
+/* ------------------------------------------------------------------------------------------------- */
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

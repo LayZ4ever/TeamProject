@@ -174,19 +174,19 @@ function deleteEmployee(empId) {
         },
         body: JSON.stringify({ empId: empId })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Employee deleted successfully.');
-            fetchEmployees();
-        } else {
-            alert('Error deleting employee: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while deleting the employee.');
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Employee deleted successfully.');
+                fetchEmployees();
+            } else {
+                alert('Error deleting employee: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the employee.');
+        });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
