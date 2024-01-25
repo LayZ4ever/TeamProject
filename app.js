@@ -225,7 +225,7 @@ app.get('/api/getCustomerId', async (req, res) => {
     try {
         const phoneNumber = req.query.phone;
 
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const sql = 'SELECT CustId FROM customer WHERE PhoneNumber = ?';
         const [rows] = await connection.query(sql, [phoneNumber]);
         connection.release();
@@ -312,7 +312,7 @@ app.post('/api/addEmployee', async (req, res) => {
     const defaultPassword = 'LogComp'; // Default password, consider using a more secure approach
 
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
 
         // Generate and check the uniqueness of the username
         let username = generateUsername(EmpName);
@@ -351,7 +351,7 @@ app.post('/api/updateEmployee', async (req, res) => {
     const { EmpId, EmpName, EmpType } = req.body;
 
     try {
-        const connection = await pool.getConnection();
+        connection = await pool.getConnection();
         const updateSql = 'UPDATE employees SET EmpName = ?, EmpType = ? WHERE EmpId = ?';
         await connection.query(updateSql, [EmpName, EmpType, EmpId]);
         res.json({ success: true });
@@ -372,9 +372,9 @@ app.delete('/api/deleteEmployee', async (req, res) => {
     if (!empId) {
         return res.status(400).send({ success: false, message: 'Employee ID is required.' });
     }
-
+    let connection;
     try {
-        const connection = await mysql.createConnection(dbConfig);
+        connection = await mysql.createConnection(dbConfig);
         await connection.beginTransaction();
 
         // Get the UserId associated with the employee
@@ -433,6 +433,30 @@ app.get('/firm', async (req, res) => {
     }
 });
 
+app.post('/firm/update', async (req, res) => {
+    const { FirmName, FirmAddress } = req.body;
+    if (!FirmName || !FirmAddress) {
+        // 400 - bad request
+        res.status(400).json({ success: false, message: 'Both FirmName and FirmAddress are required.' });
+        return;
+    }
+
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const updateSql = 'UPDATE firm SET FirmName = ?, FirmAddress = ?';
+        await connection.query(updateSql, [FirmName, FirmAddress]);
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error:', error);
+        res.json({ success: false, message: 'Error updating firm data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
 
 /* ------------------------------------------------------------------------------------------------- */
 app.listen(3000, () => {

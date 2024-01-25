@@ -16,14 +16,19 @@ document.getElementById('logoutButton').addEventListener('click', function () {
         .catch(error => console.error('Error:', error));
 });
 
-
+/**
+ * Handles the response (employee data) from the database.
+ */
 function fetchEmployees() {
     fetch('/employees')
         .then(response => response.json())
         .then(data => populateTable(data))
         .catch(error => console.error('Error fetching data:', error));
 }
-
+/**
+ * Adds the employee records sent from the database into the page (EmployeeList.html).
+ * @param {*} employees the employees returned from the database.
+ */
 function populateTable(employees) {
     const table = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
     table.innerHTML = '';
@@ -36,7 +41,10 @@ function populateTable(employees) {
         row.insertCell(3).innerHTML = `<button onclick="editEmployee(${index})">Edit</button><button onclick="deleteEmployee(${employee.EmpId})">Delete</button>`;
     });
 }
-
+/**
+ * When the 'Add' button in EmployeeList.html is pressed, this function is called.
+ * It creates a new row for the new employee record, along with a 'Save' and 'Cancel' buttons.
+ */
 function addNewEmployee() {
     const table = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
     let newRow = table.insertRow();
@@ -52,7 +60,10 @@ function cancelNewEmployee(button) {
     var row = button.parentNode.parentNode;
     row.remove(); // Remove the new row
 }
-
+/**
+ * Saves the new employee info into the base and reloads the page with the updated data.
+ * @param {*} save the 'Save' button.
+ */
 function saveNewEmployee(button) {
     var row = button.parentNode.parentNode;
     var nameInput = row.cells[1].querySelector('input').value;
@@ -123,6 +134,13 @@ function cancelEdit(rowIndex) {
     row.querySelector('button').innerText = 'Edit'; // Reset the Edit button text
 }
 
+/**
+ * Toggles between edit mode and display mode for a given table row (<tr>).
+ * @param {*} row The row that is being toggled
+ * @param {*} isEditMode isEditMode ? edit mode : display mode
+ * @param {*} name the name of the employee  
+ * @param {*} type the employee type
+ */
 function toggleEditMode(row, isEditMode, name = '', type = '') {
     if (isEditMode) {
         row.cells[1].innerHTML = `<input type="text" name="EmpName" value="${row.cells[1].innerText}" />`;
@@ -152,7 +170,6 @@ function saveEmployeeData(empId, name, type) {
         })
         .catch(error => console.error('Error:', error));
 }
-
 
 function createEmpTypeDropdown(selectedType) {
     const types = ['courier', 'office worker'];
@@ -194,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchSortedEmployees(sortingAttribute) {
-    // sortingAttribute is appended to the URL as a query parameter so that it can be acceseed in the /sortedEmployees api
+    // sortingAttribute is appended to the URL as a query parameter so that it can be acceseed in the sortedEmployees api
     url = `/sortedEmployees?sortingAttribute=${sortingAttribute}`;
     fetch(url)
         .then(response => response.json())
@@ -202,15 +219,8 @@ function fetchSortedEmployees(sortingAttribute) {
         .catch(error => console.error('Error fetching data:', error));
 }
 
-// // Add an event listener to the button
 document.getElementById('filterButton').addEventListener('click', function () {
-    // Get the selected value from the dropdown
     const selectedAttribute = document.getElementById('employeeAttribute').value;
-    // works fine.
-    console.log("Before the fetchSortedEmployees function: " + selectedAttribute);
-    // Invoke the fetchSortedEmployees function with the selected attribute
     fetchSortedEmployees(selectedAttribute);
-    // same here.
-    console.log("Before the fetchSortedEmployees function: " + selectedAttribute);
 });
 

@@ -10,11 +10,18 @@
     <div id="companyInfo">
         <h2 id="companyName">Company name: </h2>
         <address id="firmAddress">Firm address: </address>
+        <div id="editMode" style="display: none;">
+            <label for="editCompanyName"><h2>Company name:</h2></label>
+            <input type="text" id="editCompanyName"><br>
+            <label for="editFirmAddress"><address>Firm address:</address></label>
+            <input type="text" id="editFirmAddress"><br>
+            <button onclick="saveChanges()">Save</button>
+            <button onclick="cancelEdit()">Cancel</button>
+        </div>
     </div>
-    <!-- perhaps generates the company's revenue? -->
-    <button>Company's revenue</button>
+    <button id="editButton" onclick="enterEditMode()">Edit</button>
     <button id="logoutButton">Log Out</button>
+    <script src="logoutRedirectionStuff.js"></script>
+    <script src="CompanyInfo.js"></script>
 </body>
-<script src="logoutRedirectionStuff.js"></script>
-<script src="CompanyInfo.js"></script>
 </html>
