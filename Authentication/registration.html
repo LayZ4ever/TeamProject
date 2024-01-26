@@ -2,98 +2,56 @@
 <html data-bs-theme="light" lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>register</title>
-
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="Login-Form-Basic-icons.css">
+    <title>Registration page</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/registration.css">
 </head>
 
-<body style="height: 800px;">
-    <section class="position-relative py-4 py-xl-5" style="height: 90px;">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2>Register</h2>
-                </div>
+<body class="pt-lg-0 mt-lg-0">
+  <form id="registerForm">
+    <div class="container-fluid text-bg-success" style="background: var(--bs-success-bg-subtle);width: 500px;height: 520px;">
+        <div class="row d-flex justify-content-start" style="background: var(--bs-success-bg-subtle);height: auto;">
+            <div class="col"><label class="col-form-label fs-2 text-center d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-center justify-content-lg-center justify-content-xl-center pe-xl-0"><strong><span style="color: rgb(52, 109, 166);">Register</span></strong></label></div>
+            <div class="col-12 col-lg-11 offset-lg-5 d-md-flex d-lg-flex justify-content-md-center justify-content-lg-center align-items-lg-center" style="padding-left: 0px;margin-left: 4px;height: 100px;">
+                <div class="text-center d-lg-flex justify-content-lg-center align-items-lg-center" style="width: 80px;height: 80px;color: var(--bs-tertiary-bg);background: var(--bs-teal);border-radius: 50%;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person-fill-add text-start d-lg-flex justify-content-lg-start align-items-lg-start" style="font-size: 54px;">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4"></path>
+                    </svg></div>
             </div>
         </div>
-    </section>
-    <div class="row d-flex justify-content-center" style="height: 650px;">
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <div class="card mb-5" style="height: 600px;">
-
-                <div class="card-body d-flex flex-column align-items-center"
-                    style="background: var(--bs-success-bg-subtle);height: 550px;">
-                    <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4"
-                        style="background: var(--bs-teal);border-color: var(--bs-form-valid-color);"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 20 20"
-                            class="bi bi-person">
-                            <path
-                                d="M8 9C9.65685 9 11 7.65685 11 6C11 4.34315 9.65685 3 8 3C6.34315 3 5 4.34315 5 6C5 7.65685 6.34315 9 8 9Z"
-                                fill="currentColor"></path>
-                            <path d="M8 11C11.3137 11 14 13.6863 14 17H2C2 13.6863 4.68629 11 8 11Z"
-                                fill="currentColor"></path>
-                            <path
-                                d="M16 7C16 6.44772 15.5523 6 15 6C14.4477 6 14 6.44772 14 7V8H13C12.4477 8 12 8.44771 12 9C12 9.55228 12.4477 10 13 10H14V11C14 11.5523 14.4477 12 15 12C15.5523 12 16 11.5523 16 11V10H17C17.5523 10 18 9.55228 18 9C18 8.44772 17.5523 8 17 8H16V7Z"
-                                fill="currentColor"></path>
-                        </svg></div>
-                    <div class="col-lg-9" style="height: 60px;width: 450px;"><label
-                            class="col-form-label fs-2 text-center" style="color: var(--bs-green);width: 450px;">Enter
-                            your data</label></div>
-                    <form id="registerForm" style="width: 450px;height: 500px;">
-                        <div class="input-group"></div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4" style="height: 50px;"><label class="col-form-label">First
-                                        Name</label></div>
-                                <div class="col-md-6 col-lg-6" style="width: 270px;"><input class="form-control"
-                                        type="text" name="firstName" placeholder="first name" style="width: 230px;"><br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4" style="height: 50px;"><label class="col-form-label">Last
-                                        Name</label></div>
-                                <div class="col-md-6 col-lg-6" style="width: 270px;"><input class="form-control"
-                                        type="text" name="lastName" placeholder="last name" style="width: 230px;"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4" style="height: 50px;"><label class="col-form-label">Phone
-                                        Number</label></div>
-                                <div class="col-md-6 col-lg-6" style="width: 270px;"><input class="form-control"
-                                        type="text" name="phoneNumber" placeholder="phone number" style="width: 230px;">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-9" style="height: 40px;width: 450px;"></div>
-                                <div class="col-md-6 col-lg-4" style="height: 50px;"><label class="col-form-label">User
-                                        Name</label></div>
-                                <div class="col-md-6 col-lg-6" style="width: 270px;"><input class="form-control"
-                                        type="text" name="username" placeholder="username" style="width: 230px;"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4" style="height: 50px;"><label
-                                        class="col-form-label">Password</label></div>
-                                <div class="col-md-6 col-lg-6" style="width: 270px;"><input class="form-control"
-                                        type="password" name="password" placeholder="password" style="width: 230px;">
-                                </div>
-                                <div class="mb-3">Already registered? Go <a href="login.html">here.</a></div>
-                            </div>
-                            <form class="text-center" method="post">
-                                <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit"
-                                        style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);">Register</button>
-                                </div>
-                            </form>
-                        </div>
-                    </form>
-                    <div class="col" style="height: 40px;"></div>
-                </div>
-            </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 50px;">
+            <div class="col-md-6 col-lg-4" style="height: 35px;"><label class="col-form-label text-success-emphasis">First Name</label></div>
+            <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="text" name="firstName" placeholder="first name" style="width: 230px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 50px;">
+            <div class="col-md-6 col-lg-4" style="height: 35px;"><label class="col-form-label text-success-emphasis">Last Name</label></div>
+            <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="text" name="lastName" placeholder="last name" style="width: 230px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 50px;">
+            <div class="col-md-6 col-lg-4" style="height: 35px;"><label class="col-form-label text-success-emphasis" style="padding-left: 0px;margin-bottom: 0px;margin-right: 65px;padding-right: 0px;width: 140px;">Phone number</label></div>
+            <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="text" name="phoneNumber" placeholder="phone number" style="width: 230px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 20px;">
+            <div class="col" style="height: 20px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 50px;">
+            <div class="col-md-6 col-lg-4" style="height: 35px;"><label class="col-form-label text-success-emphasis" style="padding-left: 0px;margin-bottom: 0px;margin-right: 65px;padding-right: 0px;width: 140px;">User Name</label></div>
+            <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="text" name="username" placeholder="username" style="width: 230px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 50px;">
+            <div class="col-md-6 col-lg-4" style="height: 35px;"><label class="col-form-label text-success-emphasis" style="padding-left: 0px;margin-bottom: 0px;margin-right: 65px;padding-right: 0px;width: 140px;">Password</label></div>
+            <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="password" name="password" placeholder="password" style="width: 230px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 90px;">
+            <div class="col-md-6 col-lg-3" style="height: 80px;"></div>
+            <div class="col-md-6 col-lg-6 d-lg-flex justify-content-lg-center align-items-lg-center" style="height: 80px;"><button class="btn btn-primary d-block w-100" type="submit" style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);height: 35px;">Register</button></div>
+            <div class="col-md-6 col-lg-2 d-lg-flex" style="height: 80px;"></div>
         </div>
     </div>
     <script src="registration.js"></script>
-
+  </form>  
 </body>
 
 </html>
