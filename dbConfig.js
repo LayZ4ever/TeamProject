@@ -1,8 +1,8 @@
 
 const dbConfig = {
     host: 'localhost',
-    user: 'root',
-    password: '1234',
+    user: 'teamproject_user',
+    password: 'teamproject_user',
     database: 'mydb',
 };
 module.exports = dbConfig;
