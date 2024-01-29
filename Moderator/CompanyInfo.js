@@ -34,8 +34,11 @@ function populateCompanyInfo(data) {
 
     if (data && data.length > 0) {
         var companyData = data[0];
-        companyNameElement.textContent = `Company name: ${companyData.FirmName}`;
-        firmAddressElement.textContent = `Firm address: ${companyData.FirmAddress}`;
+//        companyNameElement.textContent = `Company name: ${companyData.FirmName}`;
+//        firmAddressElement.textContent = `Firm address: ${companyData.FirmAddress}`;
+//        editCompanyNameInput.value = companyData.FirmName;
+//        editFirmAddressInput.value = companyData.FirmAddress;
+        
         editCompanyNameInput.value = companyData.FirmName;
         editFirmAddressInput.value = companyData.FirmAddress;
     } else {
@@ -46,7 +49,7 @@ function populateCompanyInfo(data) {
 }
 
 function enterEditMode() {
-    // select the elements we want to manipulate
+/*     // select the elements we want to manipulate
     var companyNameElement = document.getElementById('companyName');
     var firmAddressElement = document.getElementById('firmAddress');
     var editModeDiv = document.getElementById('editMode');
@@ -55,7 +58,7 @@ function enterEditMode() {
     companyNameElement.style.display = 'none';
     firmAddressElement.style.display = 'none';
     // make editMode visible
-    editModeDiv.style.display = 'block';
+    editModeDiv.style.display = 'block'; */
 }
 
 function saveChanges() {
@@ -76,7 +79,7 @@ function saveChanges() {
     .then(data => {
         if (data.success) {
             alert('Changes saved successfully.');
-            exitEditMode();
+         //   exitEditMode();
             fetchCompany();
         } else {
             alert('Error saving changes: ' + (data.message || ''));
@@ -89,17 +92,20 @@ function saveChanges() {
 }
 
 function cancelEdit() {
-    exitEditMode();
+  //  exitEditMode();
     fetchCompany();
 }
 
 function exitEditMode() {
-    // hide editMode
+   /*  // hide editMode
     var companyNameElement = document.getElementById('editMode');
     companyNameElement.style.display = "none";
     // visualize data
     var companyNameElement = document.getElementById('companyName');
     var firmAddressElement = document.getElementById('firmAddress');
     companyNameElement.style.display = 'block';
-    firmAddressElement.style.display = 'block';
+    firmAddressElement.style.display = 'block'; */
 }
+function exitCompany() {
+    window.location.href = "Moderator.html";
+  }

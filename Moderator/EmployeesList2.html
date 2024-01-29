@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    
+    <title><h2>Employee</h2></title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/EmployeesList.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-xrMLYqe9Z9JWWc7Z3W3TaGVV9hTzg6jsAj9sq+5TfMHuLqYl28Jzv+6yZ6Y5TZfuDTrkFF5njfO1fN6E1kDag==" crossorigin="anonymous" />
+</head>
+
+<body>
+    <h1 style="--bs-body-bg: var(--bs-success-border-subtle);">Employees</h1>
+    <button onclick="addNewEmployee()">Add New Employee</button>
+
+    <button id="sortButton">Sorted by</button> 
+    <select name="employeeAttribute" id="employeeAttribute"> 
+        <option value="EmpId">Employee id</option> 
+        <option value="EmpName">Employee name</option> 
+        <option value="EmpType">Employee Type</option>
+    </select>
+
+    <button id="logoutButton">Exit</button>
+    <div class="table-responsive" id="employeeTable" style="height: auto;">
+        <table class="table" id="employees">
+            <thead style="background: var(--bs-success-border-subtle);">
+                <tr style="background: var(--bs-success-border-subtle);">
+                    <th class="text-center border rounded border-3 border-success-subtle" style="width: 10%;background: var(--bs-teal);color: var(--bs-danger-text-emphasis);">Id</th>
+                    <th class="text-center border rounded border-3 border-success-subtle" style="width: 40%;background: var(--bs-teal);color: var(--bs-danger-text-emphasis);">Name</th>
+                    <th class="text-center border rounded border-3 border-success-subtle" style="width: 20%;background: var(--bs-teal);color: var(--bs-danger-text-emphasis);">Empl Type</th>
+                    <th class="text-center border rounded border-3 border-success-subtle" style="width: 30%;background: var(--bs-teal);color: var(--bs-danger-text-emphasis);">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <script src="EmployeesList.js"></script>
+
+</body>
+
+</html>

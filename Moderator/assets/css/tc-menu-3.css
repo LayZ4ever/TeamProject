@@ -1,0 +1,97 @@
+.tc-menu-3 {
+  font-family: 'Roboto', Arial, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.tc-menu-3 * {
+  box-sizing: border-box;
+}
+
+.tc-menu-3 li {
+  display: inline-block;
+  list-style: outside none none;
+  margin: 0.5em 1em;
+  overflow: hidden;
+  position: relative;
+  border-radius: 3px;
+}
+
+.tc-menu-3 li:before, .tc-menu-3 li:after {
+  display: block;
+}
+
+.tc-menu-3 li:before {
+  bottom: 0%;
+}
+
+.tc-menu-3 li:after {
+  bottom: 75%;
+}
+
+.tc-menu-3 a {
+  backface-visibility: hidden;
+  color: #e6e6e6;
+  display: block;
+  padding: 0.5em 1em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+}
+
+.tc-menu-3 a:hover {
+  color: #ffffff;
+}
+
+.tc-menu-3 a:before {
+  bottom: 25%;
+}
+
+.tc-menu-3 a:after {
+  bottom: 50%;
+}
+
+.tc-menu-3 li:before, .tc-menu-3 li:after, .tc-menu-3 a:before, .tc-menu-3 a:after {
+  background-color: #962d22;
+  position: absolute;
+  height: 25%;
+  width: 100%;
+  left: 0;
+  content: '';
+  z-index: -1;
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+  opacity: 0;
+  -webkit-transition: all 0.3s steps(4);
+  transition: all 0.3s steps(4);
+}
+
+.tc-menu-3 li:hover:before, .tc-menu-3 li.current:before, .tc-menu-3 li:hover:after, .tc-menu-3 li.current:after, .tc-menu-3 li:hover a:before, .tc-menu-3 li.current a:before, .tc-menu-3 li:hover a:after, .tc-menu-3 li.current a:after {
+  -webkit-transform: translateX(0%);
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.tc-menu-3 li:hover:before, .tc-menu-3 li.current:before {
+  -webkit-transition-delay: 0.225s;
+  transition-delay: 0.225s;
+}
+
+.tc-menu-3 li:hover:after, .tc-menu-3 li.current:after {
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+}
+
+.tc-menu-3 li:hover a:before, .tc-menu-3 li.current a:before {
+  -webkit-transition-delay: 0.15s;
+  transition-delay: 0.15s;
+}
+
+.tc-menu-3 li:hover a:after, .tc-menu-3 li.current a:after {
+  -webkit-transition-delay: 0.075s;
+  transition-delay: 0.075s;
+}
+

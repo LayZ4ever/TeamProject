@@ -1,0 +1,80 @@
+.main-nav {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1000px;
+  background: none;
+}
+
+.main-nav ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.main-nav li {
+  list-style-type: none;
+  /*float: left;*/
+  padding: 0;
+  line-height: 50px;
+  height: 50px;
+  margin: 0;
+}
+
+.main-nav li a {
+  font-size: 13px;
+  font-weight: 400;
+  color: #ffffff;
+  /*display: inline-block;*/
+  margin: 0;
+  text-align: center;
+  transition: all .3s;
+}
+
+ul {
+  list-style: disc outside;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  background: #f64c3b;
+  color: #fff;
+  text-decoration: none;
+}
+
+li.social {
+  float: right;
+}
+
+.navbar.navbar-default.navbar-fixed-top.main-nav {
+  background: #222;
+  width: 100%;
+  display: inline-block;
+}
+
+.navbar-default .navbar-toggle {
+  border: none;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background: white;
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+  background: #f64c3b;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-default .navbar-toggle {
+  background: none;
+}
+
+.navbar-default .navbar-toggle:hover {
+  background: none;
+}
+

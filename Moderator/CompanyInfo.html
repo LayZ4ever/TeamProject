@@ -1,27 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="light" lang="en" style="padding-top: 20px;"">
+    
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company info</title>
-    <script src="logoutRedirectionStuff.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>newFirm</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/CompanyInfo.css">
 </head>
-<body>
-    <div id="companyInfo">
-        <h2 id="companyName">Company name: </h2>
-        <address id="firmAddress">Firm address: </address>
-        <div id="editMode" style="display: none;">
-            <label for="editCompanyName"><h2>Company name:</h2></label>
-            <input type="text" id="editCompanyName"><br>
-            <label for="editFirmAddress"><address>Firm address:</address></label>
-            <input type="text" id="editFirmAddress"><br>
-            <button onclick="saveChanges()">Save</button>
-            <button onclick="cancelEdit()">Cancel</button>
+
+<body class="pt-lg-0 mt-lg-0">
+    <div class="container-fluid text-bg-success" style="background: var(--bs-success-bg-subtle);width: 500px;height: 390px;">
+        <div class="row d-flex justify-content-start" style="background: var(--bs-success-bg-subtle);height: auto;">
+            <div class="col"><label class="col-form-label fs-2 text-center d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-center justify-content-lg-center justify-content-xl-center pe-xl-0"><strong><span style="color: rgb(52, 109, 166);">Company Details</span></strong></label></div>
+            <div class="col-12 col-lg-12 offset-lg-5 d-md-flex d-lg-flex justify-content-md-center justify-content-lg-center align-items-lg-center" style="padding-left: 0px;margin-left: 4px;height: 100px;">
+                <div class="text-center d-lg-flex justify-content-lg-center align-items-lg-center" style="width: 80px;height: 80px;color: var(--bs-tertiary-bg);background: var(--bs-teal);border-radius: 50%;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bank2 text-start d-lg-flex justify-content-lg-start align-items-lg-start" style="font-size: 52px;">
+                        <path d="M8.277.084a.5.5 0 0 0-.554 0l-7.5 5A.5.5 0 0 0 .5 6h1.875v7H1.5a.5.5 0 0 0 0 1h13a.5.5 0 1 0 0-1h-.875V6H15.5a.5.5 0 0 0 .277-.916l-7.5-5zM12.375 6v7h-1.25V6zm-2.5 0v7h-1.25V6zm-2.5 0v7h-1.25V6zm-2.5 0v7h-1.25V6zM8 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2M.5 15a.5.5 0 0 0 0 1h15a.5.5 0 1 0 0-1z"></path>
+                    </svg></div>
+            </div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 50px;">
+            <div class="col-md-6 col-lg-4" style="height: 35px;"><label class="col-form-label text-success-emphasis">Company name</label></div>
+            <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="text" id="editCompanyName" name="editCompanyName" placeholder="" style="width: 230px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 50px;">
+            <div class="col-md-6 col-lg-4" style="height: 35px;"><label class="col-form-label text-success-emphasis">Company address:</label></div>
+            <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="text" id="editFirmAddress" name="editFirmAddress" placeholder="" style="width: 230px;height: 35px;"></div>
+        </div>
+        <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 42px;"></div>
+        <div class="row text-start d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 90px;">
+            <div class="col-md-6 col-lg-3 d-lg-flex align-items-lg-center" style="height: 80px;"><button class="btn btn-primary d-block w-100" type="submit" style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);height: 35px;margin-left: -4px;margin-right: -3px;padding-right: 9px;" onclick="saveChanges()">Save</button></div>
+            <div class="col-md-6 col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center" style="height: 80px;"><button class="btn btn-primary d-block w-100" type="submit" style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);height: 35px;margin-left: -4px;width: 80px;margin-right: -3px;padding-right: 9px;" onclick="cancelEdit()">Cancel</button></div>
+            <div class="col-md-6 col-lg-3 d-lg-flex align-items-lg-center" style="height: 80px;"><button class="btn btn-primary d-block w-100" id="logoutButton" type="submit" style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);height: 35px;margin-left: -4px;width: auto;margin-right: -3px;padding-right: 9px;" onclick="exitCompany()" >Exit</button></div>
         </div>
     </div>
-    <button id="editButton" onclick="enterEditMode()">Edit</button>
-    <button id="logoutButton">Log Out</button>
-    <script src="logoutRedirectionStuff.js"></script>
     <script src="CompanyInfo.js"></script>
 </body>
+
 </html>

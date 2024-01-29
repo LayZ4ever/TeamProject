@@ -22,3 +22,7 @@ function myFunction(x) {
         x.type = "password";
     }
 }
+
+function exitRegistration() {
+    window.location.href = "Login.html";
+  }

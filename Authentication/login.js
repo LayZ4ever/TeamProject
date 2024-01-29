@@ -20,14 +20,15 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
         body: JSON.stringify(Object.fromEntries(formData))
     }).then(response => response.json()).then(data => {
         if (data.success) {
-            console.log(data.roleId);
+             console.log(data.roleId);
             if (data.roleId === 1){ // 1 is Moderator
                 window.location.href = '/Moderator.html'; // Moderator
             } else if (data.roleId === 2) { // 2 is Customer
                 window.location.href = '/customerPage.html';
             }else if (data.roleId === 3) { // 3 is Employee
                 window.location.href = '/parcel.html';
-            }
+            } 
+
         } else {
             alert(data.message);
         }

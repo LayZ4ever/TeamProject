@@ -1,18 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="light" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="logoutRedirectionStuff.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>HHMenu</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+    <link rel="stylesheet" href="assets/css/Button-Icon-Round.css">
+    <link rel="stylesheet" href="assets/css/Cool-Menu-Navbar.css">
+    <link rel="stylesheet" href="assets/css/Pop-Out-Vertical-Nav-w-Footer--Social-Links--1-Vertical-Nav.css">
+    <link rel="stylesheet" href="assets/css/Pop-Out-Vertical-Nav-w-Footer--Social-Links--1.css">
+    <link rel="stylesheet" href="assets/css/responsive-navbar.css">
 </head>
 
 <body>
-    <a href="EmployeesList.html"><button>Employees List</button></a>
-    <button>Customers List</button>
-    <a href="CompanyInfo.html"><button>Company information</button></a>
-    <button id="logoutButton">Log Out</button>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-light" style="margin: 0;--bs-body-bg: var(--bs-primary-bg-subtle);color: var(--bs-warning-bg-subtle);background: var(--bs-teal);">
+                <div class="container-fluid">
+                    <div><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div><img class="img-fluid" src="assets/img/bank.png" width="74" height="74">
+                    <div class="collapse navbar-collapse" id="navcol-1">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link active" href="#" style="border-color: var(--bs-pink);background: var(--bs-warning-border-subtle);">Parcels</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+                            <li class="nav-item"><a class="nav-link" href="companyInfo.html">Company</a></li>
+                            <li class="nav-item"><a class="nav-link" href="EmployeesList.html">Employee</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Customers</a></li>
+                        </ul><a class="btn btn-light ms-auto action-button" role="button" href="login.html">Log Out</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/Pop-Out-Vertical-Nav-w-Footer--Social-Links--1-Vertical-Nav.js"></script>
 </body>
-<script src="logoutRedirectionStuff.js"></script>
 
 </html>

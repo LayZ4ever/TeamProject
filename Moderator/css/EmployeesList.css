@@ -1,0 +1,61 @@
+* {
+  scroll-behavior: smooth;
+}
+
+* {
+  /*box-sizing: inherit;*/
+}
+
+*:before, *:after {
+  /*box-sizing: inherit;*/
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.table-row-even {
+  background-color: #5cba6e;
+}
+
+.table-row-odd {
+  background-color: #530c0c;
+}
+
+.cancel-button {
+  background-color: rgb(149, 205, 238);
+  color: rgb(3, 79, 45);
+  border: none;
+  margin-right: 5px;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.action-save {
+  background-color: rgb(166, 217, 166);
+  color: rgb(3, 79, 45);
+  border: none;
+  padding: 8px 12px;
+  margin-right: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.action-delete {
+  background-color: rgb(224, 153, 153);
+  color: rgb(3, 79, 45);
+  border: none;
+  padding: 8px 12px;
+  margin-right: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+

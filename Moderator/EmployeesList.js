@@ -1,20 +1,20 @@
-document.getElementById('logoutButton').addEventListener('click', function () {
-    fetch('/api/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/login.html'; // Redirect to login page after logout
-            } else {
-                alert('Logout failed. Please try again.');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-});
+// document.getElementById('logoutButton').addEventListener('click', function () {
+//     fetch('/api/logout', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.success) {
+//                 window.location.href = '/login.html'; // Redirect to login page after logout
+//             } else {
+//                 alert('Logout failed. Please try again.');
+//             }
+//         })
+//         .catch(error => console.error('Error:', error));
+// });
 
 /**
  * Handles the response (employee data) from the database.
@@ -38,7 +38,32 @@ function populateTable(employees) {
         row.insertCell(0).innerHTML = employee.EmpId;
         row.insertCell(1).innerHTML = employee.EmpName;
         row.insertCell(2).innerHTML = employee.EmpType;
-        row.insertCell(3).innerHTML = `<button onclick="editEmployee(${index})">Edit</button><button onclick="deleteEmployee(${employee.EmpId})">Delete</button>`;
+    
+        // Добавяне на класове за четни и нечетни редове
+        row.classList.add(index % 2 === 0 ? 'table-row-even' : 'table-row-odd');
+    
+        // Create a container for the buttons
+        let buttonsContainer = document.createElement('div');
+        buttonsContainer.classList.add('button-container'); // Добавяне на нов клас за контейнера
+    
+        let editButton = document.createElement('button');
+        editButton.classList.add('action-save'); // Добавяне на нов клас за бутона "Edit"
+        editButton.textContent = 'Edit'; 
+        editButton.addEventListener('click', function() {
+            editEmployee(index);
+        });
+        buttonsContainer.appendChild(editButton);
+    
+        let deleteButton = document.createElement('button');
+        deleteButton.classList.add('action-delete'); // Същият клас като за "Edit"
+        deleteButton.classList.add('cancel-button'); // Добавяне на нов клас за бутона "Cancel"
+        deleteButton.textContent = 'Delete'; 
+        deleteButton.addEventListener('click', function() {
+            deleteEmployee(employee.EmpId);
+        });
+        buttonsContainer.appendChild(deleteButton);
+    
+        row.insertCell(3).appendChild(buttonsContainer);
     });
 }
 /**
@@ -49,15 +74,37 @@ function addNewEmployee() {
     const table = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
     let newRow = table.insertRow();
 
-    // Add a temporary ID or placeholder
     newRow.insertCell(0).innerText = 'New';
     newRow.insertCell(1).innerHTML = `<input type="text" name="EmpName" />`;
     newRow.insertCell(2).innerHTML = createEmpTypeDropdown('');
-    newRow.insertCell(3).innerHTML = `<button onclick="saveNewEmployee(this)">Save</button><button onclick="cancelNewEmployee(this)">Cancel</button>`;
+ //   newRow.insertCell(3).innerHTML = `<button onclick="saveNewEmployee(this)">Save</button><button onclick="cancelNewEmployee(this)">Cancel</button>`;
+
+    // Create a container for the buttons
+    let buttonsContainer = document.createElement('div');
+    buttonsContainer.classList.add('button-container');
+
+    let saveButton = document.createElement('button');
+    saveButton.classList.add('action-save');
+    saveButton.textContent = 'Save';
+    saveButton.addEventListener('click', function() {
+        saveNewEmployee(this); // Подаваме бутона като аргумент
+    });
+    buttonsContainer.appendChild(saveButton);
+
+    let cancelButton = document.createElement('button');
+    cancelButton.classList.add('cancel-button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', function() {
+        cancelNewEmployee(this);
+    });
+    buttonsContainer.appendChild(cancelButton);
+
+    newRow.insertCell(3).appendChild(buttonsContainer);
 }
 
 function cancelNewEmployee(button) {
-    var row = button.parentNode.parentNode;
+
+    var row = button.closest('tr'); //търсим най-близкия родителски ред (tr) 
     row.remove(); // Remove the new row
 }
 /**
@@ -65,7 +112,8 @@ function cancelNewEmployee(button) {
  * @param {*} save the 'Save' button.
  */
 function saveNewEmployee(button) {
-    var row = button.parentNode.parentNode;
+    //var row = button.parentNode.parentNode;
+    var row = button.closest('tr'); 
     var nameInput = row.cells[1].querySelector('input').value;
     var typeSelect = row.cells[2].querySelector('select').value;
 
@@ -104,7 +152,9 @@ function editEmployee(rowIndex) {
         // Switch to edit mode
         toggleEditMode(row, true);
         editButton.innerText = 'Save';
-        editButton.insertAdjacentHTML('afterend', `<button onclick="cancelEdit(${rowIndex})">Cancel</button>`);
+        
+        // Добавяне на бутона "Cancel" в същата колона със стил
+        editButton.insertAdjacentHTML('afterend', `<button class="cancel-button" onclick="cancelEdit(${rowIndex})">Cancel</button>`);
     } else {
         // Handle saving logic
         handleSave(row, rowIndex);
@@ -219,8 +269,11 @@ function fetchSortedEmployees(sortingAttribute) {
         .catch(error => console.error('Error fetching data:', error));
 }
 
-document.getElementById('filterButton').addEventListener('click', function () {
+document.getElementById('sortButton').addEventListener('click', function () {
     const selectedAttribute = document.getElementById('employeeAttribute').value;
     fetchSortedEmployees(selectedAttribute);
 });
 
+function exitEmployee() {
+    window.location.href = "Moderator.html";
+  }

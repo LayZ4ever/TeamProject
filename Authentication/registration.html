@@ -4,17 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Registration page</title>
+    <title>newReg</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/registration.css">
+    <link rel="stylesheet" href="/css/Div-Overlay-Black.css">
 </head>
 
 <body class="pt-lg-0 mt-lg-0">
-  <form id="registerForm">
     <div class="container-fluid text-bg-success" style="background: var(--bs-success-bg-subtle);width: 500px;height: 520px;">
         <div class="row d-flex justify-content-start" style="background: var(--bs-success-bg-subtle);height: auto;">
             <div class="col"><label class="col-form-label fs-2 text-center d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-center justify-content-lg-center justify-content-xl-center pe-xl-0"><strong><span style="color: rgb(52, 109, 166);">Register</span></strong></label></div>
-            <div class="col-12 col-lg-11 offset-lg-5 d-md-flex d-lg-flex justify-content-md-center justify-content-lg-center align-items-lg-center" style="padding-left: 0px;margin-left: 4px;height: 100px;">
+            <div class="col-12 col-lg-12 offset-lg-5 d-md-flex d-lg-flex justify-content-md-center justify-content-lg-center align-items-lg-center" style="padding-left: 0px;margin-left: 4px;height: 100px;">
                 <div class="text-center d-lg-flex justify-content-lg-center align-items-lg-center" style="width: 80px;height: 80px;color: var(--bs-tertiary-bg);background: var(--bs-teal);border-radius: 50%;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person-fill-add text-start d-lg-flex justify-content-lg-start align-items-lg-start" style="font-size: 54px;">
                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4"></path>
@@ -45,13 +44,11 @@
             <div class="col-md-6 col-lg-7 d-lg-flex" style="height: 35px;"><input type="password" name="password" placeholder="password" style="width: 230px;"></div>
         </div>
         <div class="row text-start d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-success-bg-subtle);height: 90px;">
-            <div class="col-md-6 col-lg-3" style="height: 80px;"></div>
-            <div class="col-md-6 col-lg-6 d-lg-flex justify-content-lg-center align-items-lg-center" style="height: 80px;"><button class="btn btn-primary d-block w-100" type="submit" style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);height: 35px;">Register</button></div>
-            <div class="col-md-6 col-lg-2 d-lg-flex" style="height: 80px;"></div>
+            <div class="col-md-6 col-lg-5 d-lg-flex align-items-lg-center" style="height: 80px;width: 50%;"><button class="btn btn-primary d-block w-100" type="submit" style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);height: 35px;">Register</button></div>
+            <div class="col-md-6 col-lg-6 d-lg-flex justify-content-lg-center align-items-lg-center" style="height: 80px;width: 50%;"><button class="btn btn-primary d-block w-100" id="logoutButton" type="submit" onclick="exitRegistration()"  style="background: var(--bs-teal);border-color: var(--bs-info-text-emphasis);height: 35px;margin-left: -4px;width: auto;margin-right: -3px;padding-right: 9px;">Exit</button></div>
         </div>
     </div>
     <script src="registration.js"></script>
-  </form>  
 </body>
 
 </html>
