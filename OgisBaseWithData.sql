@@ -133,6 +133,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `parcels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `parcels` (
   `ParcelsId` int NOT NULL AUTO_INCREMENT,
   `SenderId` int NOT NULL,
@@ -144,6 +145,10 @@ CREATE TABLE `parcels` (
   `Price` double NOT NULL,
   `StatusId` int DEFAULT NULL,
   `EmpId` int DEFAULT NULL,
+  `DateSend` date NOT NULL,
+  `DateReceive` date NOT NULL,
+  `Paid` int DEFAULT NULL COMMENT '0 not paid\n1 paid',
+  `PaidOnDate` date DEFAULT NULL,
   PRIMARY KEY (`ParcelsId`),
   KEY `fk_packages_clients1_idx` (`SenderId`),
   KEY `fk_packages_clients2_idx` (`ReceiverId`),
@@ -153,8 +158,9 @@ CREATE TABLE `parcels` (
   CONSTRAINT `fk_packages_clients2` FOREIGN KEY (`ReceiverId`) REFERENCES `customer` (`CustId`),
   CONSTRAINT `fk_packages_employees1` FOREIGN KEY (`EmpId`) REFERENCES `employees` (`EmpId`),
   CONSTRAINT `fk_packages_statuses1` FOREIGN KEY (`StatusId`) REFERENCES `statuses` (`StatusId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 /*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Dumping data for table `parcels`
