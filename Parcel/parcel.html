@@ -74,15 +74,15 @@
     <form id="DeliveryForm">
         <legend>Delivery Details</legend>
         Weight: <input type="text" name="weight" id="weight" placeholder="Weight in kg" required><br>
-        Deliver to office <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" value="office"
-            onclick="showSelection('office')">
-        Deliver to address <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" value="address"
-            onclick="showSelection('address')">
-        Deliver to saved address<input type="radio" id="savedAddress" name="deliveryMethod" value="savedAddress"
-            onclick="showSelection('savedaddress')"><br>
-
+        Deliver to office <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" value="office" required
+            onclick="showSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');">
+        Deliver to address <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" value="address" required
+            onclick="showSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');">
+        Deliver to saved address<input type="radio" id="savedAddress" name="deliveryMethod" value="savedAddress" required
+            onclick="showSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');"><br>
+<!-- something interesting about "onclick":https://stackoverflow.com/questions/3910736/how-to-call-multiple-javascript-functions-in-onclick-event in the accepted answer... -->
         <div id="officeSelection" style="display:none;">
-            Office: <select id="office" name="office">
+            Office: <select id="office" class="officeSelectionRequired" name="office">
                 <option value="" selected disabled>Please select an office</option>
                 <option value="office1">Office 1</option>
                 <option value="office2">Office 2</option>
@@ -92,10 +92,10 @@
         </div>
 
         <div id="addressSelection" style="display:none;">
-            Choose a city: <input type="text" id="cityInput" name="addressCity" list="cityList"
+            Choose a city: <input type="text" id="cityInput" name="addressCity" list="cityList" class="addressSelectionRequired"
                 placeholder="Type or select a city" oninput="loadCityList()">
             <datalist id="cityList"></datalist>
-            Address: <input type="text" name="deliveryAddress" id="deliveryAddress" placeholder="zh.k , ul. ">
+            Address: <input type="text" name="deliveryAddress" id="deliveryAddress" placeholder="zh.k , ul. "  class="addressSelectionRequired">
         </div><br>
 
         <input type="submit" id="submitAllForms" value="Submit" style="display: none;">

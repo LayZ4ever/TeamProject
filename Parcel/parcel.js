@@ -262,3 +262,26 @@ document.addEventListener('DOMContentLoaded', function () {
     handleFormSubmission('SenderForm', '/api/create-or-update-customer');
     handleFormSubmission('ReceiverForm', '/api/create-or-update-customer');
 });
+
+
+//Function that sets required to a certain class and removes it from others
+function requiredONLYForClass(elementClass, ...otherClasses) {
+
+    //remove required
+    for (const otherclass of otherClasses) {
+        const otherElements = document.querySelectorAll('.' + otherclass);
+
+        for (const otherElement of otherElements) {
+            otherElement.setAttribute('disabled', '');
+            otherElement.removeAttribute('required');
+        }
+    }
+    if (elementClass !== '') {
+        const selectedElements = document.querySelectorAll('.' + elementClass);
+        for (const selectedElement of selectedElements) {
+
+            selectedElement.removeAttribute('disabled');
+            selectedElement.setAttribute('required', '');
+        }
+    }
+}
