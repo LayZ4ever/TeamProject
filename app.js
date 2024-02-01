@@ -578,6 +578,118 @@ app.get('/sortedCustomers', async (req, res) => {
     }
 });
 
+/* ------------------------------------------- Office ------------------------------------------- */
+
+//Office data
+app.get('/offices', async (req, res) => {
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        const sql = 'SELECT * FROM offices';
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching offices data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+
+// Add a new office
+app.post('/api/addOffice', async (req, res) => {
+    let connection;
+    const { OfficeName, OfficeAddress} = req.body;
+
+    try {
+        connection = await pool.getConnection();
+
+        // Insert new office
+        const insertOfficeSql = 'INSERT INTO offices (OfficeName, OfficeAddress) VALUES (?, ?)';
+        await connection.query(insertOfficeSql, [OfficeName, OfficeAddress]);
+        connection.release();
+
+        res.json({success: true});
+    } catch (error) {
+        console.error('Error adding office:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.post('/api/updateOffice', async (req, res) => {
+    let connection;
+    const { OfficeId, OfficeName, OfficeAddress } = req.body;
+
+    try {
+        connection = await pool.getConnection();
+        const updateSql = 'UPDATE offices SET OfficeName = ?, OfficeAddress = ? WHERE OfficeId = ?';
+        await connection.query(updateSql, [OfficeName, OfficeAddress, OfficeId]);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error updating office:', error);
+        res.json({ success: false });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+// API endpoint to delete an office
+app.delete('/api/deleteOffice', async (req, res) => {
+    const { officeId } = req.body;
+
+    if (!officeId) {
+        return res.status(400).send({ success: false, message: 'Office ID is required.' });
+    }
+    let connection;
+    try {
+        connection = await mysql.createConnection(dbConfig);
+        await connection.beginTransaction();
+
+        // Delete the office
+        const [deleteOffice] = await connection.execute('DELETE FROM offices WHERE OfficeId = ?', [officeId]);
+        if (deleteOffice.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'Office not found.' });
+        }
+
+        await connection.commit();
+        res.send({ success: true, message: 'Office deleted successfully.' });
+        await connection.end();
+    } catch (error) {
+        console.error('Error in deleting office:', error);
+        await connection.rollback();
+        res.status(500).send({ success: false, message: 'Internal Server Error' });
+    }
+});
+
+app.get('/sortedOffices', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const sortingAttribute = req.query.sortingAttribute || 'OfficeId';
+        const sql = `SELECT * FROM offices ORDER BY ${sortingAttribute}`;
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching offices data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
 /* ------------------------------------------- Firm ------------------------------------------- */
 app.get('/firm', async (req, res) => {
     let connection;

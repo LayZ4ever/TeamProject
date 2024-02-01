@@ -111,6 +111,7 @@ CREATE TABLE `offices` (
   `Firm_FirmId` int NOT NULL,
   `OfficeId` int NOT NULL AUTO_INCREMENT,
   `OfficeName` varchar(255) NOT NULL,
+  `OfficeAddress` varchar(255) NOT NULL,
   PRIMARY KEY (`OfficeId`),
   KEY `fk_offices_Firm1_idx` (`Firm_FirmId`),
   CONSTRAINT `fk_offices_Firm1` FOREIGN KEY (`Firm_FirmId`) REFERENCES `firm` (`FirmId`)

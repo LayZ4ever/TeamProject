@@ -1,26 +1,23 @@
-function fetchCustomers() {
-    fetch('/customers')
+function fetchOffices() {
+    fetch('/offices')
         .then(response => response.json())
         .then(data => populateTable(data))
         .catch(error => console.error('Error fetching data:', error));
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetchCustomers();
+    fetchOffices();
 });
 
-
-
-function populateTable(customers) {
-    const table = document.getElementById('customerTable').getElementsByTagName('tbody')[0];
+function populateTable(offices) {
+    const table = document.getElementById('officeTable').getElementsByTagName('tbody')[0];
     table.innerHTML = '';
-    customers.forEach((customer, index) => {
+    offices.forEach((office, index) => {
         let row = table.insertRow();
         // Add cells and set their content
-        row.insertCell(0).innerHTML = customer.CustId;
-        row.insertCell(1).innerHTML = customer.CustName;
-        row.insertCell(2).innerHTML = customer.PhoneNumber;
-        row.insertCell(3).innerHTML = customer.Address;
+        row.insertCell(0).innerHTML = office.OfficeId;
+        row.insertCell(1).innerHTML = office.OfficeName;
+        row.insertCell(2).innerHTML = office.OfficeAddress;
     
         // Добавяне на класове за четни и нечетни редове
         row.classList.add(index % 2 === 0 ? 'table-row-even' : 'table-row-odd');
@@ -33,7 +30,7 @@ function populateTable(customers) {
         editButton.classList.add('action-save'); // Добавяне на нов клас за бутона "Edit"
         editButton.textContent = 'Edit'; 
         editButton.addEventListener('click', function() {
-            editCustomer(index);
+            editOffice(index);
         });
         buttonsContainer.appendChild(editButton);
     
@@ -42,26 +39,26 @@ function populateTable(customers) {
         deleteButton.classList.add('cancel-button'); // Добавяне на нов клас за бутона "Cancel"
         deleteButton.textContent = 'Delete'; 
         deleteButton.addEventListener('click', function() {
-            deleteCustomer(customer.CustId);
+            deleteOffice(office.OfficeId);
         });
         buttonsContainer.appendChild(deleteButton);
     
-        row.insertCell(4).appendChild(buttonsContainer);
+        row.insertCell(3).appendChild(buttonsContainer);
     });
 }
 
+
 /**
- * When the 'Add' button in CustomerList.html is pressed, this function is called.
- * It creates a new row for the new customer record, along with a 'Save' and 'Cancel' buttons.
+ * When the 'Add' button in OfficeList.html is pressed, this function is called.
+ * It creates a new row for the new office record, along with a 'Save' and 'Cancel' buttons.
  */
-function addNewCustomer() {
-    const table = document.getElementById('customerTable').getElementsByTagName('tbody')[0];
+function addNewOffice() {
+    const table = document.getElementById('officeTable').getElementsByTagName('tbody')[0];
     let newRow = table.insertRow();
 
     newRow.insertCell(0).innerText = 'New';
-    newRow.insertCell(1).innerHTML = `<input type="text" name="CustName" />`;
-    newRow.insertCell(2).innerHTML = `<input type="text" name="PhoneNumber" />`;
-    newRow.insertCell(3).innerHTML = `<input type="text" name="Address" />`;
+    newRow.insertCell(1).innerHTML = `<input type="text" name="OfficeName" />`;
+    newRow.insertCell(2).innerHTML = `<input type="text" name="OfficeAddress" />`;
  
     // Create a container for the buttons
     let buttonsContainer = document.createElement('div');
@@ -71,7 +68,7 @@ function addNewCustomer() {
     saveButton.classList.add('action-save');
     saveButton.textContent = 'Save';
     saveButton.addEventListener('click', function() {
-        saveNewCustomer(this); // Подаваме бутона като аргумент
+        saveNewOffice(this); // Подаваме бутона като аргумент
     });
     buttonsContainer.appendChild(saveButton);
 
@@ -79,59 +76,57 @@ function addNewCustomer() {
     cancelButton.classList.add('cancel-button');
     cancelButton.textContent = 'Cancel';
     cancelButton.addEventListener('click', function() {
-        cancelNewCustomer(this);
+        cancelNewOffice(this);
     });
     buttonsContainer.appendChild(cancelButton);
 
-    newRow.insertCell(4).appendChild(buttonsContainer);
+    newRow.insertCell(3).appendChild(buttonsContainer);
 }
 
 /**
- * Saves the new customer info into the base and reloads the page with the updated data.
+ * Saves the new office info into the base and reloads the page with the updated data.
  * @param {*} save the 'Save' button.
  */
-function saveNewCustomer(button) {
+function saveNewOffice(button) {
     //var row = button.parentNode.parentNode;
     var row = button.closest('tr'); 
     var nameInput = row.cells[1].querySelector('input').value;
-    var phoneInput = row.cells[2].querySelector('input').value;
-    var addressInput = row.cells[3].querySelector('input').value;
+    var addressInput = row.cells[2].querySelector('input').value;
 
-    fetch('/api/addCustomer', {
+    fetch('/api/addOffice', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            CustName: nameInput,
-            PhoneNumber: phoneInput,
-            Address: addressInput
+            OfficeName: nameInput,
+            OfficeAddress: addressInput
         }),
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Customer added successfully. Username: ' + data.newUsername);
+                alert('Office added successfully.');
                 row.remove();
-                fetchCustomers();
+                fetchOffices();
             } else {
-                alert('Error adding customer: ' + (data.message || ''));
+                alert('Error adding office: ' + (data.message || ''));
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error adding customer');
+            alert('Error adding office');
         });
 }
 
-function cancelNewCustomer(button) {
+function cancelNewOffice(button) {
 
     var row = button.closest('tr');
     row.remove(); 
 }
 
-function editCustomer(rowIndex) {
-    var table = document.getElementById('customerTable').getElementsByTagName('tbody')[0];
+function editOffice(rowIndex) {
+    var table = document.getElementById('officeTable').getElementsByTagName('tbody')[0];
     var row = table.rows[rowIndex];
     var editButton = row.querySelector('button');
 
@@ -152,105 +147,105 @@ function editCustomer(rowIndex) {
  * Toggles between edit mode and display mode for a given table row (<tr>).
  * @param {*} row The row that is being toggled
  * @param {*} isEditMode isEditMode ? edit mode : display mode
- * @param {*} name the name of the customer  
- * @param {*} number the customer number
- * @param {*} address the customer address
+ * @param {*} name the name of the office  
+ * @param {*} address the office address
  */
-function toggleEditMode(row, isEditMode, name = '', number = '', address = '') {
+function toggleEditMode(row, isEditMode, name = '', address = '') {
     if (isEditMode) {
-        row.cells[1].innerHTML = `<input type="text" name="CustName" value="${row.cells[1].innerText}" />`;
-        row.cells[2].innerHTML = `<input type="text" name="PhoneNumber" value="${row.cells[2].innerText}" />`;
-        row.cells[3].innerHTML = `<input type="text" name="Address" value="${row.cells[3].innerText}" />`;
+        row.cells[1].innerHTML = `<input type="text" name="OfficeName" value="${row.cells[1].innerText}" />`;
+        row.cells[2].innerHTML = `<input type="text" name="OfficeAddress" value="${row.cells[2].innerText}" />`;
     } else {
         row.cells[1].innerHTML = name;
-        row.cells[2].innerHTML = number;
-        row.cells[3].innerHTML = address;
+        row.cells[2].innerHTML = address;
     }
 }
 
+
 function cancelEdit(rowIndex) {
-    var table = document.getElementById('customerTable').getElementsByTagName('tbody')[0];
+    var table = document.getElementById('officeTable').getElementsByTagName('tbody')[0];
     var row = table.rows[rowIndex];
 
     // Revert changes and toggle back to display mode
-    toggleEditMode(row, false, row.cells[1].querySelector('input').defaultValue, row.cells[2].querySelector('input').defaultValue, row.cells[3].querySelector('input').defaultValue);
+    toggleEditMode(row, false, row.cells[1].querySelector('input').defaultValue, row.cells[2].querySelector('input').defaultValue);
     row.querySelector('button:nth-child(2)').remove(); // Remove the Cancel button
     row.querySelector('button').innerText = 'Edit'; // Reset the Edit button text
 }
+
+
 
 function handleSave(row, rowIndex) {
     var custId = row.cells[0].innerText;
     var nameInput = row.cells[1].querySelector('input');
-    var phoneInput = row.cells[2].querySelector('input');
-    var addressInput = row.cells[3].querySelector('input');
+    var addressInput = row.cells[2].querySelector('input');
 
 
-    toggleEditMode(row, false, nameInput.value, phoneInput.value, addressInput.value);
+    toggleEditMode(row, false, nameInput.value, addressInput.value);
     row.querySelector('button:nth-child(2)').remove(); // Remove the Cancel button
     row.querySelector('button').innerText = 'Edit'; // Reset the Edit button text
 
     // Send updated data to the server
-    saveCustomerData(custId, nameInput.value, phoneInput.value, addressInput.value); 
+    saveOfficeData(custId, nameInput.value, addressInput.value); 
 }
 
-function saveCustomerData(custId, name, number, address) {
-    fetch('/api/updateCustomer', { 
+
+
+function saveOfficeData(custId, name, address) {
+    fetch('/api/updateOffice', { 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ CustId: custId, CustName: name, PhoneNumber: number, Address: address }),
+        body: JSON.stringify({ OfficeId: custId, OfficeName: name, OfficeAddress: address }),
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Customer updated successfully');
+                alert('Office updated successfully');
             } else {
-                alert('Error updating customer');
+                alert('Error updating office');
             }
         })
         .catch(error => console.error('Error:', error));
 }
 
 
-
-function deleteCustomer(custId) {
-    fetch('/api/deleteCustomer', {
+function deleteOffice(officeId) {
+    fetch('/api/deleteOffice', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ custId: custId })
+        body: JSON.stringify({ officeId: officeId })
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Customer deleted successfully.');
-                fetchCustomers();
+                alert('Office deleted successfully.');
+                fetchOffices();
             } else {
-                alert('Error deleting customer: ' + data.message);
+                alert('Error deleting office: ' + data.message);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while deleting the customer.');
+            alert('An error occurred while deleting the office.');
         });
 }
 
 document.getElementById('sortButton').addEventListener('click', function () {
-    const selectedAttribute = document.getElementById('customerAttribute').value;
-    fetchSortedCustomers(selectedAttribute);
+    const selectedAttribute = document.getElementById('officeAttribute').value;
+    fetchSortedOffices(selectedAttribute);
 });
 
-function fetchSortedCustomers(sortingAttribute) {
-    // sortingAttribute is appended to the URL as a query parameter so that it can be acceseed in the sortedCustomers api
-    url = `/sortedCustomers?sortingAttribute=${sortingAttribute}`;
+function fetchSortedOffices(sortingAttribute) {
+    // sortingAttribute is appended to the URL as a query parameter so that it can be acceseed in the sortedOffices api
+    url = `/sortedOffices?sortingAttribute=${sortingAttribute}`;
     fetch(url)
         .then(response => response.json())
         .then(data => populateTable(data))
         .catch(error => console.error('Error fetching data:', error));
 }
 
-function exitCustomer() {
+function exitOffice() {
     window.location.href = "Moderator.html";
   }
