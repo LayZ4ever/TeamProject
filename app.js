@@ -285,7 +285,7 @@ app.get('/sortedEmployees', async (req, res) => {
 });
 
 // Helper function to generate a username for the employees
-function generateUsername(fullName) {
+function generateUsername(fullName) { 
     var nameParts = fullName.trim().split(/\s+/);
     if (nameParts.length < 3) {
         console.error('Name does not have three parts:', fullName);
@@ -406,6 +406,175 @@ app.delete('/api/deleteEmployee', async (req, res) => {
         console.error('Error in deleting employee:', error);
         await connection.rollback();
         res.status(500).send({ success: false, message: 'Internal Server Error' });
+    }
+});
+
+
+
+/* ------------------------------------------- Customer ------------------------------------------- */
+
+//Customer data
+app.get('/customers', async (req, res) => {
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        const sql = 'SELECT * FROM customer';
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching customers data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+// Helper function to generate a username for the customers
+function generateUsernameCust(fullName) { 
+    var nameParts = fullName.trim().split(/\s+/);
+    if (nameParts.length < 3) {
+        console.error('Name does not have three parts:', fullName);
+        return null;
+    }
+    var username = nameParts[0].charAt(0) + nameParts[1].charAt(0) + nameParts[2];
+    return username;
+}
+
+
+// Helper function to ensure username uniqueness for the customers
+async function getUniqueUsernameCust(connection, baseUsername, suffix = 0) {
+    let testUsername = suffix === 0 ? baseUsername : `${baseUsername}${suffix}`;
+    const [users] = await connection.query('SELECT Username FROM users WHERE Username = ?', [testUsername]);
+    if (users.length > 0) {
+        return await getUniqueUsernameCust(connection, baseUsername, suffix + 1);
+    }
+    return testUsername;
+}
+
+
+// Add a new customer
+app.post('/api/addCustomer', async (req, res) => {
+    let connection;
+    const { CustName, PhoneNumber, Address} = req.body;
+    const defaultPassword = 'LogComp'; // Default password, consider using a more secure approach
+
+    try {
+        connection = await pool.getConnection();
+
+        // Generate and check the uniqueness of the username
+        let username = generateUsernameCust(CustName);
+        if (!username) {
+            res.json({ success: false, message: 'Invalid customer name format' });
+            return;
+        }
+        username = await getUniqueUsernameCust(connection, username);
+
+        // Hash the default password
+        const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+
+        // Insert new user
+        const insertUserSql = 'INSERT INTO users (RoleId, Username, Password) VALUES (2, ?, ?)';
+        const [userResult] = await connection.query(insertUserSql, [username, hashedPassword]);
+        const newUserId = userResult.insertId;
+
+        // Insert new customer
+        const insertCustSql = 'INSERT INTO customer (CustName, PhoneNumber, Address,  UserId) VALUES (?, ?, ?, ?)';
+        await connection.query(insertCustSql, [CustName, PhoneNumber, Address, newUserId]);
+        connection.release();
+
+        res.json({ success: true, newUsername: username });
+    } catch (error) {
+        console.error('Error adding customer:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.post('/api/updateCustomer', async (req, res) => {
+    let connection;
+    const { CustId, CustName, PhoneNumber, Address } = req.body;
+
+    try {
+        connection = await pool.getConnection();
+        const updateSql = 'UPDATE customer SET CustName = ?, PhoneNumber = ?, Address = ? WHERE CustId = ?';
+        await connection.query(updateSql, [CustName, PhoneNumber, Address, CustId]);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error updating customer:', error);
+        res.json({ success: false });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+// API endpoint to delete an customer and their user account
+app.delete('/api/deleteCustomer', async (req, res) => {
+    const { custId } = req.body;
+
+    if (!custId) {
+        return res.status(400).send({ success: false, message: 'Customer ID is required.' });
+    }
+    let connection;
+    try {
+        connection = await mysql.createConnection(dbConfig);
+        await connection.beginTransaction();
+
+        // Get the UserId associated with the customer
+        const [user] = await connection.execute('SELECT UserId FROM customer WHERE CustId = ?', [custId]);
+        if (user.length === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'Customer not found.' });
+        }
+        const userId = user[0].UserId;
+
+        // Delete the customer
+        const [deleteCust] = await connection.execute('DELETE FROM customer WHERE CustId = ?', [custId]);
+        if (deleteCust.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'Customer not found.' });
+        }
+
+        // Delete the user
+        const [deleteUser] = await connection.execute('DELETE FROM users WHERE UserId = ?', [userId]);
+        if (deleteUser.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'User not found.' });
+        }
+
+        await connection.commit();
+        res.send({ success: true, message: 'Customer and user deleted successfully.' });
+        await connection.end();
+    } catch (error) {
+        console.error('Error in deleting customer:', error);
+        await connection.rollback();
+        res.status(500).send({ success: false, message: 'Internal Server Error' });
+    }
+});
+
+
+app.get('/sortedCustomers', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const sortingAttribute = req.query.sortingAttribute || 'CustId';
+        const sql = `SELECT * FROM customer ORDER BY ${sortingAttribute}`;
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching customers data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
     }
 });
 
