@@ -1,20 +1,20 @@
-document.getElementById('logoutButton').addEventListener('click', function () {
-    fetch('/api/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/login.html'; // Redirect to login page after logout
-            } else {
-                alert('Logout failed. Please try again.');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-});
+// document.getElementById('logoutButton').addEventListener('click', function () {
+//     fetch('/api/logout', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.success) {
+//                 window.location.href = '/login.html'; // Redirect to login page after logout
+//             } else {
+//                 alert('Logout failed. Please try again.');
+//             }
+//         })
+//         .catch(error => console.error('Error:', error));
+// });
 
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
@@ -208,6 +208,7 @@ async function handleParcelFormSubmission(event) {
     const senderFormData = new FormData(document.getElementById('SenderForm'));
     const receiverFormData = new FormData(document.getElementById('ReceiverForm'));
     const deliveryFormData = new FormData(document.getElementById('DeliveryForm'));
+    const statusFormData = new FormData(document.getElementById('StatusForm'));
 
     const isOfficeDelivery = deliveryFormData.get('deliveryMethod') === 'office';
     const isCustomerAddress = deliveryFormData.get('deliveryMethod') === 'savedAddress';
@@ -226,6 +227,17 @@ async function handleParcelFormSubmission(event) {
     const receiverData = await receiverResponse.json();
     const receiverId = receiverData.customerId;
 
+    const weight = deliveryFormData.get('weight');
+    const price = deliveryFormData.get('price');
+    const dispachDate = deliveryFormData.get('dispachDate');
+    console.log("dispachDate:"+dispachDate);
+    const receiptDate = deliveryFormData.get('receiptDate');
+    console.log("receiptDate:"+receiptDate);
+    const statusId = statusFormData.get('status');
+    const changeStatusDate = statusFormData.get('changeStatusDate');
+    const empId = deliveryFormData.get('employee');
+    const paidOn = statusFormData.get('payDate');
+
 
     const parcelData = {
         SenderId: senderId,
@@ -233,8 +245,15 @@ async function handleParcelFormSubmission(event) {
         officeOrAddress: deliveryType,
         senderAddress: `${senderFormData.get('city')}, ${senderFormData.get('address')}`,
         receiverAddress: isCustomerAddress ? `${receiverFormData.get('city')} ${receiverFormData.get('address')}` : (isOfficeDelivery ? deliveryFormData.get('office') : `${deliveryFormData.get('addressCity')} ${deliveryFormData.get('deliveryAddress')}`),
-        Weight: deliveryFormData.get('weight'),
-        Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryType).toFixed(2),
+        Weight: weight,
+        // Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryType).toFixed(2),
+        Price: (parseFloat(deliveryFormData.get('weight')) * price + deliveryType).toFixed(2),
+        DispachDate: dispachDate ? dispachDate : null,
+        ReceiptDate: receiptDate ? receiptDate : null,
+        StatusId: statusId ? statusId : 1,
+        StatusDate: changeStatusDate ? changeStatusDate : new Date().toISOString().split("T")[0],
+        EmpId: empId,
+        PaidOn: paidOn ? paidOn : null,
     };
 
     fetch('/api/insertData', {
@@ -253,6 +272,7 @@ async function handleParcelFormSubmission(event) {
             // Handle errors here
         });
 }
+
 
 // Event listener for form submission
 document.getElementById('DeliveryForm').addEventListener('submit', handleParcelFormSubmission);
