@@ -108,14 +108,11 @@ DROP TABLE IF EXISTS `offices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `offices` (
-  `Firm_FirmId` int NOT NULL,
   `OfficeId` int NOT NULL AUTO_INCREMENT,
   `OfficeName` varchar(255) NOT NULL,
   `OfficeAddress` varchar(255) NOT NULL,
-  PRIMARY KEY (`OfficeId`),
-  KEY `fk_offices_Firm1_idx` (`Firm_FirmId`),
-  CONSTRAINT `fk_offices_Firm1` FOREIGN KEY (`Firm_FirmId`) REFERENCES `firm` (`FirmId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`OfficeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,8 +142,8 @@ CREATE TABLE parcels (
   ReceiverAddress varchar(255) NOT NULL,
   Weight double NOT NULL,
   Price double NOT NULL,
-  DispachDate date DEFAULT NULL,
-  ReceiptDate date DEFAULT NULL,
+  DispachDate date DEFAULT NOT NULL,
+  ReceiptDate date DEFAULT NOT NULL,
   StatusId int NOT NULL DEFAULT '1',
   StatusDate date DEFAULT NULL,
   EmpId int DEFAULT NULL,
