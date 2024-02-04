@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+</head>
+
+<body>
+    <div class="container">
+        <button type="button" id="openBtn"> Add New Parcel</button>
+    </div>
+    <div><select id="parcelsAttribute" name="parcelsAttribute" >
+        <option value="ParcelsId">Parcel id</option>
+        <option value="SenderId">Sender name</option>
+        <option value="ReceiverId">Receiver name</option>
+        <option value="OfficeOrAddress">Delivery To</option>
+        <option value="SenderAddress">Sender Address</option>
+        <option value="ReceiverAddress">Receiver Address</option>
+        <option value="Weight">Weight</option>
+        <option value="Price">Price</option>
+        <option value="DispachDate">Dispach Date</option>
+        <option value="ReceiptDate">Receipt Date</option>
+        <option value="StatusId">Status</option>
+        <option value="StatusDate">Status Change</option>
+        <option value="EmpId">Employee</option>
+        <option value="PaymentStatus">Payment status</option>
+    </select></div>
+    <button id="sortButton" type="button" >Sort</button>
+    <div>
+        <table class="table" id="parcels">
+            <thead>
+                <tr">
+                    <th>Parcel Id</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Delivery To</th>
+                    <th>Sender Address</th>
+                    <th>Receiver Address</th>
+                    <th>Weight</th>
+                    <th>Price</th>
+                    <th>Dispach Date</th>
+                    <th>Receipt Date</th>
+                    <th>Status</th>
+                    <th>Status Change</th>
+                    <th>Employee</th>
+                    <th>Payment status</th>
+                    <th>Action</th>
+                    </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script src="ParcelList.js"></script>
+</body>
+
+</html>
