@@ -38,31 +38,31 @@ function populateTable(employees) {
         row.insertCell(0).innerHTML = employee.EmpId;
         row.insertCell(1).innerHTML = employee.EmpName;
         row.insertCell(2).innerHTML = employee.EmpType;
-    
+
         // Добавяне на класове за четни и нечетни редове
         row.classList.add(index % 2 === 0 ? 'table-row-even' : 'table-row-odd');
-    
+
         // Create a container for the buttons
         let buttonsContainer = document.createElement('div');
         buttonsContainer.classList.add('button-container'); // Добавяне на нов клас за контейнера
-    
+
         let editButton = document.createElement('button');
         editButton.classList.add('action-save'); // Добавяне на нов клас за бутона "Edit"
-        editButton.textContent = 'Edit'; 
-        editButton.addEventListener('click', function() {
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', function () {
             editEmployee(index);
         });
         buttonsContainer.appendChild(editButton);
-    
+
         let deleteButton = document.createElement('button');
         deleteButton.classList.add('action-delete'); // Същият клас като за "Edit"
         deleteButton.classList.add('cancel-button'); // Добавяне на нов клас за бутона "Cancel"
-        deleteButton.textContent = 'Delete'; 
-        deleteButton.addEventListener('click', function() {
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function () {
             deleteEmployee(employee.EmpId);
         });
         buttonsContainer.appendChild(deleteButton);
-    
+
         row.insertCell(3).appendChild(buttonsContainer);
     });
 }
@@ -77,7 +77,7 @@ function addNewEmployee() {
     newRow.insertCell(0).innerText = 'New';
     newRow.insertCell(1).innerHTML = `<input type="text" name="EmpName" />`;
     newRow.insertCell(2).innerHTML = createEmpTypeDropdown('');
- //   newRow.insertCell(3).innerHTML = `<button onclick="saveNewEmployee(this)">Save</button><button onclick="cancelNewEmployee(this)">Cancel</button>`;
+    //   newRow.insertCell(3).innerHTML = `<button onclick="saveNewEmployee(this)">Save</button><button onclick="cancelNewEmployee(this)">Cancel</button>`;
 
     // Create a container for the buttons
     let buttonsContainer = document.createElement('div');
@@ -86,7 +86,7 @@ function addNewEmployee() {
     let saveButton = document.createElement('button');
     saveButton.classList.add('action-save');
     saveButton.textContent = 'Save';
-    saveButton.addEventListener('click', function() {
+    saveButton.addEventListener('click', function () {
         saveNewEmployee(this); // Подаваме бутона като аргумент
     });
     buttonsContainer.appendChild(saveButton);
@@ -94,17 +94,20 @@ function addNewEmployee() {
     let cancelButton = document.createElement('button');
     cancelButton.classList.add('cancel-button');
     cancelButton.textContent = 'Cancel';
-    cancelButton.addEventListener('click', function() {
+    cancelButton.addEventListener('click', function () {
         cancelNewEmployee(this);
     });
     buttonsContainer.appendChild(cancelButton);
 
     newRow.insertCell(3).appendChild(buttonsContainer);
 }
-
+/**
+ * Removes a row after pressing the cancel button.
+ * @param {*} button the (cancel) button used to reach the row for removal.
+ */
 function cancelNewEmployee(button) {
 
-    var row = button.closest('tr'); //търсим най-близкия родителски ред (tr) 
+    var row = button.closest('tr'); // returns the closest parent row of the button (tr) 
     row.remove(); // Remove the new row
 }
 /**
@@ -113,7 +116,7 @@ function cancelNewEmployee(button) {
  */
 function saveNewEmployee(button) {
     //var row = button.parentNode.parentNode;
-    var row = button.closest('tr'); 
+    var row = button.closest('tr');
     var nameInput = row.cells[1].querySelector('input').value;
     var typeSelect = row.cells[2].querySelector('select').value;
 
@@ -152,7 +155,7 @@ function editEmployee(rowIndex) {
         // Switch to edit mode
         toggleEditMode(row, true);
         editButton.innerText = 'Save';
-        
+
         // Добавяне на бутона "Cancel" в същата колона със стил
         editButton.insertAdjacentHTML('afterend', `<button class="cancel-button" onclick="cancelEdit(${rowIndex})">Cancel</button>`);
     } else {
@@ -276,4 +279,4 @@ document.getElementById('sortButton').addEventListener('click', function () {
 
 function exitEmployee() {
     window.location.href = "Moderator.html";
-  }
+}

@@ -609,7 +609,7 @@ app.post('/api/addOffice', async (req, res) => {
         connection = await pool.getConnection();
 
         // Insert new office
-        const insertOfficeSql = 'INSERT INTO offices (OfficeName, OfficeAddress) VALUES (?, ?)';
+        const insertOfficeSql = 'INSERT INTO offices (Firm_FirmId, OfficeName, OfficeAddress) VALUES (1, ?, ?)';
         await connection.query(insertOfficeSql, [OfficeName, OfficeAddress]);
         connection.release();
 
