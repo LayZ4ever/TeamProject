@@ -108,13 +108,11 @@ DROP TABLE IF EXISTS `offices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `offices` (
-  `Firm_FirmId` int NOT NULL,
   `OfficeId` int NOT NULL AUTO_INCREMENT,
   `OfficeName` varchar(255) NOT NULL,
-  PRIMARY KEY (`OfficeId`),
-  KEY `fk_offices_Firm1_idx` (`Firm_FirmId`),
-  CONSTRAINT `fk_offices_Firm1` FOREIGN KEY (`Firm_FirmId`) REFERENCES `firm` (`FirmId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `OfficeAddress` varchar(255) NOT NULL,
+  PRIMARY KEY (`OfficeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,28 +131,34 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `parcels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `parcels` (
-  `ParcelsId` int NOT NULL AUTO_INCREMENT,
-  `SenderId` int NOT NULL,
-  `ReceiverId` int NOT NULL,
-  `OfficeOrAddress` int NOT NULL,
-  `SenderAddress` varchar(255) NOT NULL,
-  `ReceiverAddress` varchar(255) NOT NULL,
-  `Weight` double NOT NULL,
-  `Price` double NOT NULL,
-  `StatusId` int DEFAULT NULL,
-  `EmpId` int DEFAULT NULL,
-  PRIMARY KEY (`ParcelsId`),
-  KEY `fk_packages_clients1_idx` (`SenderId`),
-  KEY `fk_packages_clients2_idx` (`ReceiverId`),
-  KEY `fk_packages_statuses1_idx` (`StatusId`),
-  KEY `fk_packages_employees1_idx` (`EmpId`),
-  CONSTRAINT `fk_packages_clients1` FOREIGN KEY (`SenderId`) REFERENCES `customer` (`CustId`),
-  CONSTRAINT `fk_packages_clients2` FOREIGN KEY (`ReceiverId`) REFERENCES `customer` (`CustId`),
-  CONSTRAINT `fk_packages_employees1` FOREIGN KEY (`EmpId`) REFERENCES `employees` (`EmpId`),
-  CONSTRAINT `fk_packages_statuses1` FOREIGN KEY (`StatusId`) REFERENCES `statuses` (`StatusId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
+CREATE TABLE parcels (
+  ParcelsId int NOT NULL AUTO_INCREMENT,
+  SenderId int NOT NULL,
+  ReceiverId int NOT NULL,
+  OfficeOrAddress int NOT NULL,
+  SenderAddress varchar(255) NOT NULL,
+  ReceiverAddress varchar(255) NOT NULL,
+  Weight double NOT NULL,
+  Price double NOT NULL,
+  DispachDate date DEFAULT NOT NULL,
+  ReceiptDate date DEFAULT NOT NULL,
+  StatusId int NOT NULL DEFAULT '1',
+  StatusDate date DEFAULT NULL,
+  EmpId int DEFAULT NULL,
+  PaidOn date DEFAULT NULL,
+  PRIMARY KEY (ParcelsId),
+  KEY fk_packages_clients1_idx (SenderId),
+  KEY fk_packages_clients2_idx (ReceiverId),
+  KEY fk_packages_statuses1_idx (StatusId),
+  KEY fk_packages_employees1_idx (EmpId),
+  CONSTRAINT fk_packages_clients1 FOREIGN KEY (SenderId) REFERENCES customer (CustId),
+  CONSTRAINT fk_packages_clients2 FOREIGN KEY (ReceiverId) REFERENCES customer (CustId),
+  CONSTRAINT fk_packages_employees1 FOREIGN KEY (EmpId) REFERENCES employees (EmpId)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb3
 /*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Dumping data for table `parcels`
