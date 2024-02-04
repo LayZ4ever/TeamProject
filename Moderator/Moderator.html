@@ -15,24 +15,33 @@
     <link rel="stylesheet" href="assets/css/responsive-navbar.css">
 
     <!-- this link is needed so that if there is no session, the pages with content don't load -->
-    <script src = "logoutRedirectionStuff.js"></script>
+    <script src="logoutRedirectionStuff.js"></script>
 </head>
 
-<body>
+<body style="--bs-body-bg: #eeeeee;--bs-body-color: var(--bs-info-text-emphasis);">
     <header>
         <div class="container">
-            <nav class="navbar navbar-expand-md navbar-light" style="margin: 0;--bs-body-bg: var(--bs-primary-bg-subtle);color: var(--bs-warning-bg-subtle);background: var(--bs-teal);">
+            <nav class="navbar navbar-expand-md navbar-light"
+                style="margin: 0;--bs-body-bg: var(--bs-primary-bg-subtle);color: var(--bs-warning-bg-subtle);background: linear-gradient(black, var(--bs-teal) 17%, rgb(125,125,125) 96%, white), var(--bs-teal);font-size: 20px;">
                 <div class="container-fluid">
-                    <div><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div><img class="img-fluid" src="assets/img/bank.png" width="74" height="74">
+                    <div><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span
+                                class="visually-hidden">Toggle navigation</span><span
+                                class="navbar-toggler-icon"></span></button></div><img class="img-fluid"
+                        src="assets/img/bank.png" width="74" height="74">
                     <div class="collapse navbar-collapse" id="navcol-1">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link active" href="#" style="border-color: var(--bs-pink);background: var(--bs-warning-border-subtle);">Parcels</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="ParcelList.html"
+                                    style="border-color: var(--bs-pink);background: var(--bs-warning-border-subtle);">Parcels</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="../parcel.html">Payments</a></li>
+                            
                             <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
-                            <li class="nav-item"><a class="nav-link" href="companyInfo.html">Company</a></li>
-                            <li class="nav-item"><a class="nav-link" href="EmployeesList.html">Employee</a></li>
-                            <li class="nav-item"><a class="nav-link" href="CustomersList.html">Customers</a></li>
-                            <li class="nav-item"><a class="nav-link" href="OfficesList.html">Offices</a></li>
+                            <li class="nav-item dropdown show"><a class="dropdown-toggle nav-link" aria-expanded="true" data-bs-toggle="dropdown" href="#">Catalogues</a>
+                                <div class="dropdown-menu " data-bs-popper="none" style="background: linear-gradient(black 0%, var(--bs-teal) 14%, white 100%), var(--bs-teal);color: var(--bs-dropdown-color);--bs-body-bg: var(--bs-info-text-emphasis);"><a class="dropdown-item" href="companyInfo.html">Company</a><a class="dropdown-item" href="officesList.html">Offices</a><a class="dropdown-item" href="EmployeesList.html">Employee</a><a class="dropdown-item" href="CustomersList.html">Customers</a></div>
+                            </li>
+                            <li class="nav-item"></li>
+                            <li class="nav-item"></li>
+                            <li class="nav-item"></li>
                         </ul><a class="btn btn-light ms-auto action-button" role="button" href="login.html">Log Out</a>
                     </div>
                 </div>
