@@ -103,7 +103,7 @@ app.post('/api/login', async (req, res) => {
             if (comparison) {
                 req.session.userId = users[0].UserId;
                 req.session.roleId = users[0].RoleId;
-                res.json({ success: true, message: 'Login successful', roleId: req.session.roleId});
+                res.json({ success: true, message: 'Login successful', roleId: req.session.roleId });
             } else {
                 res.json({ success: false, message: 'Wrong username or password' });
             }
@@ -138,12 +138,14 @@ app.post('/api/logout', (req, res) => {
 
 app.get('/api/checkSession', (req, res) => {
     if (req.session.userId) {
-        res.json({ loggedIn: true, roleId: req.session.roleId });
+        res.json({ loggedIn: true, roleId: req.session.roleId, userId: req.session.userId });
     } else {
         res.json({ loggedIn: false });
     }
 });
 /* ------------------------------------------------------------------------------------------------- */
+
+
 
 app.get('/api/search-customer', async (req, res) => {
     let connection;
@@ -288,6 +290,36 @@ app.get('/sortedParcels', async (req, res) => {
 
 /* ------------------------------------------- Employees ------------------------------------------- */
 
+
+//Function that gets userId from session
+function getUserIdFromSession() {
+    fetch('/api/checkSession')
+    .then(response => response.json())
+    .then(data => {
+        if (data.loggedIn) {
+            userID = data.userId;
+            // console.log(userID);
+            return userID; 
+        }
+    })
+    .catch(error => console.error('Error:', error));
+};
+//Function that gets empId from userId
+async function getEmpIdFromUserID(userId) {
+    let connection = await pool.getConnection();
+    const sql = 'SELECT * FROM employees WHERE UserId=?;';
+    const [employee] = await connection.query(sql, [userId]);
+    connection.release();
+    if (employee.length > 0) {
+        let empId = employee[0].EmpId;
+        return empId;
+    }
+}
+
+function getEmpIdFromSession() { 
+    return getEmpIdFromUserID(getUserIdFromSession());
+}
+
 //Employees data
 app.get('/employees', async (req, res) => {
     let connection;
@@ -326,7 +358,7 @@ app.get('/sortedEmployees', async (req, res) => {
 });
 
 // Helper function to generate a username for the employees
-function generateUsername(fullName) { 
+function generateUsername(fullName) {
     var nameParts = fullName.trim().split(/\s+/);
     if (nameParts.length < 3) {
         console.error('Name does not have three parts:', fullName);
@@ -474,7 +506,7 @@ app.get('/customers', async (req, res) => {
 });
 
 // Helper function to check if the customer has 2 names
-function checkName(fullName) { 
+function checkName(fullName) {
     var nameParts = fullName.trim().split(/\s+/);
     if (nameParts.length != 2) {
         console.error('Name does not have two parts:', fullName);
@@ -486,7 +518,7 @@ function checkName(fullName) {
 // Add a new customer
 app.post('/api/addCustomer', async (req, res) => {
     let connection;
-    const { CustName, PhoneNumber, Address} = req.body;
+    const { CustName, PhoneNumber, Address } = req.body;
 
     try {
         connection = await pool.getConnection();
@@ -503,7 +535,7 @@ app.post('/api/addCustomer', async (req, res) => {
         await connection.query(insertCustSql, [CustName, PhoneNumber, Address]);
         connection.release();
 
-        res.json({ success: true});
+        res.json({ success: true });
     } catch (error) {
         console.error('Error adding customer:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -617,7 +649,7 @@ app.get('/offices', async (req, res) => {
 // Add a new office
 app.post('/api/addOffice', async (req, res) => {
     let connection;
-    const { OfficeName, OfficeAddress} = req.body;
+    const { OfficeName, OfficeAddress } = req.body;
 
     try {
         connection = await pool.getConnection();
@@ -627,7 +659,7 @@ app.post('/api/addOffice', async (req, res) => {
         await connection.query(insertOfficeSql, [OfficeName, OfficeAddress]);
         connection.release();
 
-        res.json({success: true});
+        res.json({ success: true });
     } catch (error) {
         console.error('Error adding office:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });

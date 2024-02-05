@@ -15,6 +15,9 @@
 //         })
 //         .catch(error => console.error('Error:', error));
 // });
+import { getEmpIdFromSession } from '../app.js';
+
+
 
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
@@ -230,9 +233,9 @@ async function handleParcelFormSubmission(event) {
     const weight = deliveryFormData.get('weight');
     const price = deliveryFormData.get('price');
     const dispachDate = deliveryFormData.get('dispachDate');
-    console.log("dispachDate:"+dispachDate);
+    console.log("dispachDate:" + dispachDate);
     const receiptDate = deliveryFormData.get('receiptDate');
-    console.log("receiptDate:"+receiptDate);
+    console.log("receiptDate:" + receiptDate);
     const statusId = statusFormData.get('status');
     const changeStatusDate = statusFormData.get('changeStatusDate');
     const empId = deliveryFormData.get('employee');
@@ -305,3 +308,4 @@ function requiredONLYForClass(elementClass, ...otherClasses) {
         }
     }
 }
+

@@ -109,8 +109,9 @@
                     </div>
                     <span style="margin-top: 10px;"> Deliver to office </span><input type="radio"
                         id="deliveryMethodOffice" name="deliveryMethod" value="office" style="margin-left: 10px;"
-                        required
-                        onclick="showSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');">
+                        required 
+                        onclick="showSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');getEmpIdFromSession();">
+                        <!-- TODO here i use getEmpIdFromSession to debug -->
                     <span style="margin-left: 150px;"> Deliver to address </span><input type="radio"
                         id="deliveryMethodAddress" name="deliveryMethod" value="address" style="margin-left: 10px;"
                         required
@@ -193,6 +194,9 @@
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="parcel.js"></script>
+
+    
+
 </body>
 
 </html>
