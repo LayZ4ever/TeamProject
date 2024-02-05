@@ -5,35 +5,67 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>&lt;h2&gt;Offices&lt;/h2&gt;</title>
- 
-    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/EmployeesList.css">
+
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/EmployeesList.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/Icon-Button.css">
+    <link rel="stylesheet" href="css/Icon-Button.css">
+
+    <!-- this link is needed so that if there is no session, the pages with content don't load -->
+    <script src="logoutRedirectionStuff.js"></script>
 </head>
 
 <body>
     <h1 style="--bs-body-bg: var(--bs-success-border-subtle);height: 65px;">Offices</h1>
+    <!-- change here -->
+    <nav class="navbar navbar-expand-md navbar-transparency navbar-light"
+        style="/*display: flex;*//*justify-content: center;*/"></nav>
+
     <div class="container">
         <div class="row">
-            <div class="col-md-4 col-lg-3 d-lg-flex justify-content-center align-items-center align-content-center justify-content-lg-start" style="width: 25%;"><button class="btn btn-primary d-lg-flex justify-content-start align-items-start align-content-start align-items-lg-center pull-right" type="button" onclick="addNewOffice()" style="background: var(--bs-teal);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none">
+            <div class="col-md-4 col-lg-3 d-lg-flex justify-content-center align-items-center align-content-center justify-content-lg-start"
+                style="width: 25%;"><button
+                    class="btn btn-primary d-lg-flex justify-content-start align-items-start align-content-start align-items-lg-center pull-right"
+                    type="button" onclick="addNewOffice()" style="background: var(--bs-teal);"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none">
 
-                        <path d="M13 6C13 7.65685 11.6569 9 10 9C8.34315 9 7 7.65685 7 6C7 4.34315 8.34315 3 10 3C11.6569 3 13 4.34315 13 6Z" fill="currentColor"></path>
-                        <path d="M18 8C18 9.10457 17.1046 10 16 10C14.8954 10 14 9.10457 14 8C14 6.89543 14.8954 6 16 6C17.1046 6 18 6.89543 18 8Z" fill="currentColor"></path>
-                        <path d="M14 15C14 12.7909 12.2091 11 10 11C7.79086 11 6 12.7909 6 15V18H14V15Z" fill="currentColor"></path>
-                        <path d="M6 8C6 9.10457 5.10457 10 4 10C2.89543 10 2 9.10457 2 8C2 6.89543 2.89543 6 4 6C5.10457 6 6 6.89543 6 8Z" fill="currentColor"></path>
-                        <path d="M16 18V15C16 13.9459 15.7282 12.9552 15.2507 12.0943C15.4902 12.0327 15.7413 12 16 12C17.6569 12 19 13.3431 19 15V18H16Z" fill="currentColor"></path>
-                        <path d="M4.74926 12.0943C4.27185 12.9552 4 13.9459 4 15V18H1V15C1 13.3431 2.34315 12 4 12C4.25871 12 4.50977 12.0327 4.74926 12.0943Z" fill="currentColor"></path>
+                        <path
+                            d="M13 6C13 7.65685 11.6569 9 10 9C8.34315 9 7 7.65685 7 6C7 4.34315 8.34315 3 10 3C11.6569 3 13 4.34315 13 6Z"
+                            fill="currentColor"></path>
+                        <path
+                            d="M18 8C18 9.10457 17.1046 10 16 10C14.8954 10 14 9.10457 14 8C14 6.89543 14.8954 6 16 6C17.1046 6 18 6.89543 18 8Z"
+                            fill="currentColor"></path>
+                        <path d="M14 15C14 12.7909 12.2091 11 10 11C7.79086 11 6 12.7909 6 15V18H14V15Z"
+                            fill="currentColor"></path>
+                        <path
+                            d="M6 8C6 9.10457 5.10457 10 4 10C2.89543 10 2 9.10457 2 8C2 6.89543 2.89543 6 4 6C5.10457 6 6 6.89543 6 8Z"
+                            fill="currentColor"></path>
+                        <path
+                            d="M16 18V15C16 13.9459 15.7282 12.9552 15.2507 12.0943C15.4902 12.0327 15.7413 12 16 12C17.6569 12 19 13.3431 19 15V18H16Z"
+                            fill="currentColor"></path>
+                        <path
+                            d="M4.74926 12.0943C4.27185 12.9552 4 13.9459 4 15V18H1V15C1 13.3431 2.34315 12 4 12C4.25871 12 4.50977 12.0327 4.74926 12.0943Z"
+                            fill="currentColor"></path>
                     </svg>&nbsp;Add New Office</button></div>
-            <div class="col-md-4 d-lg-flex justify-content-lg-end" style="width: 25%;"><select class="border rounded-0 border-1" id="officeAttribute" name="officeAttribute" style="background: var(--bs-success-bg-subtle);width: 180px;height: 30px;color: var(--bs-info-text-emphasis);margin-top: 3px;">
+            <div class="col-md-4 d-lg-flex justify-content-lg-end" style="width: 25%;"><select
+                    class="border rounded-0 border-1" id="officeAttribute" name="officeAttribute"
+                    style="background: var(--bs-success-bg-subtle);width: 180px;height: 30px;color: var(--bs-info-text-emphasis);margin-top: 3px;">
                     <option value="OfficeId">Office id</option>
                     <option value="OfficeName">Office name</option>
                     <option value="OfficeAddress">Office address</option>
                 </select></div>
-            <div class="col d-lg-flex justify-content-lg-start" style="width: 20%;"><button class="btn btn-primary pull-right" id="sortButton" type="button" style="background: var(--bs-teal);border-top-left-radius: 10;width: 120px;"><i class="fa fa-sort-amount-desc"></i>&nbsp;Sort</button></div>
-            <div class="col-md-4 d-lg-flex justify-content-lg-end" style="width: 20%;"><button class="btn btn-primary pull-right" id="logoutButton" type="button" onclick="exitOffice()" style="background: var(--bs-teal);width: 120px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-door-open-fill">
-                        <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"></path>
+            <div class="col d-lg-flex justify-content-lg-start" style="width: 20%;"><button
+                    class="btn btn-primary pull-right" id="sortButton" type="button"
+                    style="background: var(--bs-teal);border-top-left-radius: 10;width: 120px;"><i
+                        class="fa fa-sort-amount-desc"></i>&nbsp;Sort</button></div>
+            <div class="col-md-4 d-lg-flex justify-content-lg-end" style="width: 20%;"><button
+                    class="btn btn-primary pull-right" id="logoutButton" type="button" onclick="exitOffice()"
+                    style="background: var(--bs-teal);width: 120px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                        height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-door-open-fill">
+                        <path
+                            d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1">
+                        </path>
                     </svg>&nbsp;Exit</button></div>
         </div>
     </div>
@@ -41,16 +73,20 @@
         <table class="table" id="offices">
             <thead style="background:var(--bs-success-border-subtle);">
                 <tr style="background:var(--bs-success-border-subtle);">
-                    <th class="text-center border-3 border-success-subtle border rounded" style="width:10%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Id</th>
-                    <th class="text-center border-3 border-success-subtle border rounded" style="width:30%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Name</th>
-                    <th class="text-center border-3 border-success-subtle border rounded" style="width:30%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Address</th>
-                    <th class="text-center border-3 border-success-subtle border rounded" style="width:30%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Action</th>
+                    <th class="text-center border-3 border-success-subtle border rounded"
+                        style="width:10%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Id</th>
+                    <th class="text-center border-3 border-success-subtle border rounded"
+                        style="width:30%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Name</th>
+                    <th class="text-center border-3 border-success-subtle border rounded"
+                        style="width:30%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Address</th>
+                    <th class="text-center border-3 border-success-subtle border rounded"
+                        style="width:30%;background:var(--bs-teal);color:var(--bs-danger-text-emphasis);">Action</th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
     </div>
-        <script src="OfficesList.js"></script>
+    <script src="OfficesList.js"></script>
 </body>
 
 </html>
