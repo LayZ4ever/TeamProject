@@ -249,6 +249,43 @@ app.get('/api/getCustomerId', async (req, res) => {
     }
 });
 
+app.get('/parcels', async (req, res) => {
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        const sql = 'SELECT p.*, s.CustName AS SenderName, r.CustName AS ReceiverName, t.EmpName AS EmployeeName, q.StatusName AS StatusName FROM parcels p JOIN customer s ON p.SenderId = s.CustId JOIN customer r ON p.ReceiverId = r.CustId JOIN employees t ON p.EmpId = t.EmpId JOIN statuses q ON p.StatusId = q.StatusId';
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching employees data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.get('/sortedParcels', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const sortingAttribute = req.query.sortingAttribute || 'ParcelsId';
+        const sql = `SELECT p.*, s.CustName AS SenderName, r.CustName AS ReceiverName, t.EmpName AS EmployeeName, q.StatusName AS StatusName FROM parcels p JOIN customer s ON p.SenderId = s.CustId JOIN customer r ON p.ReceiverId = r.CustId JOIN employees t ON p.EmpId = t.EmpId JOIN statuses q ON p.StatusId = q.StatusId ORDER BY ${sortingAttribute}`;
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching parcels data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+
 /* ------------------------------------------- Employees ------------------------------------------- */
 
 //Employees data
@@ -613,7 +650,7 @@ app.post('/api/addOffice', async (req, res) => {
         connection = await pool.getConnection();
 
         // Insert new office
-        const insertOfficeSql = 'INSERT INTO offices (OfficeName, OfficeAddress) VALUES (?, ?)';
+        const insertOfficeSql = 'INSERT INTO offices (Firm_FirmId, OfficeName, OfficeAddress) VALUES (1, ?, ?)';
         await connection.query(insertOfficeSql, [OfficeName, OfficeAddress]);
         connection.release();
 
@@ -705,7 +742,7 @@ app.get('/firm', async (req, res) => {
             res.json(row); // Send the first result
         } else {
             res.status(404).json({ message: 'No firm found' });
-            
+
         }
     } catch (error) {
         console.error('Error:', error);
