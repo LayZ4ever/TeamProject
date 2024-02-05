@@ -199,6 +199,7 @@ app.post('/api/create-or-update-customer', async (req, res) => {
     }
 });
 
+//this inserts into the DB
 app.post('/api/insertData', async (req, res) => {
     let connection;
 
@@ -218,6 +219,9 @@ app.post('/api/insertData', async (req, res) => {
         }
     }
 });
+
+
+
 
 app.get('/api/getCustomerId', async (req, res) => {
     let connection;
