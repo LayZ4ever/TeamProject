@@ -316,7 +316,7 @@ async function getEmpIdFromUserID(userId) {
     }
 }
 
-function getEmpIdFromSession() { 
+export function getEmpIdFromSession() { 
     return getEmpIdFromUserID(getUserIdFromSession());
 }
 
