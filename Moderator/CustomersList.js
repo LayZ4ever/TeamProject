@@ -111,7 +111,7 @@ function saveNewCustomer(button) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Customer added successfully. Username: ' + data.newUsername);
+                alert('Customer added successfully.');
                 row.remove();
                 fetchCustomers();
             } else {
