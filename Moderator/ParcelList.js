@@ -68,7 +68,7 @@ function populateTable(parcels) {
         parcelDiv.classList.add("parcel-info");
         parcelDiv.appendChild(createParagraph("Weight: " + parcel.Weight));
         parcelDiv.appendChild(createParagraph("Price: " + parcel.Price));
-        parcelDiv.appendChild(createParagraph("Payment: " + parcel.PaymentStatus)); 
+        parcelDiv.appendChild(createParagraph("Payment: " + parcel.PaidOn)); 
         parcelDiv.appendChild(createParagraph("Send to: " + (parcel.OfficeOrAddress ? "Office" : "Address")));
         
         containerDiv.appendChild(parcelDiv);   

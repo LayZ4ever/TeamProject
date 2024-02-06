@@ -255,7 +255,23 @@ app.get('/parcels', async (req, res) => {
 
     try {
         connection = await pool.getConnection();
-        const sql = 'SELECT p.*, s.CustName AS SenderName, r.CustName AS ReceiverName, t.EmpName AS EmployeeName, q.StatusName AS StatusName FROM parcels p JOIN customer s ON p.SenderId = s.CustId JOIN customer r ON p.ReceiverId = r.CustId JOIN employees t ON p.EmpId = t.EmpId JOIN statuses q ON p.StatusId = q.StatusId';
+        const sql = `
+SELECT 
+    p.*, 
+    s.CustName AS SenderName, 
+    r.CustName AS ReceiverName, 
+    t.EmpName AS EmployeeName, 
+    q.StatusName AS StatusName 
+FROM 
+    parcels p 
+JOIN 
+    customer s ON p.SenderId = s.CustId 
+JOIN 
+    customer r ON p.ReceiverId = r.CustId 
+JOIN 
+    employees t ON p.EmpId = t.EmpId 
+JOIN 
+    statuses q ON p.StatusId = q.StatusId;`;
         const [rows] = await connection.query(sql);
         res.json(rows);
     } catch (error) {
