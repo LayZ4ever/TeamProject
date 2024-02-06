@@ -6,7 +6,6 @@ function fetchParcels() {
     fetch('/parcels')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             populateTable(data);})
         .catch(error => console.error('Error fetching data:', error));
 }
@@ -255,10 +254,55 @@ document.getElementById('sortButton').addEventListener('click', function () {
     fetchSortedParcels(selectedAttribute);
 });
 
-// filtering
-document.getElementById('filterButton').addEventListener('click', function () {
-    const selectedAttribute = document.getElementById('EmpIdFilterValue').value;
-    fetchFilteredParcelsByEmpId(selectedAttribute);
+//dropdown за филтриране на служител
+function loadEmployeeList() {
+    const inputElement = document.getElementById('employeeInput');
+    const employeeListElement = document.getElementById('employeeList');
+    const searchText = inputElement.value;
+
+    // Clear previous options
+    employeeListElement.innerHTML = '';
+
+    if (searchText.length === 0) return; // Optional: only search if input is not empty
+
+    fetch(`/searchEmployees?query=${encodeURIComponent(searchText)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(employeeName => {
+                const option = document.createElement('option');
+                option.value = employeeName;
+                employeeListElement.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching employee list:', error);
+        });
+}
+
+document.getElementById('filterParcelsButton').addEventListener('click', function() {
+    const inputValue = document.getElementById('employeeInput').value.trim();
+    // Check if the input is empty
+    if (inputValue === '') {
+        fetchParcels()
+    } else {
+        const employeeIdMatch = inputValue.match(/\(ID:\s*(\d+)\)/);
+        if (employeeIdMatch) {
+            const employeeId = employeeIdMatch[1];
+            const url = `/parcelsMadeByEmployee?employeeId=${employeeId}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Filtered parcels:', data);
+                    populateTable(data);
+                })
+                .catch(error => console.error('Error fetching filtered parcels:', error));
+        } else {
+            alert('Please select a valid employee from the dropdown.');
+        }
+    }
 });
-
-

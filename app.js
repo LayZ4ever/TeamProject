@@ -344,7 +344,7 @@ app.delete('/api/deleteParcel', async (req, res) => {
 // filters
 app.get('/filteredParcelsByEmpId', async (req, res) => {
     let connection;
-    try {
+    try { 
         connection = await pool.getConnection();
         const EmpIdFilterValue = req.query.EmpIdFilterValue;
         const sql = `SELECT p.*, s.CustName AS SenderName, 
@@ -358,6 +358,53 @@ app.get('/filteredParcelsByEmpId', async (req, res) => {
                     JOIN statuses q ON p.StatusId = q.StatusId 
                     WHERE p.EmpId = ${EmpIdFilterValue}`;
         const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching parcels data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.get('/searchEmployees', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const searchQuery = req.query.query || '';  // Get the search term from the query parameters
+        // Use CONCAT and LOWER to ensure case-insensitive matching in MySQL
+        const sql = `SELECT EmpId, EmpName FROM employees WHERE LOWER(EmpName) LIKE LOWER(CONCAT('%', ?, '%'))`;
+        const [rows] = await connection.query(sql, [searchQuery]);
+        const formattedRows = rows.map(row => `${row.EmpName} (ID: ${row.EmpId})`);
+        res.json(formattedRows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching employee data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.get('/parcelsMadeByEmployee', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const employeeId = req.query.employeeId;
+        const sql = `SELECT p.*, s.CustName AS SenderName, 
+                    r.CustName AS ReceiverName, 
+                    t.EmpName AS EmployeeName, 
+                    q.StatusName AS StatusName 
+                    FROM parcels p 
+                    JOIN customer s ON p.SenderId = s.CustId 
+                    JOIN customer r ON p.ReceiverId = r.CustId 
+                    JOIN employees t ON p.EmpId = t.EmpId 
+                    JOIN statuses q ON p.StatusId = q.StatusId 
+                    WHERE p.EmpId = ?`;
+        const [rows] = await connection.query(sql, [employeeId]);
         res.json(rows);
     } catch (error) {
         console.error('Error:', error);

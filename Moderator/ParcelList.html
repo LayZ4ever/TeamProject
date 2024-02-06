@@ -39,8 +39,10 @@
         <!-- for the filters -->
         <div id="filteringParcelsAttribute" name="filteringParcelsAttribute"
             style="background: rgb(203,205,205);color: #043a3d;border-radius: 1px;padding-top: 6px;padding-right: 12px;padding-bottom: 6px;padding-left: 12px;">
-            <input id="EmpIdFilterValue" placeholder="EmpId"></input>
-            <button id="filterButton" type="button"
+            <input type="text" id="employeeInput" list="employeeList" name="employee"
+                placeholder="Type or select an employee" oninput="loadEmployeeList()" style="width: 350px;" required>
+            <datalist id="employeeList"></datalist>
+            <button id="filterParcelsButton" type="button"
                 style="background: rgb(32,201,151);border-radius: 6px;border-style: none;color: white;padding-top: 6px;padding-right: 12px;padding-bottom: 6px;padding-left: 12px;">Filter</button>
         </div>
 
