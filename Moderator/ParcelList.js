@@ -31,7 +31,9 @@ function populateTable(parcels) {
         editButton.classList.add('action-save');
         editButton.textContent = 'Edit';
         editButton.addEventListener('click', function () {
-            //TODO redirect to edit page
+        // window.location.href = '/parcel.html?parcelId='+parcel.ParcelsId;
+        window.location.assign('/parcel.html?parcelId='+parcel.ParcelsId);
+            //TODO redirect to edit page. done //Philip: Thanks for the navigation
         });
         buttonsContainer.appendChild(editButton);
 

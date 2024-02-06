@@ -143,7 +143,16 @@ app.get('/api/checkSession', (req, res) => {
     }
 });
 /* ------------------------------------------------------------------------------------------------- */
+//for parcel edit
+app.get('/api/getCustomerById', async (req, res) => {
+    const { customerId } = req.query;
 
+    connection = await pool.getConnection();
+    const sql = 'SELECT * FROM customer WHERE CustId = ?';
+    const [customer] = await connection.query(sql, [customerId]);
+    connection.release();
+    res.json(customer[0]);
+});
 
 
 app.get('/api/search-customer', async (req, res) => {
@@ -221,8 +230,26 @@ app.post('/api/insertData', async (req, res) => {
     }
 });
 
-
-
+//have to update the DB here for parcel, instead of creating a new one
+app.post('/api/updateData', async (req, res) => {
+    let connection;
+    
+    const { StatusDate, PaidOn, StatusId, ParcelId } = req.body;
+    try {
+        connection = await pool.getConnection();
+        const sql = 'UPDATE parcels SET StatusDate = ?, PaidOn = ?, StatusId = ? WHERE ParcelsId = ?';
+        await connection.query(sql, [StatusDate, PaidOn, StatusId, ParcelId]);
+        connection.release();
+        res.json({ message: 'Data updated successfully' });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error updating data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
 
 app.get('/api/getCustomerId', async (req, res) => {
     let connection;
@@ -249,6 +276,19 @@ app.get('/api/getCustomerId', async (req, res) => {
         }
     }
 });
+
+
+app.get(`/api/getParcelById`, async (req, res) => {
+    const { parcelId } = req.query;
+
+    connection = await pool.getConnection();
+    const sql = 'SELECT * FROM parcels WHERE ParcelsId = ?';
+    const [parcel] = await connection.query(sql, [parcelId]);
+    connection.release();
+
+    res.json(parcel[0]);
+});
+
 
 app.get('/parcels', async (req, res) => {
     let connection;
@@ -375,7 +415,7 @@ app.get('/filteredParcelsByEmpId', async (req, res) => {
 
 app.get('/api/getEmpIdAndName', async (req, res) => {
     if (req.session.userId) {
-        let emp = await getEmpNameIdFromUserID(req.session.userId); //added await, and that's how I got the value, instead of the promise
+        let emp = await getEmpFromUserId(req.session.userId); //added await, and that's how I got the value, instead of the promise
         let empId = emp.EmpId;
         let empName = emp.EmpName; //have to show the name
         // console.log(empId);
@@ -408,18 +448,42 @@ app.get('/api/getEmpIdAndName', async (req, res) => {
 
 
 //Function that gets empId from userId
-async function getEmpNameIdFromUserID(userId) {
+async function  getEmpFromUserId(userId) {
     connection = await pool.getConnection();
     const sql = 'SELECT * FROM employees WHERE UserId = ?';
     const [employee] = await connection.query(sql, [userId]);
     connection.release();
 
-    let empId = employee[0];
-    // console.log(empId); //it works here
-    return empId;
+    let emp = employee[0];
+    // console.log(emp); //it works here
+    return emp;
 }
 
+//Function that gets empName from empId
+async function getEmpNameFromEmpId(empId) {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const sql = 'SELECT * FROM employees WHERE EmpId = ?';
+        const [employee] = await connection.query(sql, [empId]);
+        connection.release();
 
+        let emp = employee[0];
+        // console.log(empId); //it works here
+        return emp.EmpName;
+    } catch (error) {
+        console.error('Error getting employee name:', error);
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+app.get('/api/getEmpNameFromEmpId', async (req, res) => {
+    const { empId } = req.query;
+    let empName = await getEmpNameFromEmpId(empId);
+    res.json({ empName: empName });
+});
 
 //Employees data
 app.get('/employees', async (req, res) => {
