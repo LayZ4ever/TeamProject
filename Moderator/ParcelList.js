@@ -17,7 +17,7 @@ function populateTable(parcels) {
 
     parcels.forEach((parcel, index) => {
         let containerDiv = document.createElement("div");
-        containerDiv.classList.add("yourClassName");
+        containerDiv.classList.add("container-parcel");
 
         let infoRow = document.createElement("div");
         infoRow.classList.add("info-row");
@@ -40,7 +40,7 @@ function populateTable(parcels) {
         deleteButton.classList.add('cancel-button'); 
         deleteButton.textContent = 'Delete';
         deleteButton.addEventListener('click', function () {
-            //TODO delete parcel
+            deleteParcel(parcel.ParcelsId);
         });
         buttonsContainer.appendChild(deleteButton);
 
@@ -90,6 +90,30 @@ function createParagraph(content) {
     let paragraph = document.createElement("p");
     paragraph.innerHTML = content;
     return paragraph;
+}
+
+
+function deleteParcel(parcelId) {
+    fetch('/api/deleteParcel', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ parcelId: parcelId })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Parcel deleted successfully.');
+                fetchParcels();
+            } else {
+                alert('Error deleting parcel: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the parcel.');
+        });
 }
 //----------------------------------------------------------------------------
 function loadCityList() {
@@ -228,5 +252,5 @@ function fetchSortedParcels(sortingAttribute) {
 
 document.getElementById('sortButton').addEventListener('click', function () {
     const selectedAttribute = document.getElementById('parcelsAttribute').value;
-    fetchSortedParcels(selectedAttribute);
+    fetchSortedParcels(selectedAttribute); 
 });

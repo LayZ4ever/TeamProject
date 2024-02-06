@@ -2,7 +2,7 @@
     width: 100%; 
 }
 
-.yourClassName {
+.container-parcel {
     width: 100%; 
     box-sizing: border-box; 
     overflow: hidden; 
@@ -32,9 +32,10 @@
     cursor: pointer;
 }
 
-.yourClassName p{
+.container-parcel p{
     background-color: rgb(246, 246, 246);
     margin: 0px;
+    padding-bottom: 3px!important;
 }
   
 .info-row {
@@ -42,8 +43,14 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+    align-items: center;
 }
 
+.info-row p{
+    padding: 0px!important;
+    background-color: transparent;
+
+}
 .button-container{
     margin-bottom: 5px;
     background-color: transparent!important;
