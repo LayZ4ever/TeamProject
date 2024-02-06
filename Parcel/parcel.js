@@ -255,7 +255,7 @@ async function handleParcelFormSubmission(event) {
         DispachDate: dispachDate ? dispachDate : null,
         ReceiptDate: receiptDate ? receiptDate : null,
         StatusId: statusId ? statusId : 1,
-        StatusDate: changeStatusDate ? changeStatusDate : new Date().toISOString().split("T")[0],
+        StatusDate: changeStatusDate ? changeStatusDate : new Date().toISOString().split("T")[0], //this is current date
         EmpId: empId,
         PaidOn: paidOn ? paidOn : null,
     };
@@ -327,7 +327,30 @@ async function fillEmpValue() {
     empEmt.value = empName;
 }
 
+//get parcelId from the url - edit parcel status, if null - new parcel
+function getParcelId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const parcelId = urlParams.get('parcelId');
+    if(parcelId!=null){
+        //edit parcel mode
+            //fill forms - Sender, Receiver, Delivery NOT Status
+                //get Sender info from parcelId
+
+                //get Receiver info from parcelId
+
+                //get Delivery info from parcelId
+
+
+
+
+
+            //make them read-only
+
+
+    }
+}
 
 window.addEventListener("load", fillEmpValue);
+window.addEventListener("load", conSL);
 
 // document.addEventListener("DOMContentLoaded", async () => {});
