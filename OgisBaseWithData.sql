@@ -118,7 +118,7 @@ CREATE TABLE `offices` (
 
 LOCK TABLES `offices` WRITE;
 /*!40000 ALTER TABLE `offices` DISABLE KEYS */;
-INSERT INTO `offices` VALUES (1,'Slatina\'s office','Sofia, Slatina 311');
+INSERT INTO `offices` VALUES (1,"Slatina's office",'Sofia, Slatina 311');
 /*!40000 ALTER TABLE `offices` ENABLE KEYS */;
 UNLOCK TABLES;
 
