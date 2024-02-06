@@ -18,7 +18,13 @@
 
 
 
+function calculatePrice(){
+    const isOfficeDelivery = document.getElementById('deliveryMethodOffice').checked;
+    const deliveryTypePrice = isOfficeDelivery ? 1 : 5; // 1 for office, 2 for address
+    const price = (parseFloat(document.getElementById('weight').value) * 0.50 + deliveryTypePrice).toFixed(2);
 
+    document.getElementById('price').value = price;
+}
 
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
@@ -216,7 +222,7 @@ async function handleParcelFormSubmission(event) {
 
     const isOfficeDelivery = deliveryFormData.get('deliveryMethod') === 'office';
     const isCustomerAddress = deliveryFormData.get('deliveryMethod') === 'savedAddress';
-    const deliveryType = isOfficeDelivery ? 1 : 2; // 1 for office, 2 for address
+    const deliveryTypePrice = isOfficeDelivery ? 1 : 5; // 1 for office, 5 for address
 
     // Retrieve phone numbers from sender and receiver form data
     const senderPhone = senderFormData.get('phoneNumber');
@@ -246,12 +252,12 @@ async function handleParcelFormSubmission(event) {
     const parcelData = {
         SenderId: senderId,
         ReceiverId: receiverId,
-        officeOrAddress: deliveryType,
+        officeOrAddress: deliveryTypePrice,
         senderAddress: `${senderFormData.get('city')}, ${senderFormData.get('address')}`,
         receiverAddress: isCustomerAddress ? `${receiverFormData.get('city')} ${receiverFormData.get('address')}` : (isOfficeDelivery ? deliveryFormData.get('office') : `${deliveryFormData.get('addressCity')} ${deliveryFormData.get('deliveryAddress')}`),
         Weight: weight,
-        // Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryType).toFixed(2),
-        Price: (parseFloat(deliveryFormData.get('weight')) * price + deliveryType).toFixed(2),
+        Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryTypePrice).toFixed(2),
+        // Price: (parseFloat(deliveryFormData.get('weight')) * price + deliveryTypePrice).toFixed(2), 
         DispachDate: dispachDate ? dispachDate : null,
         ReceiptDate: receiptDate ? receiptDate : null,
         StatusId: statusId ? statusId : 1,
@@ -331,26 +337,26 @@ async function fillEmpValue() {
 function getParcelId() {
     const urlParams = new URLSearchParams(window.location.search);
     const parcelId = urlParams.get('parcelId');
-    if(parcelId!=null){
+    if (parcelId != null) {
         //edit parcel mode
-            //fill forms - Sender, Receiver, Delivery NOT Status
-                //get Sender info from parcelId
+        //fill forms - Sender, Receiver, Delivery NOT Status
+        //get Sender info from parcelId
 
-                //get Receiver info from parcelId
+        //get Receiver info from parcelId
 
-                //get Delivery info from parcelId
-
-
+        //get Delivery info from parcelId (change Price to FinalPrice)
 
 
 
-            //make them read-only
+
+
+        //make them read-only
 
 
     }
 }
 
 window.addEventListener("load", fillEmpValue);
-window.addEventListener("load", conSL);
+// window.addEventListener("load", conSL);
 
 // document.addEventListener("DOMContentLoaded", async () => {});

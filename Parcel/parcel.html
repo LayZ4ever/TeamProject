@@ -91,14 +91,14 @@
                     <div class="row" style="height: 50px; margin-bottom:10px;background: var(--bs-danger-bg-subtle);">
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 30%;">
-                            <span> Weight: </span><input type="text" id="weight" name="weight"
+                            <span> Weight: </span><input type="text" id="weight" name="weight" oninput="calculatePrice()"
                                 placeholder="Weight in kg" required="" style="margin-left: 10px;">
 
                         </div>
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 30%;background: var(--bs-danger-border-subtle);">
-                            <span> Price: </span><input type="text" id="price" name="price" placeholder="Price in USD"
-                                required="" style="margin-left: 10px;">
+                            <span>Price: </span><input type="text" id="price" name="price" readonly placeholder="Price in BGN"
+                                 style="margin-left: 10px;">
                         </div>
                         <div class="col d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 40%;background: var(--bs-primary-border-subtle);">
@@ -109,15 +109,16 @@
                     </div>
                     <span style="margin-top: 10px;"> Deliver to office </span><input type="radio"
                         id="deliveryMethodOffice" name="deliveryMethod" value="office" style="margin-left: 10px;"
-                        required 
+                        required oninput="calculatePrice()"
                         onclick="showSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');">
                         <!-- TODO here I use getEmpIdFromSession to debug -->
                     <span style="margin-left: 150px;"> Deliver to address </span><input type="radio"
                         id="deliveryMethodAddress" name="deliveryMethod" value="address" style="margin-left: 10px;"
-                        required
+                        required oninput="calculatePrice()"
                         onclick="showSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');">
                     <span style="margin-left: 150px;">Deliver to saved address</span><input type="radio"
-                        id="savedAddress" name="deliveryMethod" value="savedAddress" style="margin-left: 10px; margin-bottom:10px;" required
+                        id="savedAddress" name="deliveryMethod" value="savedAddress" style="margin-left: 10px; margin-bottom:10px;" 
+                        required oninput="calculatePrice()"
                         onclick="showSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');">
 
                     <div id="officeSelection" class="radioDiv" style="display:none;">
