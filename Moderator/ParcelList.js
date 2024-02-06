@@ -23,6 +23,28 @@ function populateTable(parcels) {
         infoRow.classList.add("info-row");
         infoRow.appendChild(createParagraph("Parcel: " + parcel.ParcelsId));
         infoRow.appendChild(createParagraph("Employee: " + parcel.EmployeeName));
+        
+        let buttonsContainer = document.createElement('div');
+        buttonsContainer.classList.add('button-container');
+
+        let editButton = document.createElement('button');
+        editButton.classList.add('action-save');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', function () {
+            //TODO redirect to edit page
+        });
+        buttonsContainer.appendChild(editButton);
+
+        let deleteButton = document.createElement('button');
+        deleteButton.classList.add('action-delete'); 
+        deleteButton.classList.add('cancel-button'); 
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function () {
+            //TODO delete parcel
+        });
+        buttonsContainer.appendChild(deleteButton);
+
+        infoRow.appendChild(buttonsContainer);
         containerDiv.appendChild(infoRow);
 
         // Sender details

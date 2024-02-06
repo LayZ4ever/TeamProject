@@ -1,5 +1,5 @@
 .parcels-container{
-    width: 100%;
+    width: 100%; 
 }
 
 .yourClassName {
@@ -12,6 +12,26 @@
     border-radius: 5px;
 }
 
+.action-save{
+    background-color: rgb(166, 217, 166);
+    color: rgb(3, 79, 45);
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.action-delete {
+    background-color: rgb(224, 153, 153);
+    color: rgb(3, 79, 45);
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 .yourClassName p{
     background-color: rgb(246, 246, 246);
     margin: 0px;
@@ -22,6 +42,11 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+}
+
+.button-container{
+    margin-bottom: 5px;
+    background-color: transparent!important;
 }
 
 .sender-info,
