@@ -286,6 +286,35 @@ app.get('/sortedParcels', async (req, res) => {
     }
 });
 
+// API endpoint to delete an parcel
+app.delete('/api/deleteParcel', async (req, res) => {
+    const { parcelId } = req.body;
+
+    if (!parcelId) {
+        return res.status(400).send({ success: false, message: 'Parcel ID is required.' });
+    }
+    let connection;
+    try {
+        connection = await mysql.createConnection(dbConfig);
+        await connection.beginTransaction();
+
+        // Delete the parcel
+        const [deleteParcel] = await connection.execute('DELETE FROM parcels WHERE ParcelsId = ?', [parcelId]);
+        if (deleteParcel.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'Parcel not found.' });
+        }
+
+        await connection.commit();
+        res.send({ success: true, message: 'Parcel deleted successfully.' });
+        await connection.end();
+    } catch (error) {
+        console.error('Error in deleting parcel:', error);
+        await connection.rollback();
+        res.status(500).send({ success: false, message: 'Internal Server Error' });
+    }
+});
+
 
 /* ------------------------------------------- Employees ------------------------------------------- */
 
@@ -674,7 +703,7 @@ app.post('/api/addOffice', async (req, res) => {
         connection = await pool.getConnection();
 
         // Insert new office
-        const insertOfficeSql = 'INSERT INTO offices (Firm_FirmId, OfficeName, OfficeAddress) VALUES (1, ?, ?)';
+        const insertOfficeSql = 'INSERT INTO offices (OfficeName, OfficeAddress) VALUES (?, ?)';
         await connection.query(insertOfficeSql, [OfficeName, OfficeAddress]);
         connection.release();
 

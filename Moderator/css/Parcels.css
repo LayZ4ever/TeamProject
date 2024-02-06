@@ -1,0 +1,80 @@
+.parcels-container{
+    width: 100%; 
+}
+
+.container-parcel {
+    width: 100%; 
+    box-sizing: border-box; 
+    overflow: hidden; 
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.action-save{
+    background-color: rgb(166, 217, 166);
+    color: rgb(3, 79, 45);
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.action-delete {
+    background-color: rgb(224, 153, 153);
+    color: rgb(3, 79, 45);
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.container-parcel p{
+    background-color: rgb(246, 246, 246);
+    margin: 0px;
+    padding-bottom: 3px!important;
+}
+  
+.info-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.info-row p{
+    padding: 0px!important;
+    background-color: transparent;
+
+}
+.button-container{
+    margin-bottom: 5px;
+    background-color: transparent!important;
+}
+
+.sender-info,
+.receiver-info,
+.parcel-info, 
+.parcel1-info {
+    width: calc(25% - 10px); 
+    margin-right: 10px; 
+    float: left; 
+    box-sizing: border-box; 
+    background-color: rgb(223, 223, 223);
+}
+
+@media only screen and (max-width: 767px) {
+    .sender-info,
+    .receiver-info,
+    .parcel-info, 
+    .parcel1-info {
+        width: calc(50% - 10px); 
+        margin-right: 0; 
+        float: left; 
+        margin: 0 5px 10px 5px;
+}
+}

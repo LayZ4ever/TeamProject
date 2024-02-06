@@ -17,8 +17,7 @@
 
 --
 -- Table structure for table `customer`
---
-
+-- 
 DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -31,16 +30,17 @@ CREATE TABLE `customer` (
   PRIMARY KEY (`CustId`),
   KEY `fk_Customer_Users_idx` (`UserId`),
   CONSTRAINT `fk_Customer_Users` FOREIGN KEY (`UserId`) REFERENCES `users` (`UserId`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `customer`
 --
--- customer1 pass = 'customerPass'
+
+-- 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (5,'Simo Vel','987654321',NULL,5),(11,'Ognyan Bozhinov','0987654321',NULL,22),(12,'Donkey Shrek','0864297531',NULL,23),(13,'Simeon Simeonov','0888888888',NULL,25),(14,'Shrek Shrekov','9876543201',NULL,26),(15,'Fiona Shrekova','0981234567',NULL,27);
+INSERT INTO `customer` VALUES (34,'Simona Velichkova','0877709043',NULL,49),(35,'Ivan Ivanov','0877709044',NULL,50),(36,'Stoyan Stoyanov','0877709033',NULL,51),(37,'Georgi Georgiev','0987654321',NULL,52),(38,'Simeon Simeonov','0877709555',NULL,53),(39,'Chichko Chichkov','0987654311',NULL,54),(40,'Fiona Shrekova','0877709999',NULL,57);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,26 +52,23 @@ DROP TABLE IF EXISTS `employees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employees` (
-  `Firm_FirmId` int DEFAULT '1',
   `UserId` int NOT NULL,
   `EmpId` int NOT NULL AUTO_INCREMENT,
   `EmpName` varchar(255) NOT NULL,
   `EmpType` enum('courier','office worker') NOT NULL,
   PRIMARY KEY (`EmpId`),
-  KEY `fk_Employees_Firm1_idx` (`Firm_FirmId`),
   KEY `fk_Employees_Users1_idx` (`UserId`),
-  CONSTRAINT `fk_Employees_Firm1` FOREIGN KEY (`Firm_FirmId`) REFERENCES `firm` (`FirmId`),
   CONSTRAINT `fk_Employees_Users1` FOREIGN KEY (`UserId`) REFERENCES `users` (`UserId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `employees`
 --
--- ALL EMPLOYEE PASSWORDS ARE = 'LogComp'
+
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,11,2,'Georgi Ivanov Slavchev','courier'),(1,12,3,'Mari Vel Press','office worker'),(1,14,5,'Ivan Ivanov Ivanov','courier'),(1,30,6,'Georgi Georgiev Marinov','courier'),(1,31,7,'Shopi Shopov Shopov','courier'),(1,32,8,'Chichko Chichev Chichkov','courier');
+INSERT INTO `employees` VALUES (58,9,'Georgi Georgiev Marinov','courier'),(59,10,'Mariana Chichkova Johnes','office worker'),(60,11,'Georgi Ivanov Slavchev','courier'),(61,12,'Mariah Bob Black','office worker'),(62,13,'Anastasia Anastasievna Anastasievna','office worker'),(63,14,'Denis Denisov Hristov','courier'),(64,15,'Evgeni Butilkov Chervenkov','courier'),(65,16,'Hristina Teodorova Himikalkova','courier');
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +109,7 @@ CREATE TABLE `offices` (
   `OfficeName` varchar(255) NOT NULL,
   `OfficeAddress` varchar(255) NOT NULL,
   PRIMARY KEY (`OfficeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,6 +118,7 @@ CREATE TABLE `offices` (
 
 LOCK TABLES `offices` WRITE;
 /*!40000 ALTER TABLE `offices` DISABLE KEYS */;
+INSERT INTO `offices` VALUES (1,'Slatina\'s office','Sofia, Slatina 311');
 /*!40000 ALTER TABLE `offices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,34 +129,31 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `parcels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-
-
-CREATE TABLE parcels (
-  ParcelsId int NOT NULL AUTO_INCREMENT,
-  SenderId int NOT NULL,
-  ReceiverId int NOT NULL,
-  OfficeOrAddress int NOT NULL,
-  SenderAddress varchar(255) NOT NULL,
-  ReceiverAddress varchar(255) NOT NULL,
-  Weight double NOT NULL,
-  Price double NOT NULL,
-  DispachDate date DEFAULT NOT NULL,
-  ReceiptDate date DEFAULT NOT NULL,
-  StatusId int NOT NULL DEFAULT '1',
-  StatusDate date DEFAULT NULL,
-  EmpId int DEFAULT NULL,
-  PaidOn date DEFAULT NULL,
-  PRIMARY KEY (ParcelsId),
-  KEY fk_packages_clients1_idx (SenderId),
-  KEY fk_packages_clients2_idx (ReceiverId),
-  KEY fk_packages_statuses1_idx (StatusId),
-  KEY fk_packages_employees1_idx (EmpId),
-  CONSTRAINT fk_packages_clients1 FOREIGN KEY (SenderId) REFERENCES customer (CustId),
-  CONSTRAINT fk_packages_clients2 FOREIGN KEY (ReceiverId) REFERENCES customer (CustId),
-  CONSTRAINT fk_packages_employees1 FOREIGN KEY (EmpId) REFERENCES employees (EmpId)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb3
+CREATE TABLE `parcels` (
+  `ParcelsId` int NOT NULL AUTO_INCREMENT,
+  `SenderId` int NOT NULL,
+  `ReceiverId` int NOT NULL,
+  `OfficeOrAddress` int NOT NULL,
+  `SenderAddress` varchar(255) NOT NULL,
+  `ReceiverAddress` varchar(255) NOT NULL,
+  `Weight` double NOT NULL,
+  `Price` double NOT NULL,
+  `DispachDate` date DEFAULT NULL,
+  `ReceiptDate` date DEFAULT NULL,
+  `StatusId` int NOT NULL DEFAULT '1',
+  `StatusDate` date DEFAULT NULL,
+  `EmpId` int DEFAULT NULL,
+  `PaidOn` date DEFAULT NULL,
+  PRIMARY KEY (`ParcelsId`),
+  KEY `fk_packages_clients1_idx` (`SenderId`),
+  KEY `fk_packages_clients2_idx` (`ReceiverId`),
+  KEY `fk_packages_statuses1_idx` (`StatusId`),
+  KEY `fk_packages_employees1_idx` (`EmpId`),
+  CONSTRAINT `fk_packages_clients1` FOREIGN KEY (`SenderId`) REFERENCES `customer` (`CustId`),
+  CONSTRAINT `fk_packages_clients2` FOREIGN KEY (`ReceiverId`) REFERENCES `customer` (`CustId`),
+  CONSTRAINT `fk_packages_employees1` FOREIGN KEY (`EmpId`) REFERENCES `employees` (`EmpId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Dumping data for table `parcels`
@@ -219,7 +214,9 @@ UNLOCK TABLES;
 --
 -- Table structure for table `users`
 --
-
+-- each employee's default password is "LogComp"
+-- "admin"(username) -> "admin"(password)
+-- the username and passwords for customers are the same. Example : "customer2" -> "customer2"
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -231,16 +228,16 @@ CREATE TABLE `users` (
   PRIMARY KEY (`UserId`),
   KEY `fk_Users_Role1_idx` (`RoleId`),
   CONSTRAINT `fk_Users_Role1` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `users`
 --
--- admin pass = 'employeePass'. Yes, I know, don't ask.
+
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,5,'customer1','$2b$10$2L1fvfLDA7VfFo166pD.ceuHPv9/O0NaCB9zERYj6rbqSi4WXlT1C'),(1,7,'admin','$2b$10$vhcVF3L8KwOs04KzUCkl5eEz2lGfJ6Is9hopaYlw3Cfg2Qr2fUdFG'),(3,11,'AUentrry','$2b$10$8atgDwapfWu90Z.dcF.2meItP/uPn6yh3880XaOJps7op5SD7rhMu'),(3,12,'MVPress','$2b$10$IZKhYzwXSO8CbWOCIo9XOeZcwSE3/CjamRAKt2a2xNOnnPapq66M6'),(3,14,'IIIvanov','$2b$10$.kH4WWZrh1qKwAKTmyp9E.vfXiaJ/EuLMQxe8P8mamO6CSszpveRi'),(2,22,'customer2','$2b$10$9xibsvgChWY1gChMe2s.x.axLBkJP0c.IuEz2nB8ifmH48I4cA4um'),(2,23,'customer3','$2b$10$./lbb10plMHwT4sNrn7SrOMmkN/oIRFqmgWnyoM5aqqQuEM3Eqfnq'),(2,25,'customer5','$2b$10$/5TtkVeSBz.l6m3mp1vxVued/7VNYIPuMI0X/ExH8QlMXOJ6oObNK'),(2,26,'customer6','$2b$10$D0QiGjiPGuFC.asWFTG.bew8ne5e7l1gtimuOMICeEyeK6T3VytnC'),(2,27,'customer8','$2b$10$zmnADZ/MmjYsXEaFHB0F0.cYcFdPHTiPn4MD6kloTTOyQxsQ5i8cK'),(3,30,'GGMarinov','$2b$10$NzadKfRkcsWRygbF49L7Uee4L3IfIpE7k3ssgCYlvdQ2weUKaeC6u'),(3,31,'SSShopov','$2b$10$oaVUwhLoX9w0ofcsiDzfjeEBKQlw1.UluKPeJxasasOznaM/gQmoG'),(3,32,'CCChichkov','$2b$10$ECQMAUiMHIbpn/hrrZpdeOOeRfSi6v0Ab25rd8npkBlCPNIXWD6uu');
+INSERT INTO `users` VALUES (1,49,'admin','$2b$10$j8rcI/f3Scdv4exK0yrn3.bvBGtjj5erJTwRw52uXOqgVKxfyRFja'),(2,50,'customer1','$2b$10$RjWGQcJG0yXlnat.l31Gy.93HtTkm9miNOa8vpNHsGX5965ve5gDC'),(2,51,'customer2','$2b$10$CPC1egc2G5PgpJDR3XL4dOG3vqn5VOm0GfO5LBR0mwKk2g6CFspX6'),(2,52,'customer3','$2b$10$pXDQWlmW3wDH7zKwPfnQk.4/SwhNMbsm3WyIvHhCystm60J02NToO'),(2,53,'customer4','$2b$10$LzMPPQnGvEJyDAg1aSDcfuIj72v6lFtjUcEa8ax.6qlQbV0Wy5QPC'),(2,54,'customer5','$2b$10$kCiUhW1sXb79JN/XMUIAJuriUvB47MxH3QBDbBztY3kPcxONTafm.'),(2,57,'customer6','$2b$10$nWRGRL55i5sU1jTMrILWxO77gUWrg5K5akxlTZCMMQgumK6lCtHH.'),(3,58,'GGMarinov','$2b$10$Lp4/36Jjmy8WdYE76OarleCPGTaD.sPCIdwEE6vTvIvrti90lTRqO'),(3,59,'MCJohnes','$2b$10$nzmY/WonhzT4qUV0haRN6uILIvRlZlg2pesQ1wvtR7gCjLuYS0vP.'),(3,60,'GISlavchev','$2b$10$8WF8.4JcoZU7q8NgXpaMx.3TfrtvvWf9I9LZCD33iz2X7Y8RsepIC'),(3,61,'MBBlack','$2b$10$JFjAua1rN1grYdQ4FCP0yuQl0oqsoLFRFRM7hJFnzJYE1u6WymLJi'),(3,62,'AAAnastasievna','$2b$10$xDFUsIsLJlgF9Rqxwoyu3uGkCwnqm4VS8Xv4tHMgHh5yMleZwhGi2'),(3,63,'DDHristov','$2b$10$pGkqiooX7cjIyTWAgOFWa.6UvB2q5TDWW6AKzvilS4adzaxK3TMZm'),(3,64,'EBChervenkov','$2b$10$17tzxokgab1DGpapvnVvKeexQQhIkt2ymY2j2rqdWnYOHokF.FXqa'),(3,65,'HTHimikalkova','$2b$10$aTa4rVHf/kJeDMYM9U6z8Orxum7ig6YuPUn7qouyBvpvPDjcJdC6O');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -253,4 +250,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-25  7:05:40
+-- Dump completed on 2024-02-05 18:40:43
