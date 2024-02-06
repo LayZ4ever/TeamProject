@@ -16,6 +16,10 @@
 //         .catch(error => console.error('Error:', error));
 // });
 
+
+
+
+
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
 
@@ -230,12 +234,12 @@ async function handleParcelFormSubmission(event) {
     const weight = deliveryFormData.get('weight');
     const price = deliveryFormData.get('price');
     const dispachDate = deliveryFormData.get('dispachDate');
-    console.log("dispachDate:"+dispachDate);
+    console.log("dispachDate:" + dispachDate);
     const receiptDate = deliveryFormData.get('receiptDate');
-    console.log("receiptDate:"+receiptDate);
+    console.log("receiptDate:" + receiptDate);
     const statusId = statusFormData.get('status');
     const changeStatusDate = statusFormData.get('changeStatusDate');
-    const empId = deliveryFormData.get('employee');
+    const empId = await getEmpIdFromSession();
     const paidOn = statusFormData.get('payDate');
 
 
@@ -305,3 +309,25 @@ function requiredONLYForClass(elementClass, ...otherClasses) {
         }
     }
 }
+
+async function getEmpIdFromSession() {
+    const res = await fetch('/api/getEmpIdAndName').then(response => response.json());
+    return res.empId;
+}
+
+async function getEmpNameFromSession() {
+    const res = await fetch('/api/getEmpIdAndName').then(response => response.json());
+    return res.empName;
+}
+
+async function fillEmpValue() {
+    let empName = await getEmpNameFromSession();
+    console.log(empName);
+    const empEmt = document.getElementById("employee");
+    empEmt.value = empName;
+}
+
+
+window.addEventListener("load", fillEmpValue);
+
+// document.addEventListener("DOMContentLoaded", async () => {});

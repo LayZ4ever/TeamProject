@@ -1,8 +1,8 @@
 .parcels-container{
-    width: 100%;
+    width: 100%; 
 }
 
-.yourClassName {
+.container-parcel {
     width: 100%; 
     box-sizing: border-box; 
     overflow: hidden; 
@@ -12,9 +12,30 @@
     border-radius: 5px;
 }
 
-.yourClassName p{
+.action-save{
+    background-color: rgb(166, 217, 166);
+    color: rgb(3, 79, 45);
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.action-delete {
+    background-color: rgb(224, 153, 153);
+    color: rgb(3, 79, 45);
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.container-parcel p{
     background-color: rgb(246, 246, 246);
     margin: 0px;
+    padding-bottom: 3px!important;
 }
   
 .info-row {
@@ -22,6 +43,17 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+    align-items: center;
+}
+
+.info-row p{
+    padding: 0px!important;
+    background-color: transparent;
+
+}
+.button-container{
+    margin-bottom: 5px;
+    background-color: transparent!important;
 }
 
 .sender-info,

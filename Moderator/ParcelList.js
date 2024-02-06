@@ -17,12 +17,34 @@ function populateTable(parcels) {
 
     parcels.forEach((parcel, index) => {
         let containerDiv = document.createElement("div");
-        containerDiv.classList.add("yourClassName");
+        containerDiv.classList.add("container-parcel");
 
         let infoRow = document.createElement("div");
         infoRow.classList.add("info-row");
         infoRow.appendChild(createParagraph("Parcel: " + parcel.ParcelsId));
         infoRow.appendChild(createParagraph("Employee: " + parcel.EmployeeName));
+        
+        let buttonsContainer = document.createElement('div');
+        buttonsContainer.classList.add('button-container');
+
+        let editButton = document.createElement('button');
+        editButton.classList.add('action-save');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', function () {
+            //TODO redirect to edit page
+        });
+        buttonsContainer.appendChild(editButton);
+
+        let deleteButton = document.createElement('button');
+        deleteButton.classList.add('action-delete'); 
+        deleteButton.classList.add('cancel-button'); 
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function () {
+            deleteParcel(parcel.ParcelsId);
+        });
+        buttonsContainer.appendChild(deleteButton);
+
+        infoRow.appendChild(buttonsContainer);
         containerDiv.appendChild(infoRow);
 
         // Sender details
@@ -46,7 +68,7 @@ function populateTable(parcels) {
         parcelDiv.classList.add("parcel-info");
         parcelDiv.appendChild(createParagraph("Weight: " + parcel.Weight));
         parcelDiv.appendChild(createParagraph("Price: " + parcel.Price));
-        parcelDiv.appendChild(createParagraph("Payment: " + parcel.PaymentStatus)); 
+        parcelDiv.appendChild(createParagraph("Payment: " + parcel.PaidOn)); 
         parcelDiv.appendChild(createParagraph("Send to: " + (parcel.OfficeOrAddress ? "Office" : "Address")));
         
         containerDiv.appendChild(parcelDiv);   
@@ -68,6 +90,30 @@ function createParagraph(content) {
     let paragraph = document.createElement("p");
     paragraph.innerHTML = content;
     return paragraph;
+}
+
+
+function deleteParcel(parcelId) {
+    fetch('/api/deleteParcel', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ parcelId: parcelId })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Parcel deleted successfully.');
+                fetchParcels();
+            } else {
+                alert('Error deleting parcel: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the parcel.');
+        });
 }
 //----------------------------------------------------------------------------
 function loadCityList() {

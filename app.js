@@ -1,11 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
-const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(session({
     secret: 'your_secret_key', // Replace with a real secret key
@@ -103,7 +102,7 @@ app.post('/api/login', async (req, res) => {
             if (comparison) {
                 req.session.userId = users[0].UserId;
                 req.session.roleId = users[0].RoleId;
-                res.json({ success: true, message: 'Login successful', roleId: req.session.roleId});
+                res.json({ success: true, message: 'Login successful', roleId: req.session.roleId });
             } else {
                 res.json({ success: false, message: 'Wrong username or password' });
             }
@@ -138,12 +137,14 @@ app.post('/api/logout', (req, res) => {
 
 app.get('/api/checkSession', (req, res) => {
     if (req.session.userId) {
-        res.json({ loggedIn: true, roleId: req.session.roleId });
+        res.json({ loggedIn: true, roleId: req.session.roleId, userId: req.session.userId });
     } else {
         res.json({ loggedIn: false });
     }
 });
 /* ------------------------------------------------------------------------------------------------- */
+
+
 
 app.get('/api/search-customer', async (req, res) => {
     let connection;
@@ -254,7 +255,23 @@ app.get('/parcels', async (req, res) => {
 
     try {
         connection = await pool.getConnection();
-        const sql = 'SELECT p.*, s.CustName AS SenderName, r.CustName AS ReceiverName, t.EmpName AS EmployeeName, q.StatusName AS StatusName FROM parcels p JOIN customer s ON p.SenderId = s.CustId JOIN customer r ON p.ReceiverId = r.CustId JOIN employees t ON p.EmpId = t.EmpId JOIN statuses q ON p.StatusId = q.StatusId';
+        const sql = `
+SELECT 
+    p.*, 
+    s.CustName AS SenderName, 
+    r.CustName AS ReceiverName, 
+    t.EmpName AS EmployeeName, 
+    q.StatusName AS StatusName 
+FROM 
+    parcels p 
+JOIN 
+    customer s ON p.SenderId = s.CustId 
+JOIN 
+    customer r ON p.ReceiverId = r.CustId 
+JOIN 
+    employees t ON p.EmpId = t.EmpId 
+JOIN 
+    statuses q ON p.StatusId = q.StatusId;`;
         const [rows] = await connection.query(sql);
         res.json(rows);
     } catch (error) {
@@ -294,6 +311,35 @@ app.get('/sortedParcels', async (req, res) => {
     }
 });
 
+// API endpoint to delete an parcel
+app.delete('/api/deleteParcel', async (req, res) => {
+    const { parcelId } = req.body;
+
+    if (!parcelId) {
+        return res.status(400).send({ success: false, message: 'Parcel ID is required.' });
+    }
+    let connection;
+    try {
+        connection = await mysql.createConnection(dbConfig);
+        await connection.beginTransaction();
+
+        // Delete the parcel
+        const [deleteParcel] = await connection.execute('DELETE FROM parcels WHERE ParcelsId = ?', [parcelId]);
+        if (deleteParcel.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).send({ success: false, message: 'Parcel not found.' });
+        }
+
+        await connection.commit();
+        res.send({ success: true, message: 'Parcel deleted successfully.' });
+        await connection.end();
+    } catch (error) {
+        console.error('Error in deleting parcel:', error);
+        await connection.rollback();
+        res.status(500).send({ success: false, message: 'Internal Server Error' });
+    }
+});
+
 
 // filters
 app.get('/filteredParcelsByEmpId', async (req, res) => {
@@ -324,6 +370,56 @@ app.get('/filteredParcelsByEmpId', async (req, res) => {
 });
 
 /* ------------------------------------------- Employees ------------------------------------------- */
+
+
+
+app.get('/api/getEmpIdAndName', async (req, res) => {
+    if (req.session.userId) {
+        let emp = await getEmpNameIdFromUserID(req.session.userId); //added await, and that's how I got the value, instead of the promise
+        let empId = emp.EmpId;
+        let empName = emp.EmpName; //have to show the name
+        // console.log(empId);
+        res.json({ empId: empId, empName: empName });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+
+
+// //Function that gets userId from session, not needed - created a new endpoint
+// function getUserIdFromSession() {
+//     fetch('/api/checkSession')
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.loggedIn) {
+//                 userID = data.userId;
+//                 // console.log(userID);
+//                 return userID; //works
+//             }
+//         })
+//         .catch(error => console.error('Error:', error));
+// };
+// console.log("getEmpIdFromUserId:" +getEmpIdFromUserID(100));
+
+// function getEmpIdFromSession() {
+//     return getEmpIdFromUserID(getUserIdFromSession());
+// }
+
+
+
+//Function that gets empId from userId
+async function getEmpNameIdFromUserID(userId) {
+    connection = await pool.getConnection();
+    const sql = 'SELECT * FROM employees WHERE UserId = ?';
+    const [employee] = await connection.query(sql, [userId]);
+    connection.release();
+
+    let empId = employee[0];
+    // console.log(empId); //it works here
+    return empId;
+}
+
+
 
 //Employees data
 app.get('/employees', async (req, res) => {
@@ -363,7 +459,7 @@ app.get('/sortedEmployees', async (req, res) => {
 });
 
 // Helper function to generate a username for the employees
-function generateUsername(fullName) { 
+function generateUsername(fullName) {
     var nameParts = fullName.trim().split(/\s+/);
     if (nameParts.length < 3) {
         console.error('Name does not have three parts:', fullName);
@@ -511,7 +607,7 @@ app.get('/customers', async (req, res) => {
 });
 
 // Helper function to check if the customer has 2 names
-function checkName(fullName) { 
+function checkName(fullName) {
     var nameParts = fullName.trim().split(/\s+/);
     if (nameParts.length != 2) {
         console.error('Name does not have two parts:', fullName);
@@ -523,7 +619,7 @@ function checkName(fullName) {
 // Add a new customer
 app.post('/api/addCustomer', async (req, res) => {
     let connection;
-    const { CustName, PhoneNumber, Address} = req.body;
+    const { CustName, PhoneNumber, Address } = req.body;
 
     try {
         connection = await pool.getConnection();
@@ -540,7 +636,7 @@ app.post('/api/addCustomer', async (req, res) => {
         await connection.query(insertCustSql, [CustName, PhoneNumber, Address]);
         connection.release();
 
-        res.json({ success: true});
+        res.json({ success: true });
     } catch (error) {
         console.error('Error adding customer:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -654,7 +750,7 @@ app.get('/offices', async (req, res) => {
 // Add a new office
 app.post('/api/addOffice', async (req, res) => {
     let connection;
-    const { OfficeName, OfficeAddress} = req.body;
+    const { OfficeName, OfficeAddress } = req.body;
 
     try {
         connection = await pool.getConnection();
@@ -664,7 +760,7 @@ app.post('/api/addOffice', async (req, res) => {
         await connection.query(insertOfficeSql, [OfficeName, OfficeAddress]);
         connection.release();
 
-        res.json({success: true});
+        res.json({ success: true });
     } catch (error) {
         console.error('Error adding office:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
