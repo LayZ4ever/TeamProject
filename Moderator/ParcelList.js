@@ -208,3 +208,11 @@ document.getElementById('sortButton').addEventListener('click', function () {
     const selectedAttribute = document.getElementById('parcelsAttribute').value;
     fetchSortedParcels(selectedAttribute);
 });
+
+// filtering
+document.getElementById('filterButton').addEventListener('click', function () {
+    const selectedAttribute = document.getElementById('EmpIdFilterValue').value;
+    fetchFilteredParcelsByEmpId(selectedAttribute);
+});
+
+
