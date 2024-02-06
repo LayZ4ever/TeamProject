@@ -15,7 +15,8 @@
 //         })
 //         .catch(error => console.error('Error:', error));
 // });
-import { getEmpIdFromSession } from '../app.js';
+
+
 
 
 
@@ -238,7 +239,7 @@ async function handleParcelFormSubmission(event) {
     console.log("receiptDate:" + receiptDate);
     const statusId = statusFormData.get('status');
     const changeStatusDate = statusFormData.get('changeStatusDate');
-    const empId = deliveryFormData.get('employee');
+    const empId = await getEmpIdFromSession();
     const paidOn = statusFormData.get('payDate');
 
 
@@ -309,3 +310,24 @@ function requiredONLYForClass(elementClass, ...otherClasses) {
     }
 }
 
+async function getEmpIdFromSession() {
+    const res = await fetch('/api/getEmpIdAndName').then(response => response.json());
+    return res.empId;
+}
+
+async function getEmpNameFromSession() {
+    const res = await fetch('/api/getEmpIdAndName').then(response => response.json());
+    return res.empName;
+}
+
+async function fillEmpValue() {
+    let empName = await getEmpNameFromSession();
+    console.log(empName);
+    const empEmt = document.getElementById("employee");
+    empEmt.value = empName;
+}
+
+
+window.addEventListener("load", fillEmpValue);
+
+// document.addEventListener("DOMContentLoaded", async () => {});

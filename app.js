@@ -1,11 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
-const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(session({
     secret: 'your_secret_key', // Replace with a real secret key
@@ -291,34 +290,54 @@ app.get('/sortedParcels', async (req, res) => {
 /* ------------------------------------------- Employees ------------------------------------------- */
 
 
-//Function that gets userId from session
-function getUserIdFromSession() {
-    fetch('/api/checkSession')
-    .then(response => response.json())
-    .then(data => {
-        if (data.loggedIn) {
-            userID = data.userId;
-            // console.log(userID);
-            return userID; 
-        }
-    })
-    .catch(error => console.error('Error:', error));
-};
+
+app.get('/api/getEmpIdAndName', async (req, res) => {
+    if (req.session.userId) {
+        let emp = await getEmpNameIdFromUserID(req.session.userId); //added await, and that's how I got the value, instead of the promise
+        let empId = emp.EmpId;
+        let empName = emp.EmpName; //have to show the name
+        // console.log(empId);
+        res.json({ empId: empId, empName: empName });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+
+
+// //Function that gets userId from session, not needed - created a new endpoint
+// function getUserIdFromSession() {
+//     fetch('/api/checkSession')
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.loggedIn) {
+//                 userID = data.userId;
+//                 // console.log(userID);
+//                 return userID; //works
+//             }
+//         })
+//         .catch(error => console.error('Error:', error));
+// };
+// console.log("getEmpIdFromUserId:" +getEmpIdFromUserID(100));
+
+// function getEmpIdFromSession() {
+//     return getEmpIdFromUserID(getUserIdFromSession());
+// }
+
+
+
 //Function that gets empId from userId
-async function getEmpIdFromUserID(userId) {
-    let connection = await pool.getConnection();
-    const sql = 'SELECT * FROM employees WHERE UserId=?;';
+async function getEmpNameIdFromUserID(userId) {
+    connection = await pool.getConnection();
+    const sql = 'SELECT * FROM employees WHERE UserId = ?';
     const [employee] = await connection.query(sql, [userId]);
     connection.release();
-    if (employee.length > 0) {
-        let empId = employee[0].EmpId;
-        return empId;
-    }
+
+    let empId = employee[0];
+    // console.log(empId); //it works here
+    return empId;
 }
 
-export function getEmpIdFromSession() { 
-    return getEmpIdFromUserID(getUserIdFromSession());
-}
+
 
 //Employees data
 app.get('/employees', async (req, res) => {
