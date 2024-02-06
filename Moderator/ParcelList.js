@@ -115,6 +115,10 @@ function deleteParcel(parcelId) {
             alert('An error occurred while deleting the parcel.');
         });
 }
+
+function exitParcels() {
+    window.location.href = "Moderator.html";
+  }
 //----------------------------------------------------------------------------
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
