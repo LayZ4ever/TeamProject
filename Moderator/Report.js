@@ -22,31 +22,6 @@ function populateTable(parcels) {
         infoRow.classList.add("info-row");
         infoRow.appendChild(createParagraph("Parcel: " + parcel.ParcelsId));
         infoRow.appendChild(createParagraph("Employee: " + parcel.EmployeeName));
-        
-        let buttonsContainer = document.createElement('div');
-        buttonsContainer.classList.add('button-container');
-
-        let editButton = document.createElement('button');
-        editButton.classList.add('action-save');
-        editButton.textContent = 'Edit';
-        editButton.addEventListener('click', function () {
-        // window.location.href = '/parcel.html?parcelId='+parcel.ParcelsId;
-        window.location.assign('/parcel.html?parcelId='+parcel.ParcelsId);
-            //TODO redirect to edit page. done //Philip: Thanks for the navigation
-        });
-        buttonsContainer.appendChild(editButton);
-
-        let deleteButton = document.createElement('button');
-        deleteButton.classList.add('action-delete'); 
-        deleteButton.classList.add('cancel-button'); 
-        deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', function () {
-            deleteParcel(parcel.ParcelsId);
-        });
-        buttonsContainer.appendChild(deleteButton);
-
-        infoRow.appendChild(buttonsContainer);
-        containerDiv.appendChild(infoRow);
 
         // Sender details
         let senderDiv = document.createElement("div");
@@ -93,40 +68,80 @@ function createParagraph(content) {
     return paragraph;
 }
 
+//dropdown за филтриране на служител
+function loadEmployeeList() {
+    const inputElement = document.getElementById('employeeInput');
+    const employeeListElement = document.getElementById('employeeList');
+    const searchText = inputElement.value;
 
-function deleteParcel(parcelId) {
-    fetch('/api/deleteParcel', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ parcelId: parcelId })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Parcel deleted successfully.');
-                fetchParcels();
-            } else {
-                alert('Error deleting parcel: ' + data.message);
+    // Clear previous options
+    employeeListElement.innerHTML = '';
+
+    if (searchText.length === 0) return; // Optional: only search if input is not empty
+
+    fetch(`/searchEmployees?query=${encodeURIComponent(searchText)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(employeeName => {
+                const option = document.createElement('option');
+                option.value = employeeName;
+                employeeListElement.appendChild(option);
+            });
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while deleting the parcel.');
+            console.error('Error fetching employee list:', error);
         });
 }
 
-function fetchSortedParcels(sortingAttribute) {
-    url = `/sortedParcels?sortingAttribute=${sortingAttribute}`;
+document.getElementById('filterParcelsButton').addEventListener('click', function() {
+    const employeeInputValue = document.getElementById('employeeInput').value.trim();
+    const parcelIdValue = document.getElementById('parcelIdInput').value.trim();
+    const senderIdValue = document.getElementById('senderIdInput').value.trim();
+    const receiverIdValue = document.getElementById('receiverIdInput').value.trim();
+    const startDateValue = document.getElementById('startDateInput').value;
+    const endDateValue = document.getElementById('endDateInput').value;
+
+    // Construct the URL with query parameters
+    const url = new URL('/parcelsFilter', window.location.origin);
+
+    // Add employeeId query parameter if employee input is not empty and matches the expected format
+    const employeeIdMatch = employeeInputValue.match(/\(ID:\s*(\d+)\)/);
+    if (employeeIdMatch) {
+        const employeeId = employeeIdMatch[1];
+        url.searchParams.append('employeeId', employeeId);
+    }
+
+    // Add other query parameters if their respective inputs are not empty
+    if (parcelIdValue) url.searchParams.append('parcelId', parcelIdValue);
+    if (senderIdValue) url.searchParams.append('senderId', senderIdValue);
+    if (receiverIdValue) url.searchParams.append('receiverId', receiverIdValue);
+    if (startDateValue) url.searchParams.append('startDate', startDateValue);
+    if (endDateValue) url.searchParams.append('endDate', endDateValue);
+    
+
+    // Fetch parcels with the specified filters
     fetch(url)
         .then(response => response.json())
-        .then(data => populateTable(data))
-        .catch(error => console.error('Error fetching data:', error));
-}
+        .then(data => {
+            populateTable(data); // Populate table with the filtered data
+        })
+        .catch(error => console.error('Error fetching filtered parcels:', error));
+});
 
-document.getElementById('sortButton').addEventListener('click', function () {
-    const selectedAttribute = document.getElementById('parcelsAttribute').value;
-    fetchSortedParcels(selectedAttribute);
+document.getElementById('clearInputsButton').addEventListener('click', function() {
+    // Clear text and date inputs
+    document.getElementById('parcelIdInput').value = '';
+    document.getElementById('employeeInput').value = '';
+    document.getElementById('senderIdInput').value = '';
+    document.getElementById('receiverIdInput').value = '';
+    document.getElementById('startDateInput').value = '';
+    document.getElementById('endDateInput').value = '';
+    
+    // If you want to reset any <datalist> or other elements, add the code here
 });
 

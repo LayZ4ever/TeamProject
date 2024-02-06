@@ -382,12 +382,33 @@ app.delete('/api/deleteParcel', async (req, res) => {
 
 
 // filters
-app.get('/filteredParcelsByEmpId', async (req, res) => {
+app.get('/searchEmployees', async (req, res) => {
     let connection;
     try {
         connection = await pool.getConnection();
-        const EmpIdFilterValue = req.query.EmpIdFilterValue;
-        const sql = `SELECT p.*, s.CustName AS SenderName, 
+        const searchQuery = req.query.query || '';  // Get the search term from the query parameters
+        // Use CONCAT and LOWER to ensure case-insensitive matching in MySQL
+        const sql = `SELECT EmpId, EmpName FROM employees WHERE LOWER(EmpName) LIKE LOWER(CONCAT('%', ?, '%'))`;
+        const [rows] = await connection.query(sql, [searchQuery]);
+        const formattedRows = rows.map(row => `${row.EmpName} (ID: ${row.EmpId})`);
+        res.json(formattedRows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching employee data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.get('/parcelsFilter', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const { employeeId, parcelId, senderId, receiverId, startDate, endDate } = req.query;
+
+        let sql = `SELECT p.*, s.CustName AS SenderName, 
                     r.CustName AS ReceiverName, 
                     t.EmpName AS EmployeeName, 
                     q.StatusName AS StatusName 
@@ -395,19 +416,50 @@ app.get('/filteredParcelsByEmpId', async (req, res) => {
                     JOIN customer s ON p.SenderId = s.CustId 
                     JOIN customer r ON p.ReceiverId = r.CustId 
                     JOIN employees t ON p.EmpId = t.EmpId 
-                    JOIN statuses q ON p.StatusId = q.StatusId 
-                    WHERE p.EmpId = ${EmpIdFilterValue}`;
-        const [rows] = await connection.query(sql);
+                    JOIN statuses q ON p.StatusId = q.StatusId`;
+
+        let conditions = [];
+        let params = [];
+
+        if (employeeId) {
+            conditions.push("p.EmpId = ?");
+            params.push(employeeId);
+        }
+        if (parcelId) {
+            conditions.push("p.ParcelsId = ?");
+            params.push(parcelId);
+        }
+        if (senderId) {
+            conditions.push("p.SenderId = ?");
+            params.push(senderId);
+        }
+        if (receiverId) {
+            conditions.push("p.ReceiverId = ?");
+            params.push(receiverId);
+        }
+        if (startDate) {
+            conditions.push("p.DispatchDate >= ?");
+            params.push(startDate);
+        }
+        if (endDate) {
+            conditions.push("p.DispatchDate <= ?");
+            params.push(endDate);
+        }
+
+        if (conditions.length) {
+            sql += " WHERE " + conditions.join(" AND ");
+        }
+
+        const [rows] = await connection.query(sql, params);
         res.json(rows);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error fetching parcels data' });
     } finally {
-        if (connection) {
-            connection.release();
-        }
+        if (connection) connection.release();
     }
 });
+
 
 /* ------------------------------------------- Employees ------------------------------------------- */
 
