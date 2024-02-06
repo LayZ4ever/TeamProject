@@ -356,8 +356,19 @@ function setDateRestrictions() {
     document.getElementById('payDate').setAttribute("min", dateNow())
 }
 
+async function fillOfficeAddresses() {
+    const select = document.getElementById('office');
+    const res = await fetch('/offices');
+    const offices = await res.json();
 
-
+    for (let i = 0; i < offices.length; i++) {
+        const { OfficeName, OfficeAddress } = offices[i];
+        const opt = document.createElement('option');
+        opt.textContent = OfficeName;
+        opt.value = OfficeAddress;
+        select.appendChild(opt);
+    }
+}
 
 // --------------------------------------------------------- Edit Parcel mode ----------------------------------------------------
 
@@ -376,6 +387,7 @@ async function editOrNewMode() {
     //add new parcel mode
     else {
         fillEmpValue();
+        fillOfficeAddresses();
     }
 }
 
