@@ -386,6 +386,7 @@ async function editOrNewMode() {
     }
     //add new parcel mode
     else {
+        document.getElementById('statusSubmit').hidden=true;
         fillEmpValue();
         fillOfficeAddresses();
     }
