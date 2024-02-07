@@ -205,10 +205,10 @@ app.post('/api/insertData', async (req, res) => {
     let connection;
 
     try {
-        const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price, DispachDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn } = req.body;
+        const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price, DispatchDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn } = req.body;
         connection = await pool.getConnection();
-        const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, ReceiverAddress, Weight, Price, DispachDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        const [result] = await connection.query(sql, [SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price, DispachDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn]);
+        const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, ReceiverAddress, Weight, Price, DispatchDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const [result] = await connection.query(sql, [SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price, DispatchDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn]);
         connection.release();
         res.json({ message: 'Data inserted successfully', insertId: result.insertId });
     } catch (error) {
