@@ -84,7 +84,7 @@
                   align-items: center;
                 ">
                             <span> Send Date: </span><input class="form-control form-control" type="date"
-                                id="dispachDate" name="dispachDate" style="width: 50%" oninput="setDateRestrictions();"
+                                id="dispatchDate" name="dispatchDate" style="width: 50%" oninput="setDateRestrictions();"
                                 required="" />
                         </div>
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
@@ -141,16 +141,21 @@
                         </div>
                         <div class="col">
                             <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" required=""
-                                style="margin-left: 10px" value="office" /><span style="margin-top: 10px">&nbsp;office
+                                style="margin-left: 10px" value="office" oninput="calculatePrice()"
+                                onclick="showRadioButtonSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');" /><span
+                                style="margin-top: 10px">&nbsp;office </span>
+                        </div>
+                        <div class="col">
+                            <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" required="" value="address"
+                                required oninput="calculatePrice()"
+                                onclick="showRadioButtonSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');" /><span>&nbsp;address
                             </span>
                         </div>
                         <div class="col">
-                            <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" required=""
-                                value="address" /><span>&nbsp;address </span>
-                        </div>
-                        <div class="col">
                             <input type="radio" id="savedAddress" name="deliveryMethod" required=""
-                                style="margin-left: 10px; margin-bottom: 10px" value="savedAddress" /><span>&nbsp;saved
+                                style="margin-left: 10px; margin-bottom: 10px" value="savedAddress" required
+                                oninput="calculatePrice()"
+                                onclick="showRadioButtonSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');" /><span>&nbsp;saved
                                 address</span>
                         </div>
                     </div>
@@ -169,30 +174,7 @@
                     <input type="submit" id="submitAllForms" style="display: none; margin: 10px" value="Submit" />
                 </form>
             </div>
-            <div class="row" style="background: #cfe2ff; padding: 5px 0; display: flex">
-                <div class="col-lg-2">
-                    <span style="margin-top: 10px"> Deliver to:&nbsp;</span>
-                </div>
-                <div class="col">
-                    <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" required=""
-                        style="margin-left: 10px" value="office" oninput="calculatePrice()"
-                        onclick="showRadioButtonSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');" /><span
-                        style="margin-top: 10px">&nbsp;office </span>
-                </div>
-                <div class="col">
-                    <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" required="" value="address"
-                        required oninput="calculatePrice()"
-                        onclick="showRadioButtonSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');" /><span>&nbsp;address
-                    </span>
-                </div>
-                <div class="col">
-                    <input type="radio" id="savedAddress" name="deliveryMethod" required=""
-                        style="margin-left: 10px; margin-bottom: 10px" value="savedAddress" required
-                        oninput="calculatePrice()"
-                        onclick="showRadioButtonSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');" /><span>&nbsp;saved
-                        address</span>
-                </div>
-            </div>
+           
             <div id="officeSelection" class="radioDiv" style="display: none">
                 <span> Office: </span><select class="officeSelectionRequired" id="office" name="office">
                     <option value="" selected="">Please select an office</option>
@@ -270,7 +252,7 @@
                         <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
                             style="width: 50%; margin-top: 10px">
                             Pay Date: </span><input class="form-control form-control" id="payDate" type="date"
-                            style="width: 50%" name="paydate" />
+                            style="width: 50%" name="payDate" />
                     </div>
                 </div>
                 <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"

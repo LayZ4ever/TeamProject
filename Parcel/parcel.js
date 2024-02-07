@@ -245,8 +245,8 @@ async function handleParcelFormSubmission(event) {
 
     const weight = deliveryFormData.get('weight');
     const price = deliveryFormData.get('price');
-    const dispachDate = deliveryFormData.get('dispachDate');
-    // console.log("dispachDate:" + dispachDate);
+    const dispatchDate = deliveryFormData.get('dispatchDate');
+    // console.log("dispatchDate:" + dispatchDate);
     const receiptDate = deliveryFormData.get('receiptDate');
     // console.log("receiptDate:" + receiptDate);
     const statusId = statusFormData.get('status');
@@ -263,7 +263,7 @@ async function handleParcelFormSubmission(event) {
         Weight: weight,
         Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + (isOfficeDelivery ? 3 : 5)).toFixed(2),
         // Price: (parseFloat(deliveryFormData.get('weight')) * price + deliveryTypePrice).toFixed(2), 
-        DispachDate: dispachDate ? dispachDate : null,
+        DispatchDate: dispatchDate ? dispatchDate : null,
         ReceiptDate: receiptDate ? receiptDate : null,
         StatusId: statusId ? statusId : 1,
         StatusDate: changeStatusDate ? changeStatusDate : dateNow(), //this is current date
@@ -352,10 +352,10 @@ async function fillEmpValue() {
 }
 
 function setDateRestrictions() {
-    document.getElementById('dispachDate').setAttribute("min", dateNow())
+    document.getElementById('dispatchDate').setAttribute("min", dateNow())
     // console.log(dateNow())
-    document.getElementById('receiptDate').setAttribute("min", document.getElementById('dispachDate').value);
-    // console.log(document.getElementById('dispachDate').value);
+    document.getElementById('receiptDate').setAttribute("min", document.getElementById('dispatchDate').value);
+    // console.log(document.getElementById('dispatchDate').value);
 
     document.getElementById('changeStatusDate').setAttribute("min", dateNow())
     document.getElementById('payDate').setAttribute("min", dateNow())
@@ -471,7 +471,7 @@ async function fillDeliveryFormData(formId, parcel) {
         form.elements[i].disabled = true;
     }
 
-    form.elements['dispachDate'].value = parcel.DispachDate.split("T")[0];
+    form.elements['dispatchDate'].value = parcel.DispatchDate.split("T")[0];
     form.elements['receiptDate'].value = parcel.ReceiptDate.split("T")[0];
 
     form.elements['weight'].value = parcel.Weight;

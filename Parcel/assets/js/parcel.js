@@ -239,8 +239,8 @@ async function handleParcelFormSubmission(event) {
 
     const weight = deliveryFormData.get('weight');
     const price = deliveryFormData.get('price');
-    const dispachDate = deliveryFormData.get('dispachDate');
-    console.log("dispachDate:" + dispachDate);
+    const dispatchDate = deliveryFormData.get('dispatchDate');
+    console.log("dispatchDate:" + dispatchDate);
     const receiptDate = deliveryFormData.get('receiptDate');
     console.log("receiptDate:" + receiptDate);
     const statusId = statusFormData.get('status');
@@ -258,7 +258,7 @@ async function handleParcelFormSubmission(event) {
         Weight: weight,
         Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryTypePrice).toFixed(2),
         // Price: (parseFloat(deliveryFormData.get('weight')) * price + deliveryTypePrice).toFixed(2), 
-        DispachDate: dispachDate ? dispachDate : null,
+        DispatchDate: dispatchDate ? dispatchDate : null,
         ReceiptDate: receiptDate ? receiptDate : null,
         StatusId: statusId ? statusId : 1,
         StatusDate: changeStatusDate ? changeStatusDate : new Date().toISOString().split("T")[0], //this is current date

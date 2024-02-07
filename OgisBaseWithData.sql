@@ -138,7 +138,7 @@ CREATE TABLE `parcels` (
   `ReceiverAddress` varchar(255) NOT NULL,
   `Weight` double NOT NULL,
   `Price` double NOT NULL,
-  `DispachDate` date DEFAULT NULL,
+  `DispatchDate` date DEFAULT NULL,
   `ReceiptDate` date DEFAULT NULL,
   `StatusId` int NOT NULL DEFAULT '1',
   `StatusDate` date DEFAULT NULL,
