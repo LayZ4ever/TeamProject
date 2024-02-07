@@ -23,9 +23,9 @@
 </head>
 
 <body>
-    <div class="container" style="background: var(--bs-teal)">
-        <label class="form-label form-label" style="font-size: 32px">Parcel&nbsp;</label><label id="parcelNum"
-            class="form-label form-label" style="font-size: 32px; color: var(--bs-link-color)">No</label>
+    <div class="container" style="background: var(--bs-teal);">
+        <label class="form-label form-label" style="font-size: 26px">Parcel&nbsp;</label><label id="parcelNum"
+            class="form-label form-label" style="font-size: 26px; color: var(--bs-link-color)">No</label>
     </div>
     <div class="container">
         <div class="row">
@@ -33,21 +33,21 @@
                 <form id="SenderForm" style="margin-bottom: 10px">
                     <legend>Sender information</legend>
                     <span> Phone number: </span><input type="text" id="senderPhoneInput" maxlength="10" minlength="10"
-                        name="phoneNumber" required style="width: 300px; margin-left: 19px" /><br />
+                        name="phoneNumber" required style="width: 50%; margin-left: 19px" /><br />
 
                     <span> First Name: </span><input type="text" name="firstName" required
-                        style="width: 300px; margin-left: 47px" /><br />
+                        style="width: 50%; margin-left: 47px" /><br />
 
                     <span> Last Name: </span><input type="text" name="lastName" required
-                        style="width: 300px; margin-left: 49px" /><br />
+                        style="width: 50%; margin-left: 49px" /><br />
 
                     <span> City: </span><input type="text" id="cityInput" list="cityList" name="city"
                         placeholder="Type or select a city" oninput="loadCityList()" required
-                        style="width: 300px; margin-left: 96px" /><datalist id="cityList"></datalist><br />
+                        style="width: 50%; margin-left: 96px" /><datalist id="cityList"></datalist><br />
 
                     <span style="width: 100px; text-align: right; padding-right: 0px">
                         Address: </span><input type="text" name="address" placeholder="zh.k , ul. " required
-                        style="width: 300px; margin-left: 67px" /><br />
+                        style="width: 50%; margin-left: 67px" /><br />
 
                     <input name="submit" type="submit" id="senderSubmit" value="Submit" />
                 </form>
@@ -56,50 +56,52 @@
                 <form id="ReceiverForm" style="margin-bottom: 10px">
                     <legend>Receiver information</legend>
                     <span> Phone number: </span><input type="text" id="receiverPhoneInput" maxlength="10" minlength="10"
-                        name="phoneNumber" required style="width: 300px; margin-left: 19px" /><br />
+                        name="phoneNumber" required style="width: 50%; margin-left: 19px" /><br />
                     <span> First Name: </span><input type="text" name="firstName" required
-                        style="width: 300px; margin-left: 47px" /><br />
+                        style="width: 50%; margin-left: 47px" /><br />
                     <span> Last Name: </span><input type="text" name="lastName" required
-                        style="width: 300px; margin-left: 49px" /><br />
+                        style="width: 50%; margin-left: 49px" /><br />
                     <span> City: </span><input type="text" id="cityInput" list="cityList" name="city"
                         placeholder="Type or select a city" oninput="loadCityList()" required
-                        style="width: 300px; margin-left: 96px" /><datalist id="cityList"></datalist><br />
+                        style="width: 50%; margin-left: 96px" /><datalist id="cityList"></datalist><br />
                     <span> Address: </span><input type="text" name="address" placeholder="zh.k , ul. " required
-                        style="width: 300px; margin-left: 67px" /><br />
+                        style="width: 50%; margin-left: 67px" /><br />
 
                     <input name="submit" type="submit" id="receiverSubmit" value="Submit" />
                 </form>
             </div>
         </div>
         <div class="row">
-            <div class="col" style="background: #20c997">
-                <form id="DeliveryForm" style="width: 100%">
-                    <legend>Delivery Details</legend>
-                    <div class="row" style="background: var(--bs-danger-bg-subtle)">
-                        <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
+            <div class="col" style="background: #20c997; padding:0;">
+                <form id="DeliveryForm" style="width: 100%;">
+                    <legend style=" padding-left: 12px; margin:10px 0;">Delivery Details</legend>
+                    <div class="row" style="background: var(--bs-danger-bg-subtle); margin:0;">
+                        <div class="col-lg-3 d-lg-flex align-items-lg-center col-resp " style="
                   width: 50%;
                   background: var(--bs-success-bg-subtle);
                   display: flex;
                   justify-content: space-between;
                   align-items: center;
+                  
+                  
                 ">
                             <span> Send Date: </span><input class="form-control form-control" type="date"
-                                id="dispatchDate" name="dispatchDate" style="width: 50%" oninput="setDateRestrictions();"
+                                id="dispatchDate" name="dispatchDate" style="width: 50%; margin: 10px 0;" oninput="setDateRestrictions();"
                                 required="" />
                         </div>
-                        <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
+                        <div class="col-lg-3 d-lg-flex align-items-lg-center col-resp" style="
                   width: 50%;
                   background: var(--bs-warning-bg-subtle);
                   display: flex;
                   justify-content: space-between;
                   align-items: center;
                 ">
-                            <span> Receipt Date: </span><input class="form-control form-control" type="date"
-                                id="receiptDate" name="receiptDate" style="width: 50%" oninput="setDateRestrictions();"
+                            <span> Receipt Date: </span><input class="form-control form-control; margin: 10px 0;" type="date"
+                                id="receiptDate" name="receiptDate" style="width: 50%; margin: 10px 0;" oninput="setDateRestrictions();"
                                 required="" />
                         </div>
                     </div>
-                    <div class="row row-pad" style="background: var(--bs-danger-bg-subtle)">
+                    <div class="row row-pad" style="background: var(--bs-danger-bg-subtle); margin: 0;">
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
                   width: 33%;
                   padding: 5px 0;
@@ -107,7 +109,7 @@
                   justify-content: space-evenly;
                   align-items: center;
                 ">
-                            <span style="width: 30%"> Weight: </span><input type="number" id="weight" value="0.1"
+                            <span style="width: 30%; margin: 10px 0;"> Weight: </span><input type="number" id="weight" value="0.1"
                                 min="0.1" name="weight" oninput="calculatePrice()" placeholder="Weight in kg"
                                 required="" style="margin-left: 10px; width: 60%" />
                         </div>
@@ -119,7 +121,7 @@
                   justify-content: space-evenly;
                   align-items: center;
                 ">
-                            <span style="width: 30%">Price: </span><input type="text" id="price" name="price"
+                            <span style="width: 30%; margin: 10px 0;">Price: </span><input type="text" id="price" name="price"
                                 placeholder="Price in BGN" readonly="" style="margin-left: 10px; width: 60%" />
                         </div>
                         <div class="col d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
@@ -130,13 +132,13 @@
                   justify-content: space-evenly;
                   align-items: center;
                 ">
-                            <span style="width: 30%"> Employee: </span><input type="text" id="employee" name="employee"
+                            <span style="width: 30%; margin: 10px 0;"> Employee: </span><input type="text" id="employee" name="employee"
                                 placeholder="Employee name" readonly="" required=""
                                 style="margin-left: 10px; width: 60%" />
                         </div>
                     </div>
-                    <div class="row" style="background: #cfe2ff; padding: 5px 0; display: flex">
-                        <div class="col-lg-2">
+                    <div class="row" style="background: #cfe2ff; padding: 5px 0; display: flex; margin: 0; align-items: center;">
+                        <div class="col-lg-2" style="margin: 10px 0;">
                             <span style="margin-top: 10px"> Deliver to:&nbsp;</span>
                         </div>
                         <div class="col">
@@ -159,12 +161,12 @@
                                 address</span>
                         </div>
                     </div>
-                    <div id="officeSelection" class="radioDiv" style="display: none">
+                    <div id="officeSelection" class="radioDiv" style="display: none; background: #cfe2ff; padding-left:12px; padding-bottom:5px">
                         <span> Office: </span><select class="officeSelectionRequired" id="office" name="office">
                             <option value="" selected="">Please select an office</option>
                         </select>
                     </div>
-                    <div id="addressSelection" class="radioDiv" style="display: none">
+                    <div id="addressSelection" class="radioDiv" style="display: none; background: #cfe2ff; padding: 5px 0px 5px 12px;">
                         <span> Choose a city: </span><input type="text" class="addressSelectionRequired" id="cityInput"
                             list="cityList" name="addressCity" placeholder="Type or select a city" /><datalist
                             id="cityList"></datalist><span> Address: </span><input type="text"
@@ -209,8 +211,8 @@
                   padding-left: 0px;
                   margin: 0px !important;
                 ">
-                        <legend class="d-lg-flex justify-content-lg-center align-items-lg-center"
-                            style="background: var(--bs-teal); margin-bottom: 0px">
+                        <legend class="d-lg-flex align-items-lg-center"
+                            style="background: var(--bs-teal); margin-bottom: 0px; padding: 10px 0 10px 12px;">
                             Status Details
                         </legend>
                     </div>
@@ -219,14 +221,14 @@
                   padding: 0;
                   margin-bottom: 0px;
                   padding-bottom: 0px;
+
                 ">
-                        <legend class="d-lg-flex justify-content-lg-center align-items-lg-center" style="
+                        <legend class="d-lg-flex align-items-lg-center" style="
                     background: var(--bs-teal);
                     width: 100%;
-                    padding-bottom: 0px;
                     margin-bottom: 0px;
-                    padding-left: 0px;
-                    margin-left: 1px;
+                    padding-left: 12px;
+                    padding: 10px 0 10px 12px;
                   ">
                             Payment Details
                         </legend>
@@ -235,8 +237,8 @@
                 <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
                     style="margin-right: 0px; margin-left: 0px">
                     <div class="col-md-6 d-lg-flex justify-content-lg-start align-items-lg-start"
-                        style="background: var(--bs-warning-bg-subtle); display: flex">
-                        <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                        style="background: var(--bs-warning-bg-subtle); display: flex; padding: 10px 12px;">
+                        <span class="d-lg-flex align-items-lg-start"
                             style="width: 50%; margin-top: 10px">
                             Change StatusDate: </span><input
                             class="form-control d-lg-flex justify-content-lg-end align-items-lg-start form-control"
@@ -248,8 +250,9 @@
                     <div class="col-md-6" style="
                   background: var(--bs-warning-border-subtle);
                   display: flex;
+                  padding: 10px 12px;
                 ">
-                        <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                        <span class="d-lg-flex align-items-lg-start"
                             style="width: 50%; margin-top: 10px">
                             Pay Date: </span><input class="form-control form-control" id="payDate" type="date"
                             style="width: 50%" name="payDate" />
@@ -261,11 +264,12 @@
                   background: var(--bs-warning-bg-subtle);
                   width: 100%;
                   padding-bottom: 10px;
+                  padding-top: 10px;
                 ">
                         <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
-                            style="width: 100px; margin-top: 10px">
+                            style="width: 100px;">
                             Status: </span><select id="status" name="status"
-                            style="margin-left: 10px; margin-top: 8px; width: 80%">
+                            style="margin-left: 10px; width: 80%">
                             <option value="" selected="">Please select status</option>
                             <option value="1">Приета</option>
                             <option value="2">Изпратена</option>
