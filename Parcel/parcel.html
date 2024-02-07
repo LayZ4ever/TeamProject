@@ -285,6 +285,8 @@
                   required=""
                   style="margin-left: 10px"
                   value="office"
+                  oninput="calculatePrice()"
+                  onclick="showRadioButtonSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');"
                 /><span style="margin-top: 10px">&nbsp;office </span>
               </div>
               <div class="col">
@@ -294,6 +296,9 @@
                   name="deliveryMethod"
                   required=""
                   value="address"
+                  required
+                  oninput="calculatePrice()"
+                  onclick="showRadioButtonSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');"
                 /><span>&nbsp;address </span>
               </div>
               <div class="col">
@@ -304,6 +309,9 @@
                   required=""
                   style="margin-left: 10px; margin-bottom: 10px"
                   value="savedAddress"
+                  required
+                  oninput="calculatePrice()"
+                  onclick="showRadioButtonSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');"
                 /><span>&nbsp;saved address</span>
               </div>
             </div>
@@ -326,6 +334,7 @@
                 list="cityList"
                 name="addressCity"
                 placeholder="Type or select a city"
+                oninput="loadCityList()"
               /><datalist id="cityList"></datalist><span> Address: </span
               ><input
                 type="text"
