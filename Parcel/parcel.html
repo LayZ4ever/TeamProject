@@ -129,131 +129,77 @@
                   display: flex;
                   justify-content: space-evenly;
                   align-items: center;
-                "
-              >
-                <span style="width: 30%"> Employee: </span
-                ><input
-                  type="text"
-                  id="employee"
-                  name="employee"
-                  placeholder="Employee name"
-                  readonly=""
-                  required=""
-                  style="margin-left: 10px; width: 60%"
-                />
-              </div>
+                "></div>
+                        <span style="width: 30%"> Employee: </span><input type="text" id="employee" name="employee"
+                            placeholder="Employee name" readonly="" required="" style="margin-left: 10px; width: 60%" />
+                    </div>
             </div>
-            <div
-              class="row"
-              style="background: #cfe2ff; padding: 5px 0; display: flex"
-            >
-              <div class="col-lg-2">
-                <span style="margin-top: 10px"> Deliver to:&nbsp;</span>
-              </div>
-              <div class="col">
-                <input
-                  type="radio"
-                  id="deliveryMethodOffice"
-                  name="deliveryMethod"
-                  required=""
-                  style="margin-left: 10px"
-                  value="office"
-                  oninput="calculatePrice()"
-                  onclick="showRadioButtonSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');"
-                /><span style="margin-top: 10px">&nbsp;office </span>
-              </div>
-              <div class="col">
-                <input
-                  type="radio"
-                  id="deliveryMethodAddress"
-                  name="deliveryMethod"
-                  required=""
-                  value="address"
-                  required
-                  oninput="calculatePrice()"
-                  onclick="showRadioButtonSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');"
-                /><span>&nbsp;address </span>
-              </div>
-              <div class="col">
-                <input
-                  type="radio"
-                  id="savedAddress"
-                  name="deliveryMethod"
-                  required=""
-                  style="margin-left: 10px; margin-bottom: 10px"
-                  value="savedAddress"
-                  required
-                  oninput="calculatePrice()"
-                  onclick="showRadioButtonSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');"
-                /><span>&nbsp;saved address</span>
-              </div>
+            <div class="row" style="background: #cfe2ff; padding: 5px 0; display: flex">
+                <div class="col-lg-2">
+                    <span style="margin-top: 10px"> Deliver to:&nbsp;</span>
+                </div>
+                <div class="col">
+                    <input type="radio" id="deliveryMethodOffice" name="deliveryMethod" required=""
+                        style="margin-left: 10px" value="office" oninput="calculatePrice()"
+                        onclick="showRadioButtonSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');" /><span
+                        style="margin-top: 10px">&nbsp;office </span>
+                </div>
+                <div class="col">
+                    <input type="radio" id="deliveryMethodAddress" name="deliveryMethod" required="" value="address"
+                        required oninput="calculatePrice()"
+                        onclick="showRadioButtonSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');" /><span>&nbsp;address
+                    </span>
+                </div>
+                <div class="col">
+                    <input type="radio" id="savedAddress" name="deliveryMethod" required=""
+                        style="margin-left: 10px; margin-bottom: 10px" value="savedAddress" required
+                        oninput="calculatePrice()"
+                        onclick="showRadioButtonSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');" /><span>&nbsp;saved
+                        address</span>
+                </div>
             </div>
             <div id="officeSelection" class="radioDiv" style="display: none">
-              <span> Office: </span
-              ><select
-                class="officeSelectionRequired"
-                id="office"
-                name="office"
-              >
-                <option value="" selected="">Please select an office</option>
-              </select>
+                <span> Office: </span><select class="officeSelectionRequired" id="office" name="office">
+                    <option value="" selected="">Please select an office</option>
+                </select>
             </div>
             <div id="addressSelection" class="radioDiv" style="display: none">
-              <span> Choose a city: </span
-              ><input
-                type="text"
-                class="addressSelectionRequired"
-                id="cityInput"
-                list="cityList"
-                name="addressCity"
-                placeholder="Type or select a city"
-                oninput="loadCityList()"
-              /><datalist id="cityList"></datalist><span> Address: </span
-              ><input
-                type="text"
-                class="addressSelectionRequired"
-                id="deliveryAddress"
-                name="deliveryAddress"
-                placeholder="zh.k , ul. "
-              />
+                <span> Choose a city: </span><input type="text" class="addressSelectionRequired" id="cityInput"
+                    list="cityList" name="addressCity" placeholder="Type or select a city"
+                    oninput="loadCityList()" /><datalist id="cityList"></datalist><span> Address: </span><input
+                    type="text" class="addressSelectionRequired" id="deliveryAddress" name="deliveryAddress"
+                    placeholder="zh.k , ul. " />
             </div>
-            <input
-              type="submit"
-              id="submitAllForms"
-              style="display: none; margin: 10px"
-              value="Submit"
-            />
-          </form>
+            <input type="submit" id="submitAllForms" style="display: none; margin: 10px" value="Submit" />
+            </form>
         </div>
-      </div>
-      <div class="row">
+    </div>
+    <div class="row">
         <div class="col" style="padding: 0">
-          <form
-            id="StatusForm"
-            style="
+            <form id="StatusForm" style="
               background: var(--bs-dark-bg-subtle);
               width: 100%;
               margin-left: 0px;
             ">
-                    <div class="row" style="width: 100%; margin-right: 0px; margin-left: 0px">
-                        <div class="col-md-6" style="
+                <div class="row" style="width: 100%; margin-right: 0px; margin-left: 0px">
+                    <div class="col-md-6" style="
                   width: 50%;
                   padding-right: 0px;
                   padding-left: 0px;
                   margin: 0px !important;
                 ">
-                            <legend class="d-lg-flex justify-content-lg-center align-items-lg-center"
-                                style="background: var(--bs-teal); margin-bottom: 0px">
-                                Status Details
-                            </legend>
-                        </div>
-                        <div class="col-md-6" style="
+                        <legend class="d-lg-flex justify-content-lg-center align-items-lg-center"
+                            style="background: var(--bs-teal); margin-bottom: 0px">
+                            Status Details
+                        </legend>
+                    </div>
+                    <div class="col-md-6" style="
                   width: 50%;
                   padding: 0;
                   margin-bottom: 0px;
                   padding-bottom: 0px;
                 ">
-                            <legend class="d-lg-flex justify-content-lg-center align-items-lg-center" style="
+                        <legend class="d-lg-flex justify-content-lg-center align-items-lg-center" style="
                     background: var(--bs-teal);
                     width: 100%;
                     padding-bottom: 0px;
@@ -261,58 +207,58 @@
                     padding-left: 0px;
                     margin-left: 1px;
                   ">
-                                Payment Details
-                            </legend>
-                        </div>
+                            Payment Details
+                        </legend>
                     </div>
-                    <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
-                        style="margin-right: 0px; margin-left: 0px">
-                        <div class="col-md-6 d-lg-flex justify-content-lg-start align-items-lg-start"
-                            style="background: var(--bs-warning-bg-subtle); display: flex">
-                            <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
-                                style="width: 50%; margin-top: 10px">
-                                Change StatusDate: </span><input
-                                class="form-control d-lg-flex justify-content-lg-end align-items-lg-start form-control"
-                                id="changeStatusDate" type="date" style="
+                </div>
+                <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
+                    style="margin-right: 0px; margin-left: 0px">
+                    <div class="col-md-6 d-lg-flex justify-content-lg-start align-items-lg-start"
+                        style="background: var(--bs-warning-bg-subtle); display: flex">
+                        <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                            style="width: 50%; margin-top: 10px">
+                            Change StatusDate: </span><input
+                            class="form-control d-lg-flex justify-content-lg-end align-items-lg-start form-control"
+                            id="changeStatusDate" type="date" style="
                     /*margin-left: 10px;*/
                     width: 50%; /*margin-top: 5px;*/
                   " />
-                        </div>
-                        <div class="col-md-6" style="
+                    </div>
+                    <div class="col-md-6" style="
                   background: var(--bs-warning-border-subtle);
                   display: flex;
                 ">
-                            <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
-                                style="width: 50%; margin-top: 10px">
-                                Pay Date: </span><input class="form-control form-control" id="payDate" type="date"
-                                style="width: 50%" name="paydate" />
-                        </div>
+                        <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                            style="width: 50%; margin-top: 10px">
+                            Pay Date: </span><input class="form-control form-control" id="payDate" type="date"
+                            style="width: 50%" name="paydate" />
                     </div>
-                    <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
-                        style="margin-right: 0px; margin-left: 0px">
-                        <div class="col-md-6 d-lg-flex justify-content-lg-center align-items-lg-start" style="
+                </div>
+                <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
+                    style="margin-right: 0px; margin-left: 0px">
+                    <div class="col-md-6 d-lg-flex justify-content-lg-center align-items-lg-start" style="
                   background: var(--bs-warning-bg-subtle);
                   width: 100%;
                   padding-bottom: 10px;
                 ">
-                            <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
-                                style="width: 100px; margin-top: 10px">
-                                Status: </span><select id="status" name="status"
-                                style="margin-left: 10px; margin-top: 8px; width: 80%">
-                                <option value="" selected="">Please select status</option>
-                                <option value="1">Приета</option>
-                                <option value="2">Изпратена</option>
-                                <option value="3">Получена</option>
-                                <option value="4">Платена</option>
-                                <option value="5">Приключена</option>
-                            </select>
-                        </div>
-                        <input name="submit" type="submit" id="statusSubmit" value="Submit" />
+                        <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                            style="width: 100px; margin-top: 10px">
+                            Status: </span><select id="status" name="status"
+                            style="margin-left: 10px; margin-top: 8px; width: 80%">
+                            <option value="" selected="">Please select status</option>
+                            <option value="1">Приета</option>
+                            <option value="2">Изпратена</option>
+                            <option value="3">Получена</option>
+                            <option value="4">Платена</option>
+                            <option value="5">Приключена</option>
+                        </select>
                     </div>
-                </form>
-            </div>
+                    <input name="submit" type="submit" id="statusSubmit" value="Submit" />
+                </div>
+            </form>
         </div>
-        <div id="result"></div>
+    </div>
+    <div id="result"></div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <!-- <script src="assets/js/assets/bootstrap/js/bootstrap.min.js"></script> -->
