@@ -24,7 +24,7 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
             if (data.roleId === 1){ // 1 is Moderator
                 window.location.href = '/Moderator.html'; // Moderator
             } else if (data.roleId === 2) { // 2 is Customer
-                window.location.href = '/customerPage.html';
+                window.location.href = '/CustomerParcels.html';
             }else if (data.roleId === 3) { // 3 is Employee
                 window.location.href = '/Moderator.html';
             } 

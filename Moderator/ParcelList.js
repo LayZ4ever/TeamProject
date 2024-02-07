@@ -69,7 +69,7 @@ function populateTable(parcels) {
         parcelDiv.classList.add("parcel-info");
         parcelDiv.appendChild(createParagraph("Weight: " + parcel.Weight));
         parcelDiv.appendChild(createParagraph("Price: " + parcel.Price));
-        parcelDiv.appendChild(createParagraph("Payment: " +(parcel.PaidOn === null ? null : new Date(parcel.PaidOn).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
+        parcelDiv.appendChild(createParagraph("Payment: " + (parcel.PaidOn === null ? null : new Date(parcel.PaidOn).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
         parcelDiv.appendChild(createParagraph("Send to: " + (parcel.OfficeOrAddress == 1 ? "Office" : "Address")));
         
         containerDiv.appendChild(parcelDiv);   

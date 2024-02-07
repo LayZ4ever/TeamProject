@@ -20,6 +20,8 @@ const pool = mysql.createPool(dbConfig);
 app.use(express.static('Authentication'));
 app.use(express.static('Parcel'));
 app.use(express.static('Moderator'));
+app.use(express.static('Customer'));
+
 
 /* ------------------------------------ LOGIN AND REGISTRATION ------------------------------------ */
 
@@ -250,6 +252,26 @@ app.post('/api/updateData', async (req, res) => {
         }
     }
 });
+//have to update the DB here for parcel, instead of creating a new one
+app.post('/api/updateData', async (req, res) => {
+    let connection;
+
+    const { StatusDate, PaidOn, StatusId, ParcelId } = req.body;
+    try {
+        connection = await pool.getConnection();
+        const sql = 'UPDATE parcels SET StatusDate = ?, PaidOn = ?, StatusId = ? WHERE ParcelsId = ?';
+        await connection.query(sql, [StatusDate, PaidOn, StatusId, ParcelId]);
+        connection.release();
+        res.json({ message: 'Data updated successfully' });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error updating data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
 
 app.get('/api/getCustomerId', async (req, res) => {
     let connection;
@@ -276,6 +298,19 @@ app.get('/api/getCustomerId', async (req, res) => {
         }
     }
 });
+
+
+app.get(`/api/getParcelById`, async (req, res) => {
+    const { parcelId } = req.query;
+
+    connection = await pool.getConnection();
+    const sql = 'SELECT * FROM parcels WHERE ParcelsId = ?';
+    const [parcel] = await connection.query(sql, [parcelId]);
+    connection.release();
+
+    res.json(parcel[0]);
+});
+
 
 
 app.get(`/api/getParcelById`, async (req, res) => {
@@ -384,6 +419,27 @@ app.delete('/api/deleteParcel', async (req, res) => {
 // filters
 app.get('/searchEmployees', async (req, res) => {
     let connection;
+    try { 
+        connection = await pool.getConnection();
+        const searchQuery = req.query.query || '';  // Get the search term from the query parameters
+        // Use CONCAT and LOWER to ensure case-insensitive matching in MySQL
+        const sql = `SELECT EmpId, EmpName FROM employees WHERE LOWER(EmpName) LIKE LOWER(CONCAT('%', ?, '%'))`;
+        const [rows] = await connection.query(sql, [searchQuery]);
+        const formattedRows = rows.map(row => `${row.EmpName} (ID: ${row.EmpId})`);
+        res.json(formattedRows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching employee data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+
+app.get('/searchEmployees', async (req, res) => {
+    let connection;
     try {
         connection = await pool.getConnection();
         const searchQuery = req.query.query || '';  // Get the search term from the query parameters
@@ -460,6 +516,80 @@ app.get('/parcelsFilter', async (req, res) => {
     }
 });
 
+// for customer parcels
+async function getCustIdFromUserId(UserId) {
+    connection = await pool.getConnection();
+    const sql = 'SELECT * FROM customer WHERE UserId = ?';
+    const [customer] = await connection.query(sql, [UserId]);
+    connection.release();
+
+    let custId = customer[0].CustId;
+    // console.log("Is userId extracted? :" + UserId);
+    // console.log("Is CustId extracted? :" + custId);
+    return custId;
+}
+
+app.get('/customerParcels', async (req, res) => {
+    let connection;
+    connection = await pool.getConnection();
+    try {
+        connection = await pool.getConnection();
+        let UserId = req.session.userId;
+        let CustId = await getCustIdFromUserId(UserId);
+        const sql = `
+        SELECT p.*, s.CustName AS SenderName, 
+        r.CustName AS ReceiverName, 
+        t.EmpName AS EmployeeName, 
+        q.StatusName AS StatusName 
+        FROM parcels p 
+        JOIN customer s ON p.SenderId = s.CustId 
+        JOIN customer r ON p.ReceiverId = r.CustId 
+        JOIN employees t ON p.EmpId = t.EmpId 
+        JOIN statuses q ON p.StatusId = q.StatusId
+        WHERE p.SenderId = ${CustId}
+        OR p.ReceiverId = ${CustId};`;
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching parcels data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.get('/sortedCustomerParcels', async (req, res) => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        let UserId = req.session.userId;
+        let CustId = await getCustIdFromUserId(UserId);
+        const sortingAttribute = req.query.sortingAttribute || 'ParcelsId';
+        const sql = `SELECT p.*, s.CustName AS SenderName, 
+                    r.CustName AS ReceiverName, 
+                    t.EmpName AS EmployeeName, 
+                    q.StatusName AS StatusName 
+                    FROM parcels p 
+                    JOIN customer s ON p.SenderId = s.CustId 
+                    JOIN customer r ON p.ReceiverId = r.CustId 
+                    JOIN employees t ON p.EmpId = t.EmpId 
+                    JOIN statuses q ON p.StatusId = q.StatusId 
+                    WHERE p.SenderId = ${CustId}
+                    OR p.ReceiverId = ${CustId}
+                    ORDER BY ${sortingAttribute}`;
+        const [rows] = await connection.query(sql);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching parcels data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
 
 /* ------------------------------------------- Employees ------------------------------------------- */
 
