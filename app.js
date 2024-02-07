@@ -217,7 +217,6 @@ app.post('/api/insertData', async (req, res) => {
 
     try {
         const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price, DispatchDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn } = req.body;
-        const { SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price, DispatchDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn } = req.body;
         connection = await pool.getConnection();
         const sql = 'INSERT INTO parcels (SenderId, ReceiverId, OfficeOrAddress, SenderAddress, ReceiverAddress, Weight, Price, DispatchDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         const [result] = await connection.query(sql, [SenderId, ReceiverId, officeOrAddress, senderAddress, receiverAddress, Weight, Price, DispatchDate, ReceiptDate, StatusId, StatusDate, EmpId, PaidOn]);
