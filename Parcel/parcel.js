@@ -454,7 +454,7 @@ function fillCustomerFormData(formId, customer) {
 
     // Split the combined city and address
     // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
-    const addressParts = customerData.Address.split(', ');
+    const addressParts = customer.Address.split(', ');
     const city = addressParts.shift() //+ ', ';
     const address = addressParts.join(', ');
 
@@ -486,7 +486,7 @@ async function fillDeliveryFormData(formId, parcel) {
         form.elements['deliveryMethod'].value = "address";
         // Split the combined city and address
         // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
-        const addressParts = customerData.Address.split(', ');
+        const addressParts = parcel.Address.split(', ');
         const city = addressParts.shift()// + ', ';
         const address = addressParts.join(', ');
 
