@@ -233,7 +233,7 @@ app.post('/api/insertData', async (req, res) => {
 //have to update the DB here for parcel, instead of creating a new one
 app.post('/api/updateData', async (req, res) => {
     let connection;
-    
+
     const { StatusDate, PaidOn, StatusId, ParcelId } = req.body;
     try {
         connection = await pool.getConnection();
@@ -312,7 +312,7 @@ JOIN
     employees t ON p.EmpId = t.EmpId 
 JOIN 
     statuses q ON p.StatusId = q.StatusId;`;
-        const [rows] = await connection.query(sql);
+        const [rows] = await connection.query(sql)  ;
         res.json(rows);
     } catch (error) {
         console.error('Error:', error);
@@ -500,7 +500,7 @@ app.get('/api/getEmpIdAndName', async (req, res) => {
 
 
 //Function that gets empId from userId
-async function  getEmpFromUserId(userId) {
+async function getEmpFromUserId(userId) {
     connection = await pool.getConnection();
     const sql = 'SELECT * FROM employees WHERE UserId = ?';
     const [employee] = await connection.query(sql, [userId]);
