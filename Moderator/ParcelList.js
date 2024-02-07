@@ -6,7 +6,6 @@ function fetchParcels() {
     fetch('/parcels')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             populateTable(data);})
         .catch(error => console.error('Error fetching data:', error));
 }
@@ -31,7 +30,9 @@ function populateTable(parcels) {
         editButton.classList.add('action-save');
         editButton.textContent = 'Edit';
         editButton.addEventListener('click', function () {
-            //TODO redirect to edit page
+        // window.location.href = '/parcel.html?parcelId='+parcel.ParcelsId;
+        window.location.assign('/parcel.html?parcelId='+parcel.ParcelsId);
+            //TODO redirect to edit page. done //Philip: Thanks for the navigation
         });
         buttonsContainer.appendChild(editButton);
 
@@ -68,14 +69,14 @@ function populateTable(parcels) {
         parcelDiv.classList.add("parcel-info");
         parcelDiv.appendChild(createParagraph("Weight: " + parcel.Weight));
         parcelDiv.appendChild(createParagraph("Price: " + parcel.Price));
-        parcelDiv.appendChild(createParagraph("Payment: " + parcel.PaidOn)); 
-        parcelDiv.appendChild(createParagraph("Send to: " + (parcel.OfficeOrAddress ? "Office" : "Address")));
+        parcelDiv.appendChild(createParagraph("Payment: " +(parcel.PaidOn === null ? null : new Date(parcel.PaidOn).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
+        parcelDiv.appendChild(createParagraph("Send to: " + (parcel.OfficeOrAddress == 1 ? "Office" : "Address")));
         
         containerDiv.appendChild(parcelDiv);   
         
         let parcelDiv1 = document.createElement("div");
         parcelDiv1.classList.add("parcel1-info");
-        parcelDiv1.appendChild(createParagraph("Dispatch Date: " + (parcel.DispachDate === null ? null : new Date(parcel.DispachDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
+        parcelDiv1.appendChild(createParagraph("Dispatch Date: " + (parcel.DispatchDate === null ? null : new Date(parcel.DispatchDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
         parcelDiv1.appendChild(createParagraph("Receipt Date: " + (parcel.ReceiptDate === null ? null : new Date(parcel.ReceiptDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
         parcelDiv1.appendChild(createParagraph("Status: " + parcel.StatusName + " " + (parcel.StatusDate === null ? null : new Date(parcel.StatusDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
         containerDiv.appendChild(parcelDiv1);
@@ -115,6 +116,10 @@ function deleteParcel(parcelId) {
             alert('An error occurred while deleting the parcel.');
         });
 }
+
+function exitParcels() {
+    window.location.href = "Moderator.html";
+  }
 //----------------------------------------------------------------------------
 function loadCityList() {
     const cityListElement = document.getElementById('cityList');
@@ -254,11 +259,4 @@ document.getElementById('sortButton').addEventListener('click', function () {
     const selectedAttribute = document.getElementById('parcelsAttribute').value;
     fetchSortedParcels(selectedAttribute);
 });
-
-// filtering
-document.getElementById('filterButton').addEventListener('click', function () {
-    const selectedAttribute = document.getElementById('EmpIdFilterValue').value;
-    fetchFilteredParcelsByEmpId(selectedAttribute);
-});
-
 

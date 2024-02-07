@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Parcels</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Parcels.css">
+
+</head>
+
+<body>
+    <h1 style="font-size: 2.5rem;">Report</h1>
+    <div class="container" style="display: flex;justify-content: space-between;">
+        <div id="filteringParcelsAttribute" name="filteringParcelsAttribute"
+            style="background: rgb(203,205,205);color: #043a3d;border-radius: 1px;padding-top: 6px;padding-right: 12px;padding-bottom: 6px;padding-left: 12px;">
+            <input type="text" id="parcelIdInput" name="parcelId" placeholder="Enter parcel ID" style="width: 113px;"
+                required>
+            <input type="text" id="employeeInput" list="employeeList" name="employee"
+                placeholder="Type or select an employee" oninput="loadEmployeeList()" style="width: 250px;" required>
+            <datalist id="employeeList"></datalist>
+            <input type="text" id="senderIdInput" name="senderId" placeholder="Enter Sender ID" style="width: 118px;"
+                required>
+            <input type="text" id="receiverIdInput" name="receiverId" placeholder="Enter Receiver ID"
+                style="width: 128px;" required>
+            <input type="date" id="startDateInput" name="startDate" placeholder="From date">
+            <input type="date" id="endDateInput" name="endDate" placeholder="To date">
+            <button id="filterParcelsButton" type="button"
+                style="background: rgb(32,201,151);border-radius: 6px;border-style: none;color: white;padding-top: 6px;padding-right: 12px;padding-bottom: 6px;padding-left: 12px;">Filter</button>
+            <button id="clearInputsButton" type="button"
+                style="background: rgb(32,201,151);border-radius: 6px;border-style: none;color: white;padding-top: 6px;padding-right: 12px;padding-bottom: 6px;padding-left: 12px;">Clear</button>
+        </div>
+    </div>
+    <div>
+        <div class="table parcels-container" id="parcels">
+        </div>
+    </div>
+    <script src="Report.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
