@@ -142,12 +142,12 @@ function fillForm(formId, customerData) {
     // Split the combined city and address
     if (customerData.Address) {
         // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
-        const addressParts = customerData.Address.split(') ');
-        const city = addressParts[0] + ')';
-        const address = addressParts[1];
+        const addressParts = customerData.Address.split(', ');
+        const city = addressParts.shift()// + ', ';
+        const address = addressParts.join(', ');
 
         form.elements['city'].value = city;
-        form.elements['address'].value = address;
+        (address ? form.elements['address'].value = address : "");
         form.elements['city'].readOnly = true;
         form.elements['address'].readOnly = true;
     } else {
@@ -215,7 +215,7 @@ function handleFormSubmission(formId, apiUrl) {
 async function handleParcelFormSubmission(event) {
     event.preventDefault();
 
-    
+
     // Collect data from SenderForm, ReceiverForm, and DeliveryForm
     const senderFormData = new FormData(document.getElementById('SenderForm'));
     const receiverFormData = new FormData(document.getElementById('ReceiverForm'));
@@ -225,7 +225,7 @@ async function handleParcelFormSubmission(event) {
     const isOfficeDelivery = deliveryFormData.get('deliveryMethod') === 'office';
     const isCustomerAddress = deliveryFormData.get('deliveryMethod') === 'savedAddress';
     const deliveryType = isOfficeDelivery ? 1 : 2; // 1 for office, 2 for address
-    
+
     // Retrieve phone numbers from sender and receiver form data
     const senderPhone = senderFormData.get('phoneNumber');
     const receiverPhone = receiverFormData.get('phoneNumber');
@@ -238,7 +238,7 @@ async function handleParcelFormSubmission(event) {
     const receiverResponse = await fetch(`/api/getCustomerId?phone=${receiverPhone}`);
     const receiverData = await receiverResponse.json();
     const receiverId = receiverData.customerId;
-    
+
     const weight = deliveryFormData.get('weight');
     const price = deliveryFormData.get('price');
     const dispachDate = deliveryFormData.get('dispachDate');
@@ -249,7 +249,7 @@ async function handleParcelFormSubmission(event) {
     const changeStatusDate = statusFormData.get('changeStatusDate');
     const empId = await getEmpIdFromSession();
     const paidOn = statusFormData.get('payDate');
-    
+
     const parcelData = !editMode ? {
         SenderId: senderId,
         ReceiverId: receiverId,
@@ -374,7 +374,7 @@ async function fillOfficeAddresses() {
 
 window.addEventListener("load", editOrNewMode);
 async function editOrNewMode() {
-    setDateRestrictions(); 
+    setDateRestrictions();
     const parcelId = getParcelId();
     //edit parcel mode
     if (parcelId != null) {
@@ -382,11 +382,11 @@ async function editOrNewMode() {
         await parcelEditMode(parcelId); //maybe it doesn't need await here
         //enable StatusForm submit button and make the fields required and remove other submit buttons
         requiredONLYForClass("required");
-        
+
     }
     //add new parcel mode
     else {
-        document.getElementById('statusSubmit').hidden=true;
+        document.getElementById('statusSubmit').hidden = true;
         fillEmpValue();
         fillOfficeAddresses();
     }
@@ -413,7 +413,7 @@ async function parcelEditMode(parcelId) {
 
     //get Receiver info from parcelId
     const receiverData = await getCustomerById(parcel.ReceiverId);
-    
+
     //fill forms - Sender, Receiver, Delivery NOT Status
 
     fillCustomerFormData("SenderForm", senderData);
@@ -449,12 +449,12 @@ function fillCustomerFormData(formId, customer) {
 
     // Split the combined city and address
     // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
-    const addressParts = customer.Address.split(') ');
-    const city = addressParts[0] + ')';
-    const address = addressParts[1];
+    const addressParts = customerData.Address.split(', ');
+    const city = addressParts.shift() //+ ', ';
+    const address = addressParts.join(', ');
 
     form.elements['city'].value = city;
-    form.elements['address'].value = address;
+    (address ? form.elements['address'].value = address : "");
 
 }
 
@@ -480,12 +480,13 @@ async function fillDeliveryFormData(formId, parcel) {
         document.getElementById('addressSelection').style.display = 'block';
         form.elements['deliveryMethod'].value = "address";
         // Split the combined city and address
-        // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
-        const addressParts = parcel.ReceiverAddress.split(') ');
-        const city = addressParts[0] + ')';
-        const address = addressParts[1];
+         // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
+         const addressParts = customerData.Address.split(', ');
+         const city = addressParts.shift()// + ', ';
+         const address = addressParts.join(', ');
+ 
         form.elements['addressCity'].value = city;
-        form.elements['deliveryAddress'].value = address;
+        (address ? form.elements['deliveryAddress'].value = address : "");
 
 
     }
@@ -508,4 +509,3 @@ async function getParcelById(parcelId) {
     const res = await fetch(`/api/getParcelById?parcelId=${parcelId}`).then(response => response.json())
     return res;
 }
-s
