@@ -380,6 +380,7 @@ async function fillOfficeAddresses() {
 window.addEventListener("load", editOrNewMode);
 async function editOrNewMode() {
     setDateRestrictions();
+    fillOfficeAddresses();
     const parcelId = getParcelId();
     //edit parcel mode
     if (parcelId != null) {
@@ -393,7 +394,7 @@ async function editOrNewMode() {
     else {
         document.getElementById('statusSubmit').hidden = true;
         fillEmpValue();
-        fillOfficeAddresses();
+        
     }
 }
 
@@ -424,7 +425,7 @@ async function parcelEditMode(parcelId) {
     fillCustomerFormData("SenderForm", senderData);
     fillCustomerFormData("ReceiverForm", receiverData);
     fillDeliveryFormData("DeliveryForm", parcel);
-
+    fillStatusFormData("StatusForm", parcel);
 }
 
 
@@ -495,10 +496,18 @@ async function fillDeliveryFormData(formId, parcel) {
 
 
     }
+}
+ function fillStatusFormData(formId, parcel) {
+    const form = document.getElementById(formId);
 
-
+    form.elements['changeStatusDate'].value = parcel.StatusDate.split("T")[0];
+    form.elements['payDate'].value = parcel.PaidOn.split("T")[0];
+    form.elements['status'].value = parcel.StatusId;
 
 }
+
+
+
 
 async function getEmpName(empId) {
     const res = await fetch(`/api/getEmpNameFromEmpId?empId=${empId}`).then(response => response.json());
