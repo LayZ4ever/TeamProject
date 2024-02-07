@@ -16,11 +16,12 @@
 //         .catch(error => console.error('Error:', error));
 // });
 
+let editMode;
+const dateNow = () => new Date().toISOString().split("T")[0];
 
-
-function calculatePrice(){
+function calculatePrice() {
     const isOfficeDelivery = document.getElementById('deliveryMethodOffice').checked;
-    const deliveryTypePrice = isOfficeDelivery ? 1 : 5; // 1 for office, 2 for address
+    const deliveryTypePrice = isOfficeDelivery ? 3 : 5; // 3 bgn for office, 5 bgn for address
     const price = (parseFloat(document.getElementById('weight').value) * 0.50 + deliveryTypePrice).toFixed(2);
 
     document.getElementById('price').value = price;
@@ -53,7 +54,7 @@ function loadCityList() {
         });
 }
 
-function showSelection(selectionType) {
+function showRadioButtonSelection(selectionType) {
     var officeSelection = document.getElementById('officeSelection');
     var addressSelection = document.getElementById('addressSelection');
 
@@ -214,6 +215,7 @@ function handleFormSubmission(formId, apiUrl) {
 async function handleParcelFormSubmission(event) {
     event.preventDefault();
 
+    
     // Collect data from SenderForm, ReceiverForm, and DeliveryForm
     const senderFormData = new FormData(document.getElementById('SenderForm'));
     const receiverFormData = new FormData(document.getElementById('ReceiverForm'));
@@ -222,8 +224,8 @@ async function handleParcelFormSubmission(event) {
 
     const isOfficeDelivery = deliveryFormData.get('deliveryMethod') === 'office';
     const isCustomerAddress = deliveryFormData.get('deliveryMethod') === 'savedAddress';
-    const deliveryTypePrice = isOfficeDelivery ? 1 : 5; // 1 for office, 5 for address
-
+    const deliveryType = isOfficeDelivery ? 1 : 2; // 1 for office, 2 for address
+    
     // Retrieve phone numbers from sender and receiver form data
     const senderPhone = senderFormData.get('phoneNumber');
     const receiverPhone = receiverFormData.get('phoneNumber');
@@ -236,37 +238,41 @@ async function handleParcelFormSubmission(event) {
     const receiverResponse = await fetch(`/api/getCustomerId?phone=${receiverPhone}`);
     const receiverData = await receiverResponse.json();
     const receiverId = receiverData.customerId;
-
+    
     const weight = deliveryFormData.get('weight');
     const price = deliveryFormData.get('price');
     const dispachDate = deliveryFormData.get('dispachDate');
-    console.log("dispachDate:" + dispachDate);
+    // console.log("dispachDate:" + dispachDate);
     const receiptDate = deliveryFormData.get('receiptDate');
-    console.log("receiptDate:" + receiptDate);
+    // console.log("receiptDate:" + receiptDate);
     const statusId = statusFormData.get('status');
     const changeStatusDate = statusFormData.get('changeStatusDate');
     const empId = await getEmpIdFromSession();
     const paidOn = statusFormData.get('payDate');
-
-
-    const parcelData = {
+    
+    const parcelData = !editMode ? {
         SenderId: senderId,
         ReceiverId: receiverId,
-        officeOrAddress: deliveryTypePrice,
+        officeOrAddress: deliveryType,
         senderAddress: `${senderFormData.get('city')}, ${senderFormData.get('address')}`,
         receiverAddress: isCustomerAddress ? `${receiverFormData.get('city')} ${receiverFormData.get('address')}` : (isOfficeDelivery ? deliveryFormData.get('office') : `${deliveryFormData.get('addressCity')} ${deliveryFormData.get('deliveryAddress')}`),
         Weight: weight,
-        Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + deliveryTypePrice).toFixed(2),
+        Price: (parseFloat(deliveryFormData.get('weight')) * 0.50 + (isOfficeDelivery ? 3 : 5)).toFixed(2),
         // Price: (parseFloat(deliveryFormData.get('weight')) * price + deliveryTypePrice).toFixed(2), 
         DispachDate: dispachDate ? dispachDate : null,
         ReceiptDate: receiptDate ? receiptDate : null,
         StatusId: statusId ? statusId : 1,
-        StatusDate: changeStatusDate ? changeStatusDate : new Date().toISOString().split("T")[0], //this is current date
+        StatusDate: changeStatusDate ? changeStatusDate : dateNow(), //this is current date
         EmpId: empId,
         PaidOn: paidOn ? paidOn : null,
+    } : {
+        ParcelId: getParcelId(),
+        StatusId: statusId,
+        PaidOn: paidOn || null,
+        StatusDate: changeStatusDate || dateNow()
     };
 
-    fetch('/api/insertData', {
+    fetch(`/api/${editMode ? 'update' : 'insert'}Data`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -286,6 +292,8 @@ async function handleParcelFormSubmission(event) {
 
 // Event listener for form submission
 document.getElementById('DeliveryForm').addEventListener('submit', handleParcelFormSubmission);
+document.getElementById('StatusForm').addEventListener('submit', handleParcelFormSubmission);
+
 document.addEventListener('DOMContentLoaded', function () {
     searchCustomer('senderPhoneInput', 'SenderForm', 'senderSubmit');
     searchCustomer('receiverPhoneInput', 'ReceiverForm', 'receiverSubmit');
@@ -297,15 +305,20 @@ document.addEventListener('DOMContentLoaded', function () {
 //Function that sets required to a certain class and removes it from others
 function requiredONLYForClass(elementClass, ...otherClasses) {
 
-    //remove required
-    for (const otherclass of otherClasses) {
-        const otherElements = document.querySelectorAll('.' + otherclass);
 
-        for (const otherElement of otherElements) {
-            otherElement.setAttribute('disabled', '');
-            otherElement.removeAttribute('required');
+
+    //remove required
+    if (otherClasses.length != 0) {
+        for (const otherclass of otherClasses) {
+            const otherElements = document.querySelectorAll('.' + otherclass);
+
+            for (const otherElement of otherElements) {
+                otherElement.setAttribute('disabled', '');
+                otherElement.removeAttribute('required');
+            }
         }
     }
+
     if (elementClass !== '') {
         const selectedElements = document.querySelectorAll('.' + elementClass);
         for (const selectedElement of selectedElements) {
@@ -328,35 +341,170 @@ async function getEmpNameFromSession() {
 
 async function fillEmpValue() {
     let empName = await getEmpNameFromSession();
-    console.log(empName);
+    // console.log(empName);
     const empEmt = document.getElementById("employee");
     empEmt.value = empName;
 }
+
+function setDateRestrictions() {
+    document.getElementById('dispachDate').setAttribute("min", dateNow())
+    // console.log(dateNow())
+    document.getElementById('receiptDate').setAttribute("min", document.getElementById('dispachDate').value);
+    // console.log(document.getElementById('dispachDate').value);
+
+    document.getElementById('changeStatusDate').setAttribute("min", dateNow())
+    document.getElementById('payDate').setAttribute("min", dateNow())
+}
+
+async function fillOfficeAddresses() {
+    const select = document.getElementById('office');
+    const res = await fetch('/offices');
+    const offices = await res.json();
+
+    for (let i = 0; i < offices.length; i++) {
+        const { OfficeName, OfficeAddress } = offices[i];
+        const opt = document.createElement('option');
+        opt.textContent = OfficeName;
+        opt.value = OfficeAddress;
+        select.appendChild(opt);
+    }
+}
+
+// --------------------------------------------------------- Edit Parcel mode ----------------------------------------------------
+
+window.addEventListener("load", editOrNewMode);
+async function editOrNewMode() {
+    setDateRestrictions(); 
+    const parcelId = getParcelId();
+    //edit parcel mode
+    if (parcelId != null) {
+        editMode = true;
+        await parcelEditMode(parcelId); //maybe it doesn't need await here
+        //enable StatusForm submit button and make the fields required and remove other submit buttons
+        requiredONLYForClass("required");
+        
+    }
+    //add new parcel mode
+    else {
+        fillEmpValue();
+        fillOfficeAddresses();
+    }
+}
+
 
 //get parcelId from the url - edit parcel status, if null - new parcel
 function getParcelId() {
     const urlParams = new URLSearchParams(window.location.search);
     const parcelId = urlParams.get('parcelId');
-    if (parcelId != null) {
-        //edit parcel mode
-        //fill forms - Sender, Receiver, Delivery NOT Status
-        //get Sender info from parcelId
+    return parcelId;
+}
 
-        //get Receiver info from parcelId
+async function parcelEditMode(parcelId) {
 
-        //get Delivery info from parcelId (change Price to FinalPrice)
+    //edit parcel mode  
+    document.getElementById("parcelNum").innerText = "No " + parcelId;
+    document.getElementById('changeStatusDate').value = dateNow();
+    //get parcel
+    const parcel = await getParcelById(parcelId);
+
+    //get Sender info from parcelId     
+    const senderData = await getCustomerById(parcel.SenderId);
+
+    //get Receiver info from parcelId
+    const receiverData = await getCustomerById(parcel.ReceiverId);
+    
+    //fill forms - Sender, Receiver, Delivery NOT Status
+
+    fillCustomerFormData("SenderForm", senderData);
+    fillCustomerFormData("ReceiverForm", receiverData);
+    fillDeliveryFormData("DeliveryForm", parcel);
+
+}
 
 
+//same as window.addEventListener("load",func)
+// document.addEventListener("DOMContentLoaded", async () => {});
 
+const makeReadOnly = (e) => e.readOnly = true;
+const makeDisabled = (e) => e.disabled = true;
 
+//use this for Sender and Receiver forms
+function fillCustomerFormData(formId, customer) {
+    const form = document.getElementById(formId);
 
-        //make them read-only
+    // form.elements.forEach(makeDisabled);
+
+    for (let i = 0; i < form.elements.length; i++) {
+        form.elements[i].disabled = true;
+    }
+    form.elements['submit'].hidden = true;
+
+    form.elements['phoneNumber'].value = customer.PhoneNumber;
+
+    // Split full name into first and last names
+    const fullName = customer.CustName.split(' ');
+    form.elements['firstName'].value = fullName[0];
+    form.elements['lastName'].value = fullName[1];
+
+    // Split the combined city and address
+    // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
+    const addressParts = customer.Address.split(') ');
+    const city = addressParts[0] + ')';
+    const address = addressParts[1];
+
+    form.elements['city'].value = city;
+    form.elements['address'].value = address;
+
+}
+
+async function fillDeliveryFormData(formId, parcel) {
+    const form = document.getElementById(formId);
+
+    // form.elements.forEach(makeReadOnly);
+    for (let i = 0; i < form.elements.length; i++) {
+        form.elements[i].disabled = true;
+    }
+
+    form.elements['dispachDate'].value = parcel.DispachDate.split("T")[0];
+    form.elements['receiptDate'].value = parcel.ReceiptDate.split("T")[0];
+
+    form.elements['weight'].value = parcel.Weight;
+    form.elements['price'].value = parcel.Price;
+    form.elements['employee'].value = await getEmpName(parcel.EmpId);
+    if (parcel.OfficeOrAddress == 1) {
+        document.getElementById('officeSelection').style.display = 'block';
+        form.elements['deliveryMethod'].value = "office";
+        form.elements['office'].value = parcel.ReceiverAddress;
+    } else {
+        document.getElementById('addressSelection').style.display = 'block';
+        form.elements['deliveryMethod'].value = "address";
+        // Split the combined city and address
+        // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
+        const addressParts = parcel.ReceiverAddress.split(') ');
+        const city = addressParts[0] + ')';
+        const address = addressParts[1];
+        form.elements['addressCity'].value = city;
+        form.elements['deliveryAddress'].value = address;
 
 
     }
+
+
+
 }
 
-window.addEventListener("load", fillEmpValue);
-// window.addEventListener("load", conSL);
+async function getEmpName(empId) {
+    const res = await fetch(`/api/getEmpNameFromEmpId?empId=${empId}`).then(response => response.json());
+    return res.empName;
+}
 
-// document.addEventListener("DOMContentLoaded", async () => {});
+async function getCustomerById(customerId) {
+    const res = await fetch(`/api/getCustomerById?customerId=${customerId}`).then(response => response.json())
+    return res;
+}
+
+async function getParcelById(parcelId) {
+    const res = await fetch(`/api/getParcelById?parcelId=${parcelId}`).then(response => response.json())
+    return res;
+}
+s

@@ -23,7 +23,7 @@
 
 <body style="height: 1500px;">
     <div class="container" style="background: var(--bs-teal);"><label class="form-label"
-            style="font-size: 32px;">Parcel&nbsp;</label><label class="form-label"
+            style="font-size: 32px;">Parcel&nbsp;</label><label id="parcelNum" class="form-label"
             style="font-size: 32px;color: var(--bs-link-color);">No</label></div>
     <div class="container">
         <div class="row">
@@ -46,7 +46,7 @@
                     <span style="width: 100px;text-align: right;padding-right: 0px;"> Address: </span><input type="text"
                         name="address" placeholder="zh.k , ul. " required style="width: 300px;margin-left: 67px;"><br>
 
-                    <input type="submit" id="senderSubmit" value="Submit">
+                    <input name="submit" type="submit" id="senderSubmit" value="Submit">
                 </form>
             </div>
             <div class="col-md-6" style="background: var(--bs-warning-bg-subtle);">
@@ -64,7 +64,7 @@
                     <span> Address: </span><input type="text" name="address" placeholder="zh.k , ul. " required
                         style="width: 300px;margin-left: 67px;"><br>
 
-                    <input type="submit" id="receiverSubmit" value="Submit">
+                    <input name="submit" type="submit" id="receiverSubmit" value="Submit">
                 </form>
             </div>
         </div>
@@ -76,13 +76,13 @@
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 50%;background: var(--bs-success-bg-subtle);">
                             <span> Send Date: </span><input class="form-control" type="date" id="dispachDate"
-                                name="dispachDate" style="margin-left: 100px;width: 200px;" required>
+                                name="dispachDate" style="margin-left: 100px;width: 200px;"  oninput="setDateRestrictions();" required>
 
                         </div>
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 50%;background: var(--bs-warning-bg-subtle);">
                             <span> Receipt Date: </span><input class="form-control" type="date" id="receiptDate"
-                                name="receiptDate" style="margin-left: 100px;width: 200px;" required>
+                                name="receiptDate" style="margin-left: 100px;width: 200px;" oninput="setDateRestrictions();" required>
 
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                     <div class="row" style="height: 50px; margin-bottom:10px;background: var(--bs-danger-bg-subtle);">
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 30%;">
-                            <span> Weight: </span><input type="text" id="weight" name="weight" oninput="calculatePrice()"
+                            <span> Weight: </span><input type="number" id="weight" value="0.1" min="0.1" name="weight" oninput="calculatePrice()"
                                 placeholder="Weight in kg" required="" style="margin-left: 10px;">
 
                         </div>
@@ -105,29 +105,24 @@
                             <span> Employee: </span><input type="text" id="employee" name="employee"
                                 placeholder="Employee name" readonly="" required="" style="margin-left: 10px;">
                         </div> 
-                        <!--    //should get it from the session and prefill the employee name -->
+
                     </div>
                     <span style="margin-top: 10px;"> Deliver to office </span><input type="radio"
                         id="deliveryMethodOffice" name="deliveryMethod" value="office" style="margin-left: 10px;"
                         required oninput="calculatePrice()"
-                        onclick="showSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');">
-                        <!-- TODO here I use getEmpIdFromSession to debug -->
+                        onclick="showRadioButtonSelection('office');requiredONLYForClass('officeSelectionRequired','addressSelectionRequired');">
                     <span style="margin-left: 150px;"> Deliver to address </span><input type="radio"
                         id="deliveryMethodAddress" name="deliveryMethod" value="address" style="margin-left: 10px;"
                         required oninput="calculatePrice()"
-                        onclick="showSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');">
+                        onclick="showRadioButtonSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');">
                     <span style="margin-left: 150px;">Deliver to saved address</span><input type="radio"
                         id="savedAddress" name="deliveryMethod" value="savedAddress" style="margin-left: 10px; margin-bottom:10px;" 
                         required oninput="calculatePrice()"
-                        onclick="showSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');">
+                        onclick="showRadioButtonSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');">
 
                     <div id="officeSelection" class="radioDiv" style="display:none;">
                         <span> Office: </span><select id="office" class="officeSelectionRequired" name="office">
                             <option value="" selected="">Please select an office</option>
-                            <option value="office1">Office 1</option>
-                            <option value="office2">Office 2</option>
-                            <option value="office3">Office 3</option>
-                            <option value="office3">Office 4</option>
                         </select>
                     </div>
                     <div id="addressSelection" class="radioDiv" style="display:none;">
@@ -166,13 +161,13 @@
                     <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
                         style="width: 200px;margin-top: 10px;"> Change StatusDate: </span><input id="changeStatusDate"
                         class="form-control d-lg-flex justify-content-lg-end align-items-lg-start" type="date"
-                        style="margin-left: 10px;width: 200px;margin-top: 5px;">
+                        style="margin-left: 10px;width: 200px;margin-top: 5px;" name="statusdate">
                 </div>
                 <div class="col-md-6" style="height: 45px;background: var(--bs-warning-border-subtle);"><span
                         class="d-lg-flex justify-content-lg-center align-items-lg-start"
                         style="width: 100px;margin-top: 10px;"> Pay Date: </span><input id="payDate"
                         class="form-control" type="date"
-                        style="width: 200px;height: 35px;margin-top: -30px;margin-left: 120px;" name="paydate"></div>
+                        style="width: 200px;height: 35px;margin-top: -30px;margin-left: 120px;" name="payDate"></div>
             </div>
             <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
                 style="height: 50px;width: 960px;margin-right: 0px;margin-left: 0px;">
@@ -180,7 +175,7 @@
                     style="padding-right: 0px;padding-left: 0px;background: var(--bs-warning-bg-subtle);height: 45px;width: 100%;">
                     <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
                         style="width: 100px;margin-top: 10px;"> Status: </span>
-                        <select id="status" name="status" style="margin-left: 10px;margin-top: 8px;width: 500px;">
+                        <select id="status" class="required" name="status" style="margin-left: 10px;margin-top: 8px;width: 500px;">
                         <option value="" selected="">Please select status</option>
                         <option value="1">Name of Status 1</option>
                         <option value="2">Name of Status 2</option>
@@ -188,6 +183,7 @@
                         <option value="4">Name of Status 4</option>
                     </select>
                 </div>
+                <input name="submit" type="submit" id="statusSubmit" value="Submit">
             </div>
         </form>
     </div>
