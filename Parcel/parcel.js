@@ -501,7 +501,7 @@ async function fillDeliveryFormData(formId, parcel) {
     const form = document.getElementById(formId);
 
     form.elements['changeStatusDate'].value = parcel.StatusDate.split("T")[0];
-    form.elements['payDate'].value = parcel.PaidOn.split("T")[0];
+    form.elements['payDate'].value = parcel.PaidOn === null? null :parcel.PaidOn.split("T")[0];
     form.elements['status'].value = parcel.StatusId;
 
 }
