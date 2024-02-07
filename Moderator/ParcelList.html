@@ -11,7 +11,14 @@
 </head>
 
 <body>
-    <h1 style="font-size: 2.5rem;">Parcels</h1>
+    <div class="head-row" style="display: flex; justify-content: space-between; width: 90%; align-items: center;">
+        <h1 style="font-size: 2.5rem;">Parcels</h1>
+        <button class="btn btn-primary pull-right" id="logoutButton" type="button" onclick="exitParcels()"
+        style="background: var(--bs-teal);width: 120px; height: 40px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+        height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-door-open-fill">
+        <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"></path>
+         </svg>Exit</button>
+    </div>
     <div class="container" style="display: flex;justify-content: space-between;"><button type="button" id="openBtn"
             style="color: var(--bs-body-bg);background: #20c997;border-radius:6px; margin-bottom:5px;border-style: none;padding-right: 12px;padding-left: 12px;">
             <a href="/parcel.html" style="color: inherit; text-decoration: inherit;">Add New Parcel</a></button>
@@ -26,7 +33,7 @@
                 <option value="ReceiverAddress">Receiver Address</option>
                 <option value="Weight">Weight</option>
                 <option value="Price">Price</option>
-                <option value="DispachDate">Dispach Date</option>
+                <option value="DispatchDate">Dispatch Date</option>
                 <option value="ReceiptDate">Receipt Date</option>
                 <option value="StatusId">Status</option>
                 <option value="StatusDate">Status Change</option>
