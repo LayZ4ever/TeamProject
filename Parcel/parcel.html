@@ -1,255 +1,128 @@
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
-  <head>
+
+<head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <title>Parcel</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/css/x-dropdown.css" />
     <script>
-      window.onload = function () {
-        fetch("/api/checkSession")
-          .then((response) => response.json())
-          .then((data) => {
-            if (!data.loggedIn) {
-              window.location.href = "/login.html"; // Redirect to login page if not logged in
-            }
-          })
-          .catch((error) => console.error("Error:", error));
-      };
+        window.onload = function () {
+            fetch("/api/checkSession")
+                .then((response) => response.json())
+                .then((data) => {
+                    if (!data.loggedIn) {
+                        window.location.href = "/login.html"; // Redirect to login page if not logged in
+                    }
+                })
+                .catch((error) => console.error("Error:", error));
+        };
     </script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="container" style="background: var(--bs-teal)">
-      <label class="form-label form-label" style="font-size: 32px"
-        >Parcel&nbsp;</label
-      ><label
-        id="parcelNum"
-        class="form-label form-label"
-        style="font-size: 32px; color: var(--bs-link-color)"
-        >No</label
-      >
+        <label class="form-label form-label" style="font-size: 32px">Parcel&nbsp;</label><label id="parcelNum"
+            class="form-label form-label" style="font-size: 32px; color: var(--bs-link-color)">No</label>
     </div>
     <div class="container">
-      <div class="row">
-        <div class="col-md-6" style="background: var(--bs-success-bg-subtle)">
-          <form id="SenderForm" style="margin-bottom: 10px">
-            <legend>Sender information</legend>
-            <span> Phone number: </span
-            ><input
-              type="text"
-              id="senderPhoneInput"
-              maxlength="10"
-              minlength="10"
-              name="phoneNumber"
-              required
-              style="width: 300px; margin-left: 19px"
-            /><br />
+        <div class="row">
+            <div class="col-md-6" style="background: var(--bs-success-bg-subtle)">
+                <form id="SenderForm" style="margin-bottom: 10px">
+                    <legend>Sender information</legend>
+                    <span> Phone number: </span><input type="text" id="senderPhoneInput" maxlength="10" minlength="10"
+                        name="phoneNumber" required style="width: 300px; margin-left: 19px" /><br />
 
-            <span> First Name: </span
-            ><input
-              type="text"
-              name="firstName"
-              required
-              style="width: 300px; margin-left: 47px"
-            /><br />
+                    <span> First Name: </span><input type="text" name="firstName" required
+                        style="width: 300px; margin-left: 47px" /><br />
 
-            <span> Last Name: </span
-            ><input
-              type="text"
-              name="lastName"
-              required
-              style="width: 300px; margin-left: 49px"
-            /><br />
+                    <span> Last Name: </span><input type="text" name="lastName" required
+                        style="width: 300px; margin-left: 49px" /><br />
 
-            <span> City: </span
-            ><input
-              type="text"
-              id="cityInput"
-              list="cityList"
-              name="city"
-              placeholder="Type or select a city"
-              oninput="loadCityList()"
-              required
-              style="width: 300px; margin-left: 96px"
-            /><datalist id="cityList"></datalist><br />
+                    <span> City: </span><input type="text" id="cityInput" list="cityList" name="city"
+                        placeholder="Type or select a city" oninput="loadCityList()" required
+                        style="width: 300px; margin-left: 96px" /><datalist id="cityList"></datalist><br />
 
-            <span style="width: 100px; text-align: right; padding-right: 0px">
-              Address: </span
-            ><input
-              type="text"
-              name="address"
-              placeholder="zh.k , ul. "
-              required
-              style="width: 300px; margin-left: 67px"
-            /><br />
+                    <span style="width: 100px; text-align: right; padding-right: 0px">
+                        Address: </span><input type="text" name="address" placeholder="zh.k , ul. " required
+                        style="width: 300px; margin-left: 67px" /><br />
 
-            <input
-              name="submit"
-              type="submit"
-              id="senderSubmit"
-              value="Submit"
-            />
-          </form>
+                    <input name="submit" type="submit" id="senderSubmit" value="Submit" />
+                </form>
+            </div>
+            <div class="col-md-6" style="background: var(--bs-warning-bg-subtle)">
+                <form id="ReceiverForm" style="margin-bottom: 10px">
+                    <legend>Receiver information</legend>
+                    <span> Phone number: </span><input type="text" id="receiverPhoneInput" maxlength="10" minlength="10"
+                        name="phoneNumber" required style="width: 300px; margin-left: 19px" /><br />
+                    <span> First Name: </span><input type="text" name="firstName" required
+                        style="width: 300px; margin-left: 47px" /><br />
+                    <span> Last Name: </span><input type="text" name="lastName" required
+                        style="width: 300px; margin-left: 49px" /><br />
+                    <span> City: </span><input type="text" id="cityInput" list="cityList" name="city"
+                        placeholder="Type or select a city" oninput="loadCityList()" required
+                        style="width: 300px; margin-left: 96px" /><datalist id="cityList"></datalist><br />
+                    <span> Address: </span><input type="text" name="address" placeholder="zh.k , ul. " required
+                        style="width: 300px; margin-left: 67px" /><br />
+
+                    <input name="submit" type="submit" id="receiverSubmit" value="Submit" />
+                </form>
+            </div>
         </div>
-        <div class="col-md-6" style="background: var(--bs-warning-bg-subtle)">
-          <form id="ReceiverForm" style="margin-bottom: 10px">
-            <legend>Receiver information</legend>
-            <span> Phone number: </span
-            ><input
-              type="text"
-              id="receiverPhoneInput"
-              maxlength="10"
-              minlength="10"
-              name="phoneNumber"
-              required
-              style="width: 300px; margin-left: 19px"
-            /><br />
-            <span> First Name: </span
-            ><input
-              type="text"
-              name="firstName"
-              required
-              style="width: 300px; margin-left: 47px"
-            /><br />
-            <span> Last Name: </span
-            ><input
-              type="text"
-              name="lastName"
-              required
-              style="width: 300px; margin-left: 49px"
-            /><br />
-            <span> City: </span
-            ><input
-              type="text"
-              id="cityInput"
-              list="cityList"
-              name="city"
-              placeholder="Type or select a city"
-              oninput="loadCityList()"
-              required
-              style="width: 300px; margin-left: 96px"
-            /><datalist id="cityList"></datalist><br />
-            <span> Address: </span
-            ><input
-              type="text"
-              name="address"
-              placeholder="zh.k , ul. "
-              required
-              style="width: 300px; margin-left: 67px"
-            /><br />
-
-            <input
-              name="submit"
-              type="submit"
-              id="receiverSubmit"
-              value="Submit"
-            />
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" style="background: #20c997">
-          <form id="DeliveryForm" style="width: 100%">
-            <legend>Delivery Details</legend>
-            <div class="row" style="background: var(--bs-danger-bg-subtle)">
-              <div
-                class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp"
-                style="
+        <div class="row">
+            <div class="col" style="background: #20c997">
+                <form id="DeliveryForm" style="width: 100%">
+                    <legend>Delivery Details</legend>
+                    <div class="row" style="background: var(--bs-danger-bg-subtle)">
+                        <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
                   width: 50%;
                   background: var(--bs-success-bg-subtle);
                   display: flex;
                   justify-content: space-between;
                   align-items: center;
-                "
-              >
-                <span> Send Date: </span
-                ><input
-                  class="form-control form-control"
-                  type="date"
-                  id="dispachDate"
-                  name="dispachDate"
-                  style="width: 50%"
-                  required=""
-                />
-              </div>
-              <div
-                class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp"
-                style="
+                ">
+                            <span> Send Date: </span><input class="form-control form-control" type="date"
+                                id="dispachDate" name="dispachDate" style="width: 50%" oninput="setDateRestrictions();"
+                                required="" />
+                        </div>
+                        <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
                   width: 50%;
                   background: var(--bs-warning-bg-subtle);
                   display: flex;
                   justify-content: space-between;
                   align-items: center;
-                "
-              >
-                <span> Receipt Date: </span
-                ><input
-                  class="form-control form-control"
-                  type="date"
-                  id="receiptDate"
-                  name="receiptDate"
-                  style="width: 50%"
-                  required=""
-                />
-              </div>
-            </div>
-            <div
-              class="row row-pad"
-              style="background: var(--bs-danger-bg-subtle)"
-            >
-              <div
-                class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp"
-                style="
+                ">
+                            <span> Receipt Date: </span><input class="form-control form-control" type="date"
+                                id="receiptDate" name="receiptDate" style="width: 50%" oninput="setDateRestrictions();"
+                                required="" />
+                        </div>
+                    </div>
+                    <div class="row row-pad" style="background: var(--bs-danger-bg-subtle)">
+                        <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
                   width: 33%;
                   padding: 5px 0;
                   display: flex;
                   justify-content: space-evenly;
                   align-items: center;
-                "
-              >
-                <span style="width: 30%"> Weight: </span
-                ><input
-                  type="number"
-                  id="weight"
-                  value="0.1"
-                  min="0.1"
-                  name="weight"
-                  oninput="calculatePrice()"
-                  placeholder="Weight in kg"
-                  required=""
-                  style="margin-left: 10px; width: 60%"
-                />
-              </div>
-              <div
-                class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp"
-                style="
+                ">
+                            <span style="width: 30%"> Weight: </span><input type="number" id="weight" value="0.1"
+                                min="0.1" name="weight" oninput="calculatePrice()" placeholder="Weight in kg"
+                                required="" style="margin-left: 10px; width: 60%" />
+                        </div>
+                        <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
                   width: 33%;
                   background: var(--bs-danger-border-subtle);
                   padding: 5px 0;
                   display: flex;
                   justify-content: space-evenly;
                   align-items: center;
-                "
-              >
-                <span style="width: 30%">Price: </span
-                ><input
-                  type="text"
-                  id="price"
-                  name="price"
-                  placeholder="Price in BGN"
-                  readonly=""
-                  style="margin-left: 10px; width: 60%"
-                />
-              </div>
-              <div
-                class="col d-lg-flex justify-content-lg-center align-items-lg-center col-resp"
-                style="
+                ">
+                            <span style="width: 30%">Price: </span><input type="text" id="price" name="price"
+                                placeholder="Price in BGN" readonly="" style="margin-left: 10px; width: 60%" />
+                        </div>
+                        <div class="col d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
                   width: 33%;
                   background: var(--bs-primary-border-subtle);
                   padding: 5px 0;
@@ -361,140 +234,89 @@
               background: var(--bs-dark-bg-subtle);
               width: 100%;
               margin-left: 0px;
-            "
-          >
-            <div
-              class="row"
-              style="width: 100%; margin-right: 0px; margin-left: 0px"
-            >
-              <div
-                class="col-md-6"
-                style="
+            ">
+                    <div class="row" style="width: 100%; margin-right: 0px; margin-left: 0px">
+                        <div class="col-md-6" style="
                   width: 50%;
                   padding-right: 0px;
                   padding-left: 0px;
                   margin: 0px !important;
-                "
-              >
-                <legend
-                  class="d-lg-flex justify-content-lg-center align-items-lg-center"
-                  style="background: var(--bs-teal); margin-bottom: 0px"
-                >
-                  Status Details
-                </legend>
-              </div>
-              <div
-                class="col-md-6"
-                style="
+                ">
+                            <legend class="d-lg-flex justify-content-lg-center align-items-lg-center"
+                                style="background: var(--bs-teal); margin-bottom: 0px">
+                                Status Details
+                            </legend>
+                        </div>
+                        <div class="col-md-6" style="
                   width: 50%;
                   padding: 0;
                   margin-bottom: 0px;
                   padding-bottom: 0px;
-                "
-              >
-                <legend
-                  class="d-lg-flex justify-content-lg-center align-items-lg-center"
-                  style="
+                ">
+                            <legend class="d-lg-flex justify-content-lg-center align-items-lg-center" style="
                     background: var(--bs-teal);
                     width: 100%;
                     padding-bottom: 0px;
                     margin-bottom: 0px;
                     padding-left: 0px;
                     margin-left: 1px;
-                  "
-                >
-                  Payment Details
-                </legend>
-              </div>
-            </div>
-            <div
-              class="row d-lg-flex justify-content-lg-center align-items-lg-start"
-              style="margin-right: 0px; margin-left: 0px"
-            >
-              <div
-                class="col-md-6 d-lg-flex justify-content-lg-start align-items-lg-start"
-                style="background: var(--bs-warning-bg-subtle); display: flex"
-              >
-                <span
-                  class="d-lg-flex justify-content-lg-center align-items-lg-start"
-                  style="width: 50%; margin-top: 10px"
-                >
-                  Change StatusDate: </span
-                ><input
-                  class="form-control d-lg-flex justify-content-lg-end align-items-lg-start form-control"
-                  id="changeStatusDate"
-                  type="date"
-                  style="
+                  ">
+                                Payment Details
+                            </legend>
+                        </div>
+                    </div>
+                    <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
+                        style="margin-right: 0px; margin-left: 0px">
+                        <div class="col-md-6 d-lg-flex justify-content-lg-start align-items-lg-start"
+                            style="background: var(--bs-warning-bg-subtle); display: flex">
+                            <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                                style="width: 50%; margin-top: 10px">
+                                Change StatusDate: </span><input
+                                class="form-control d-lg-flex justify-content-lg-end align-items-lg-start form-control"
+                                id="changeStatusDate" type="date" style="
                     /*margin-left: 10px;*/
                     width: 50%; /*margin-top: 5px;*/
-                  "
-                />
-              </div>
-              <div
-                class="col-md-6"
-                style="
+                  " />
+                        </div>
+                        <div class="col-md-6" style="
                   background: var(--bs-warning-border-subtle);
                   display: flex;
-                "
-              >
-                <span
-                  class="d-lg-flex justify-content-lg-center align-items-lg-start"
-                  style="width: 50%; margin-top: 10px"
-                >
-                  Pay Date: </span
-                ><input
-                  class="form-control form-control"
-                  id="payDate"
-                  type="date"
-                  style="width: 50%"
-                  name="paydate"
-                />
-              </div>
-            </div>
-            <div
-              class="row d-lg-flex justify-content-lg-center align-items-lg-start"
-              style="margin-right: 0px; margin-left: 0px"
-            >
-              <div
-                class="col-md-6 d-lg-flex justify-content-lg-center align-items-lg-start"
-                style="
+                ">
+                            <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                                style="width: 50%; margin-top: 10px">
+                                Pay Date: </span><input class="form-control form-control" id="payDate" type="date"
+                                style="width: 50%" name="paydate" />
+                        </div>
+                    </div>
+                    <div class="row d-lg-flex justify-content-lg-center align-items-lg-start"
+                        style="margin-right: 0px; margin-left: 0px">
+                        <div class="col-md-6 d-lg-flex justify-content-lg-center align-items-lg-start" style="
                   background: var(--bs-warning-bg-subtle);
                   width: 100%;
                   padding-bottom: 10px;
-                "
-              >
-                <span
-                  class="d-lg-flex justify-content-lg-center align-items-lg-start"
-                  style="width: 100px; margin-top: 10px"
-                >
-                  Status: </span
-                ><select
-                  id="status"
-                  name="status"
-                  style="margin-left: 10px; margin-top: 8px; width: 80%"
-                >
-                  <option value="" selected="">Please select status</option>
-                  <option value="1">Приета</option>
-                  <option value="2">Изпратена</option>
-                  <option value="3">Получена</option>
-                  <option value="4">Платена</option>
-                  <option value="5">Приключена</option>
-                </select>
-              </div>
-              <input
-                name="submit"
-                type="submit"
-                id="statusSubmit"
-                value="Submit"
-              />
+                ">
+                            <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
+                                style="width: 100px; margin-top: 10px">
+                                Status: </span><select id="status" name="status"
+                                style="margin-left: 10px; margin-top: 8px; width: 80%">
+                                <option value="" selected="">Please select status</option>
+                                <option value="1">Приета</option>
+                                <option value="2">Изпратена</option>
+                                <option value="3">Получена</option>
+                                <option value="4">Платена</option>
+                                <option value="5">Приключена</option>
+                            </select>
+                        </div>
+                        <input name="submit" type="submit" id="statusSubmit" value="Submit" />
+                    </div>
+                </form>
             </div>
-          </form>
         </div>
-      </div>
-      <div id="result"></div>
+        <div id="result"></div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <!-- <script src="assets/js/assets/bootstrap/js/bootstrap.min.js"></script> -->
     <script src="parcel.js"></script>
-  </body>
+</body>
+
 </html>
