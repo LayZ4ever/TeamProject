@@ -15,16 +15,22 @@
     <div class="container" style="display: flex;justify-content: space-between;">
         <div id="filteringParcelsAttribute" name="filteringParcelsAttribute"
             style="background: rgb(203,205,205);color: #043a3d;border-radius: 1px;padding-top: 6px;padding-right: 12px;padding-bottom: 6px;padding-left: 12px;">
+            <label>Parcel ID</label>
             <input type="text" id="parcelIdInput" name="parcelId" placeholder="Enter parcel ID" style="width: 113px;"
                 required>
+            <label>Employee Name</label>
             <input type="text" id="employeeInput" list="employeeList" name="employee"
                 placeholder="Type or select an employee" oninput="loadEmployeeList()" style="width: 250px;" required>
             <datalist id="employeeList"></datalist>
+            <label>Sender ID</label>
             <input type="text" id="senderIdInput" name="senderId" placeholder="Enter Sender ID" style="width: 118px;"
                 required>
+            <label>Receiver ID</label>
             <input type="text" id="receiverIdInput" name="receiverId" placeholder="Enter Receiver ID"
                 style="width: 128px;" required>
+            <label>From Date</label>
             <input type="date" id="startDateInput" name="startDate" placeholder="From date">
+            <label>To Date</label>
             <input type="date" id="endDateInput" name="endDate" placeholder="To date">
             <button id="filterParcelsButton" type="button"
                 style="background: rgb(32,201,151);border-radius: 6px;border-style: none;color: white;padding-top: 6px;padding-right: 12px;padding-bottom: 6px;padding-left: 12px;">Filter</button>

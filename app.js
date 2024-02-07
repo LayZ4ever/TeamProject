@@ -316,7 +316,7 @@ JOIN
         res.json(rows);
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Error fetching employees data' });
+        res.status(500).json({ message: 'Error fetching parcels data' });
     } finally {
         if (connection) {
             connection.release();

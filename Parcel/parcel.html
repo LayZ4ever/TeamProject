@@ -110,7 +110,7 @@
                   align-items: center;
                 ">
                             <span style="width: 30%; margin: 10px 0;"> Weight: </span><input type="number" id="weight" value="0.1"
-                                min="0.1" name="weight" oninput="calculatePrice()" placeholder="Weight in kg"
+                                min="0.1" step="0.1" name="weight" oninput="calculatePrice()" placeholder="Weight in kg"
                                 required="" style="margin-left: 10px; width: 60%" />
                         </div>
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center col-resp" style="
@@ -168,28 +168,15 @@
                     </div>
                     <div id="addressSelection" class="radioDiv" style="display: none; background: #cfe2ff; padding: 5px 0px 5px 12px;">
                         <span> Choose a city: </span><input type="text" class="addressSelectionRequired" id="cityInput"
-                            list="cityList" name="addressCity" placeholder="Type or select a city" /><datalist
-                            id="cityList"></datalist><span> Address: </span><input type="text"
-                            class="addressSelectionRequired" id="deliveryAddress" name="deliveryAddress"
+                            list="cityList" name="addressCity" placeholder="Type or select a city"
+                            oninput="loadCityList()" /><datalist id="cityList"></datalist><span> Address: </span><input
+                            type="text" class="addressSelectionRequired" id="deliveryAddress" name="deliveryAddress"
                             placeholder="zh.k , ul. " />
                     </div>
                     <input type="submit" id="submitAllForms" style="display: none; margin: 10px" value="Submit" />
                 </form>
             </div>
-           
-            <div id="officeSelection" class="radioDiv" style="display: none">
-                <span> Office: </span><select class="officeSelectionRequired" id="office" name="office">
-                    <option value="" selected="">Please select an office</option>
-                </select>
-            </div>
-            <div id="addressSelection" class="radioDiv" style="display: none">
-                <span> Choose a city: </span><input type="text" class="addressSelectionRequired" id="cityInput"
-                    list="cityList" name="addressCity" placeholder="Type or select a city"
-                    oninput="loadCityList()" /><datalist id="cityList"></datalist><span> Address: </span><input
-                    type="text" class="addressSelectionRequired" id="deliveryAddress" name="deliveryAddress"
-                    placeholder="zh.k , ul. " />
-            </div>
-            <input
+                    <input
               type="submit"
               id="submitAllForms"
               style="display: none; margin: 10px"
@@ -242,7 +229,7 @@
                             style="width: 50%; margin-top: 10px">
                             Change StatusDate: </span><input
                             class="form-control d-lg-flex justify-content-lg-end align-items-lg-start form-control"
-                            id="changeStatusDate" type="date" style="
+                            id="changeStatusDate" name="changeStatusDate" type="date" style="
                     /*margin-left: 10px;*/
                     width: 50%; /*margin-top: 5px;*/
                   " />
