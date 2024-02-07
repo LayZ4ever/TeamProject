@@ -76,13 +76,15 @@
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 50%;background: var(--bs-success-bg-subtle);">
                             <span> Send Date: </span><input class="form-control" type="date" id="dispachDate"
-                                name="dispachDate" style="margin-left: 100px;width: 200px;"  oninput="setDateRestrictions();" required>
+                                name="dispachDate" style="margin-left: 100px;width: 200px;"
+                                oninput="setDateRestrictions();" required>
 
                         </div>
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 50%;background: var(--bs-warning-bg-subtle);">
                             <span> Receipt Date: </span><input class="form-control" type="date" id="receiptDate"
-                                name="receiptDate" style="margin-left: 100px;width: 200px;" oninput="setDateRestrictions();" required>
+                                name="receiptDate" style="margin-left: 100px;width: 200px;"
+                                oninput="setDateRestrictions();" required>
 
                         </div>
                     </div>
@@ -91,20 +93,21 @@
                     <div class="row" style="height: 50px; margin-bottom:10px;background: var(--bs-danger-bg-subtle);">
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 30%;">
-                            <span> Weight: </span><input type="number" id="weight" value="0.1" min="0.1" name="weight" oninput="calculatePrice()"
-                                placeholder="Weight in kg" required="" style="margin-left: 10px;">
+                            <span> Weight: </span><input type="number" id="weight" value="0.1" min="0.1" name="weight"
+                                oninput="calculatePrice()" placeholder="Weight in kg" required=""
+                                style="margin-left: 10px;">
 
                         </div>
                         <div class="col-lg-3 d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 30%;background: var(--bs-danger-border-subtle);">
-                            <span>Price: </span><input type="text" id="price" name="price" readonly placeholder="Price in BGN"
-                                 style="margin-left: 10px;">
+                            <span>Price: </span><input type="text" id="price" name="price" readonly
+                                placeholder="Price in BGN" style="margin-left: 10px;">
                         </div>
                         <div class="col d-lg-flex justify-content-lg-center align-items-lg-center"
                             style="height: 40px;width: 40%;background: var(--bs-primary-border-subtle);">
                             <span> Employee: </span><input type="text" id="employee" name="employee"
                                 placeholder="Employee name" readonly="" required="" style="margin-left: 10px;">
-                        </div> 
+                        </div>
 
                     </div>
                     <span style="margin-top: 10px;"> Deliver to office </span><input type="radio"
@@ -116,8 +119,8 @@
                         required oninput="calculatePrice()"
                         onclick="showRadioButtonSelection('address');requiredONLYForClass('addressSelectionRequired','officeSelectionRequired');">
                     <span style="margin-left: 150px;">Deliver to saved address</span><input type="radio"
-                        id="savedAddress" name="deliveryMethod" value="savedAddress" style="margin-left: 10px; margin-bottom:10px;" 
-                        required oninput="calculatePrice()"
+                        id="savedAddress" name="deliveryMethod" value="savedAddress"
+                        style="margin-left: 10px; margin-bottom:10px;" required oninput="calculatePrice()"
                         onclick="showRadioButtonSelection('savedaddress');requiredONLYForClass('','officeSelectionRequired','addressSelectionRequired');">
 
                     <div id="officeSelection" class="radioDiv" style="display:none;">
@@ -175,12 +178,14 @@
                     style="padding-right: 0px;padding-left: 0px;background: var(--bs-warning-bg-subtle);height: 45px;width: 100%;">
                     <span class="d-lg-flex justify-content-lg-center align-items-lg-start"
                         style="width: 100px;margin-top: 10px;"> Status: </span>
-                        <select id="status" class="required" name="status" style="margin-left: 10px;margin-top: 8px;width: 500px;">
+                    <select id="status" class="required" name="status"
+                        style="margin-left: 10px;margin-top: 8px;width: 500px;">
                         <option value="" selected="">Please select status</option>
-                        <option value="1">Name of Status 1</option>
-                        <option value="2">Name of Status 2</option>
-                        <option value="3">Name of Status 3</option>
-                        <option value="4">Name of Status 4</option>
+                        <option value="1">Приета</option>
+                        <option value="2">Изпратена</option>
+                        <option value="3">Получена</option>
+                        <option value="4">Платена</option>
+                        <option value="5">Приключена</option>
                     </select>
                 </div>
                 <input name="submit" type="submit" id="statusSubmit" value="Submit">
@@ -192,7 +197,7 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="parcel.js"></script>
 
-    
+
 
 </body>
 

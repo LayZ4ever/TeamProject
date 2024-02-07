@@ -16,6 +16,10 @@
 //         .catch(error => console.error('Error:', error));
 // });
 
+function refreshPage() { window.location.reload(); }
+
+function gotoParcels() { window.location.assign('/ParcelList.html'); }
+
 let editMode;
 const dateNow = () => new Date().toISOString().split("T")[0];
 
@@ -287,6 +291,7 @@ async function handleParcelFormSubmission(event) {
             console.error('Error:', error);
             // Handle errors here
         });
+        gotoParcels();
 }
 
 
@@ -480,11 +485,11 @@ async function fillDeliveryFormData(formId, parcel) {
         document.getElementById('addressSelection').style.display = 'block';
         form.elements['deliveryMethod'].value = "address";
         // Split the combined city and address
-         // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
-         const addressParts = customerData.Address.split(', ');
-         const city = addressParts.shift()// + ', ';
-         const address = addressParts.join(', ');
- 
+        // Splitting the address at ") ", assuming the format "gr. CityName (PostCode) Address"
+        const addressParts = customerData.Address.split(', ');
+        const city = addressParts.shift()// + ', ';
+        const address = addressParts.join(', ');
+
         form.elements['addressCity'].value = city;
         (address ? form.elements['deliveryAddress'].value = address : "");
 
