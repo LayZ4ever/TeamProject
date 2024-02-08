@@ -252,26 +252,6 @@ app.post('/api/updateData', async (req, res) => {
         }
     }
 });
-//have to update the DB here for parcel, instead of creating a new one
-app.post('/api/updateData', async (req, res) => {
-    let connection;
-
-    const { StatusDate, PaidOn, StatusId, ParcelId } = req.body;
-    try {
-        connection = await pool.getConnection();
-        const sql = 'UPDATE parcels SET StatusDate = ?, PaidOn = ?, StatusId = ? WHERE ParcelsId = ?';
-        await connection.query(sql, [StatusDate, PaidOn, StatusId, ParcelId]);
-        connection.release();
-        res.json({ message: 'Data updated successfully' });
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Error updating data' });
-    } finally {
-        if (connection) {
-            connection.release();
-        }
-    }
-});
 
 app.get('/api/getCustomerId', async (req, res) => {
     let connection;
@@ -297,18 +277,6 @@ app.get('/api/getCustomerId', async (req, res) => {
             connection.release();
         }
     }
-});
-
-
-app.get(`/api/getParcelById`, async (req, res) => {
-    const { parcelId } = req.query;
-
-    connection = await pool.getConnection();
-    const sql = 'SELECT * FROM parcels WHERE ParcelsId = ?';
-    const [parcel] = await connection.query(sql, [parcelId]);
-    connection.release();
-
-    res.json(parcel[0]);
 });
 
 
@@ -438,25 +406,6 @@ app.get('/searchEmployees', async (req, res) => {
 });
 
 
-app.get('/searchEmployees', async (req, res) => {
-    let connection;
-    try {
-        connection = await pool.getConnection();
-        const searchQuery = req.query.query || '';  // Get the search term from the query parameters
-        // Use CONCAT and LOWER to ensure case-insensitive matching in MySQL
-        const sql = `SELECT EmpId, EmpName FROM employees WHERE LOWER(EmpName) LIKE LOWER(CONCAT('%', ?, '%'))`;
-        const [rows] = await connection.query(sql, [searchQuery]);
-        const formattedRows = rows.map(row => `${row.EmpName} (ID: ${row.EmpId})`);
-        res.json(formattedRows);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Error fetching employee data' });
-    } finally {
-        if (connection) {
-            connection.release();
-        }
-    }
-});
 
 app.get('/parcelsFilter', async (req, res) => {
     let connection;
