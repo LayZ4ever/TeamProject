@@ -3,7 +3,7 @@ window.onload = function () {
         .then(response => response.json())
         .then(data => {
             if (!data.loggedIn) {
-                window.location.href = '/registration.html'; // Redirect to login page if not logged in
+                window.location.href = '/login.html'; // Redirect to login page if not logged in
             }
         })
         .catch(error => console.error('Error:', error));
