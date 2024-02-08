@@ -315,7 +315,7 @@ JOIN
     employees t ON p.EmpId = t.EmpId 
 JOIN 
     statuses q ON p.StatusId = q.StatusId;`;
-        const [rows] = await connection.query(sql)  ;
+        const [rows] = await connection.query(sql);
         res.json(rows);
     } catch (error) {
         console.error('Error:', error);
@@ -387,7 +387,7 @@ app.delete('/api/deleteParcel', async (req, res) => {
 // filters
 app.get('/searchEmployees', async (req, res) => {
     let connection;
-    try { 
+    try {
         connection = await pool.getConnection();
         const searchQuery = req.query.query || '';  // Get the search term from the query parameters
         // Use CONCAT and LOWER to ensure case-insensitive matching in MySQL
@@ -533,6 +533,51 @@ app.get('/sortedCustomerParcels', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error fetching parcels data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+
+app.get('/getTotalPaidSum', async (req, res) => {
+    let connection;
+    connection = await pool.getConnection();
+    try {
+        connection = await pool.getConnection();
+        const sql = `
+        SELECT sum(Price) 
+        FROM mydb.parcels
+        WHERE PaidOn is not null
+        `;
+        const [sum] = await connection.query(sql);
+        res.json(...sum);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching TotalPaidSum data' });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.get('/getTotalNotPaidSum', async (req, res) => {
+    let connection;
+    connection = await pool.getConnection();
+    try {
+        connection = await pool.getConnection();
+        const sql = `
+        SELECT sum(Price) 
+        FROM mydb.parcels
+        WHERE PaidOn is null
+        `;
+        const [sum] = await connection.query(sql);
+        res.json(...sum);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching TotalNotPaidSum data' });
     } finally {
         if (connection) {
             connection.release();
