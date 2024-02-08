@@ -8,18 +8,7 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/css/x-dropdown.css" />
-    <script>
-        window.onload = function () {
-            fetch("/api/checkSession")
-                .then((response) => response.json())
-                .then((data) => {
-                    if (!data.loggedIn) {
-                        window.location.href = "/login.html"; // Redirect to login page if not logged in
-                    }
-                })
-                .catch((error) => console.error("Error:", error));
-        };
-    </script>
+    <script src = "logoutRedirectionStuff.js"></script>
 </head>
 
 <body>
