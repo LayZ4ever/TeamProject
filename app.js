@@ -541,13 +541,13 @@ app.get('/sortedCustomerParcels', async (req, res) => {
 });
 
 
-app.get('/getTotalPaidSum', async (req, res) => {
+app.get('/api/getTotalPaidSum', async (req, res) => {
     let connection;
     connection = await pool.getConnection();
     try {
         connection = await pool.getConnection();
         const sql = `
-        SELECT sum(Price) 
+        SELECT sum(Price) as totalPaidSum 
         FROM mydb.parcels
         WHERE PaidOn is not null
         `;
@@ -563,13 +563,13 @@ app.get('/getTotalPaidSum', async (req, res) => {
     }
 });
 
-app.get('/getTotalNotPaidSum', async (req, res) => {
+app.get('/api/getTotalUnpaidSum', async (req, res) => {
     let connection;
     connection = await pool.getConnection();
     try {
         connection = await pool.getConnection();
         const sql = `
-        SELECT sum(Price) 
+        SELECT sum(Price) as totalUnpaidSum 
         FROM mydb.parcels
         WHERE PaidOn is null
         `;

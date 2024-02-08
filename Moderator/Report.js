@@ -2,17 +2,42 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchParcels();
 });
 
+function fetchTotalPaidSum() {
+    fetch('/api/getTotalPaidSum')
+        .then(response => response.json())
+        .then(data => {
+            const paidSumElement = document.getElementById('paidSum');
+            paidSumElement.innerHTML = data.totalPaidSum;
+        })
+        .catch(error => console.error('Error fetching total paid sum:', error));
+
+}
+function fetchTotalUnpaidSum() {
+    fetch('/api/getTotalUnpaidSum')
+        .then(response => response.json())
+        .then(data => {
+            const paidSumElement = document.getElementById('unpaidSum');
+            paidSumElement.innerHTML = data.totalUnpaidSum;
+        })
+        .catch(error => console.error('Error fetching total paid sum:', error));
+}
+
+
 function fetchParcels() {
+    fetchTotalPaidSum();
+    fetchTotalUnpaidSum();
     fetch('/parcels')
         .then(response => response.json())
         .then(data => {
-            populateTable(data);})
+            populateTable(data);
+        })
         .catch(error => console.error('Error fetching data:', error));
+
 }
 
 function populateTable(parcels) {
     const container = document.getElementById('parcels');
-    container.innerHTML = ''; 
+    container.innerHTML = '';
 
     parcels.forEach((parcel, index) => {
         let containerDiv = document.createElement("div");
@@ -26,7 +51,7 @@ function populateTable(parcels) {
         // Sender details
         let senderDiv = document.createElement("div");
         senderDiv.classList.add("sender-info");
-        senderDiv.appendChild(createParagraph("Sender: " ));
+        senderDiv.appendChild(createParagraph("Sender: "));
         senderDiv.appendChild(createParagraph(parcel.SenderName));
         senderDiv.appendChild(createParagraph(parcel.SenderAddress));
         containerDiv.appendChild(senderDiv);
@@ -34,21 +59,21 @@ function populateTable(parcels) {
         // Receiver details
         let receiverDiv = document.createElement("div");
         receiverDiv.classList.add("receiver-info");
-        receiverDiv.appendChild(createParagraph("Receiver: " ));
+        receiverDiv.appendChild(createParagraph("Receiver: "));
         receiverDiv.appendChild(createParagraph(parcel.ReceiverName));
         receiverDiv.appendChild(createParagraph(parcel.ReceiverAddress));
         containerDiv.appendChild(receiverDiv);
-        
+
         // Parcel details
         let parcelDiv = document.createElement("div");
         parcelDiv.classList.add("parcel-info");
         parcelDiv.appendChild(createParagraph("Weight: " + parcel.Weight));
         parcelDiv.appendChild(createParagraph("Price: " + parcel.Price));
-        parcelDiv.appendChild(createParagraph("Payment: " + parcel.PaidOn)); 
+        parcelDiv.appendChild(createParagraph("Payment: " + parcel.PaidOn));
         parcelDiv.appendChild(createParagraph("Send to: " + (parcel.OfficeOrAddress ? "Office" : "Address")));
-        
-        containerDiv.appendChild(parcelDiv);   
-        
+
+        containerDiv.appendChild(parcelDiv);
+
         let parcelDiv1 = document.createElement("div");
         parcelDiv1.classList.add("parcel1-info");
         parcelDiv1.appendChild(createParagraph("Dispatch Date: " + (parcel.DispatchDate === null ? null : new Date(parcel.DispatchDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }))));
@@ -98,7 +123,7 @@ function loadEmployeeList() {
         });
 }
 
-document.getElementById('filterParcelsButton').addEventListener('click', function() {
+document.getElementById('filterParcelsButton').addEventListener('click', function () {
     const employeeInputValue = document.getElementById('employeeInput').value.trim();
     const parcelIdValue = document.getElementById('parcelIdInput').value.trim();
     const senderIdValue = document.getElementById('senderIdInput').value.trim();
@@ -122,7 +147,7 @@ document.getElementById('filterParcelsButton').addEventListener('click', functio
     if (receiverIdValue) url.searchParams.append('receiverId', receiverIdValue);
     if (startDateValue) url.searchParams.append('startDate', startDateValue);
     if (endDateValue) url.searchParams.append('endDate', endDateValue);
-    
+
 
     // Fetch parcels with the specified filters
     fetch(url)
@@ -133,7 +158,7 @@ document.getElementById('filterParcelsButton').addEventListener('click', functio
         .catch(error => console.error('Error fetching filtered parcels:', error));
 });
 
-document.getElementById('clearInputsButton').addEventListener('click', function() {
+document.getElementById('clearInputsButton').addEventListener('click', function () {
     // Clear text and date inputs
     document.getElementById('parcelIdInput').value = '';
     document.getElementById('employeeInput').value = '';
@@ -141,7 +166,7 @@ document.getElementById('clearInputsButton').addEventListener('click', function(
     document.getElementById('receiverIdInput').value = '';
     document.getElementById('startDateInput').value = '';
     document.getElementById('endDateInput').value = '';
-    
+
     // If you want to reset any <datalist> or other elements, add the code here
 });
 
